@@ -15,6 +15,10 @@ import { StepsModule } from 'primeng/steps';
 import { RegisterOrderComponent } from './pages/register-order/register-order.component';
 import { PaymentComponent } from './pages/Payment.Component';
 
+import { ToggleButtonModule } from 'primeng/togglebutton';
+import { ButtonModule } from 'primeng/button';
+import { RippleModule } from 'primeng/ripple';
+
 @NgModule({
   declarations:[
 
@@ -30,7 +34,10 @@ import { PaymentComponent } from './pages/Payment.Component';
     PickListModule,
     OrderListModule,
     TabMenuModule,
-    StepsModule
+    StepsModule,
+    ToggleButtonModule,
+    ButtonModule,
+    RippleModule
   ],
   })
   export class MeseraModule { }

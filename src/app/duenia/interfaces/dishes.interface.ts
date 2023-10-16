@@ -13,6 +13,6 @@ export interface Dishes {
     id ?: number;
     nombrePlatillo?: string;
     categoriaID? : string;
-    esMenuDelDia? : boolean;
     precio? : number
+    esMenuDelDia? : boolean;
   }

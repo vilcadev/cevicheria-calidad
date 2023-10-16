@@ -14,15 +14,3 @@ $gutter: 1rem; //for primeflex grid system
 @import "assets/demo/styles/code.scss";
 
 
-
-/* Estilos para las pestañas activas */
-.tab-menu-active {
-    border-color: #6366F1;
-    color: #6366F1;
-  }
-
-  /* Estilos para las pestañas inactivas */
-  .tab-menu-inactive {
-    border-color: #ccc; /* Color de borde de las pestañas inactivas */
-    color: #555; /* Color del texto de las pestañas inactivas */
-  }

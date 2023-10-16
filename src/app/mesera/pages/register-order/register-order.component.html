@@ -6,8 +6,17 @@
             <h5>TabMenu</h5>
             <p-tabMenu styleClass="mb-5" [model]="routeItems" ></p-tabMenu>
 
-            <h5>Steps</h5>
-            <p-steps [model]="routeItems" styleClass="mt-5" [readonly]="false"></p-steps>
+            <span class="p-buttonset">
+				<button pButton pRipple label="Buscar Menú del Día" icon="pi pi-search"></button>
+				<button pButton pRipple label="{{mesaNombre | uppercase}}" icon="" style="cursor:default"></button>
+			</span>
+            <hr>
+            <span class="p-buttonset">
+				<button pButton pRipple type="button" label="Pre - Cuenta" class="p-button-raised p-button-secondary" icon="pi pi-print"></button>
+				<button pButton pRipple type="button" label="Guardar" class="p-button-raised p-button-success"></button>
+			</span>
+
+
         </div>
         <div class="col-12 md:col-4 mt-5 md:mt-0">
             <router-outlet></router-outlet>

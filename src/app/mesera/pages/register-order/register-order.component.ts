@@ -30,14 +30,7 @@ export class RegisterOrderComponent implements OnInit{
     ];
 
     }
-    redirectToOrderPage(){
-       this.router.navigate(['/mesera/payments',this.mesaNombre]);
 
-    }
-    redirectToOrderPage1(){
-        this.router.navigate(['/mesera/register-order',this.mesaNombre]);
-
-    }
 
 
 
