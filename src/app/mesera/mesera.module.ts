@@ -19,6 +19,9 @@ import { ToggleButtonModule } from 'primeng/togglebutton';
 import { ButtonModule } from 'primeng/button';
 import { RippleModule } from 'primeng/ripple';
 
+import { DialogModule } from 'primeng/dialog';
+import { InputTextModule } from 'primeng/inputtext';
+
 @NgModule({
   declarations:[
 
@@ -37,7 +40,9 @@ import { RippleModule } from 'primeng/ripple';
     StepsModule,
     ToggleButtonModule,
     ButtonModule,
-    RippleModule
+    RippleModule,
+    DialogModule,
+    InputTextModule
   ],
   })
   export class MeseraModule { }
