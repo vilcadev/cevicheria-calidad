@@ -20,10 +20,12 @@ async ngOnInit() {
   this.obtenerPlatillos();
 }
 
+valSwitch: boolean = false;
+
 visible: boolean = false;
 
 
-// Side bar
+// Side bar hola soy un cambio
 sidebarVisible: boolean = false;
 
 productDialog: boolean = false;
@@ -68,6 +70,8 @@ selectedPlato1: Dishes1 = {
   esMenuDelDia: true,
   precio: 100
 };
+
+
 
 //Funciona
 obtenerPlatillos(){

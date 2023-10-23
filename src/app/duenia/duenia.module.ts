@@ -17,6 +17,7 @@ import { DropdownModule } from 'primeng/dropdown';
 import { FormsModule } from '@angular/forms';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { MainMenuComponent } from './pages/main-menu/main-menu.component';
+import { InputSwitchModule } from 'primeng/inputswitch';
 
 @NgModule({
     declarations:[
@@ -33,6 +34,7 @@ import { MainMenuComponent } from './pages/main-menu/main-menu.component';
       DropdownModule,
       RadioButtonModule,
       InputTextModule,
+      InputSwitchModule,
 
       DueniaRoutingModule,
       FormsModule,

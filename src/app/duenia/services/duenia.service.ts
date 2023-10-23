@@ -25,6 +25,7 @@ export class DueniaService {
   }
 
 
+  // Método para obtener los platillos
   obtenerPlatillos():Observable<Dishes1[]>{
     const response = this.http.get<Dishes1[]>(`${this.miapiUrl}ListaCompleta`);
     return response;

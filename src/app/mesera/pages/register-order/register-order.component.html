@@ -87,22 +87,14 @@
             </ng-template>
         </p-dataView>
 
-     </p-dialog>
+    <!-- <button pButton pRipple type="button" label="Guardar" class="p-button-raised p-button-success center-button"></button> -->
+      <!-- Botón Guardar fuera del área desplazable -->
+    <div class="fixed-button" style="cursor: pointer;" >
+        <i icon="pi pi-shopping-bag"></i>
+        <!-- <button pButton pRipple type="button" label="Guardar" class="p-button-raised p-button-success"></button> -->
 
-     <style>
-         /* ScrollBar Style */
- ::-webkit-scrollbar {
-  width: 10px;
-}
 
-::-webkit-scrollbar-thumb {
-  background-color: #08fdd8; /* Cambia este color al que desees */
-  border-radius: 5px;
-}
-
-::-webkit-scrollbar-track {
-  background-color:#1b2735;
-}
-     </style>
+    </div>
+</p-dialog>
 
 <h1>{{mesaNombre}}</h1>
