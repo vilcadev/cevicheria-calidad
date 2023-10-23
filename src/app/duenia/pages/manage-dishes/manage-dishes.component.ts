@@ -25,7 +25,7 @@ valSwitch: boolean = false;
 visible: boolean = false;
 
 
-// Side bar hola soy un cambio
+// Side bar
 sidebarVisible: boolean = false;
 
 productDialog: boolean = false;
