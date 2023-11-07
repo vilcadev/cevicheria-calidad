@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { MenuItem } from 'primeng/api';
 import { DataView } from 'primeng/dataview';
 import { Dishes1 } from 'src/app/duenia/interfaces/dishes.interface';
+import { platos } from '../../interfaces/platos.interface';
 
 @Component({
   selector: 'app-register-order',
@@ -16,7 +17,7 @@ export class RegisterOrderComponent implements OnInit{
 
     mesaNombre: string;
     constructor(private route: ActivatedRoute,
-        private router: Router) {}
+        private router: Router) { }
     ngOnInit(): void {
 
         // Recuperar el número de Plato de la URL
@@ -29,11 +30,16 @@ export class RegisterOrderComponent implements OnInit{
     ];
     }
 
+
     menuDialog:boolean =false;
 
 
     // platos:string[] =['Plato 1','Plato 2','Plato 3','Plato 4','Plato 5','soy' ];
 
+    cols: any[] = [];
+
+
+    //Platillos
     platos: Dishes1[] = [
         {
           id: 1,
@@ -84,7 +90,101 @@ export class RegisterOrderComponent implements OnInit{
 
 
 
+    // Lista de Platillos
+     platosList: platos[] = [];
+
+    // nuevoId = 1; // Inicializa un contador para los IDs únicos
+    // agregarPlato(nombre: string, precioUnitario: number) {
+    //   const nuevoPlato: platos = {
+    //     id:this.nuevoId++,
+    //     nombre: nombre,
+    //     cantidad: 1,
+    //     precioUnitario: precioUnitario
+    //   };
+    //   this.platosList.push(nuevoPlato);
+    // }
+
+    aumentarCantidad(plato: platos) {
+      plato.cantidad++;
+      plato.precio = plato.precioUnitario * plato.cantidad;
+    }
+
+    disminuirCantidad(plato: platos) {
+      if (plato.cantidad > 1) {
+        plato.cantidad--;
+      }
+      plato.precio = plato.precioUnitario * plato.cantidad;
+    }
+
+    eliminarPlato(id: number) {
+        const index = this.platosList.findIndex(plato => plato.id === id);
+        if (index !== -1) {
+          this.platosList.splice(index, 1);
+        }
+      }
 
 
+
+
+
+
+      //FUNCIONALIDAD BUSCAR PLATILLOS******************************************
+
+      selectedPlatillos: any[] = [];
+
+      seleccionarPlato(product: any) {
+        const platilloSeleccionado = {
+          nombre: product.nombrePlatillo,
+          cantidad: 1, // Empieza con una cantidad de 1
+          precioUnitario: product.precio,
+          precio:product.precio
+        };
+        this.selectedPlatillos.push(platilloSeleccionado);
+      }
+
+      transferirPlatillos() {
+        let precio = 0;
+        // Iterar sobre los platillos seleccionados
+        for (const platillo of this.selectedPlatillos) {
+
+          // Verificar si el producto ya existe en platosList
+          const productoExistente = this.platosList.find(p => p.nombre === platillo.nombre);
+
+          if (productoExistente) {
+            // Si el producto ya existe, aumentar la cantidad en lugar de agregarlo de nuevo
+            productoExistente.cantidad += platillo.cantidad;
+
+            // Precio = Precio Unitario * Cantidad
+            productoExistente.precio = platillo.precioUnitario * productoExistente.cantidad;
+          } else {
+            // Si el producto no existe, agregarlo a platosList
+            const nuevoId = this.platosList.length + 1;
+            const nuevoPlatillo: platos = {
+              id: nuevoId,
+              nombre: platillo.nombre,
+              cantidad: platillo.cantidad,
+              precioUnitario: platillo.precioUnitario,
+              precio: platillo.precio
+            };
+            this.platosList.push(nuevoPlatillo);
+          }
+        }
+        // Resetear el array temporal de platillos seleccionados
+        this.selectedPlatillos = [];
+
+
+
+         // Cerrar el modal
+        this.menuDialog = false;
+      }
+
+
+      //Pipe Seleccionados:
+      public clientsMap = {
+        '=0':'No hay nada Aquí',
+        '=1': 'Ver 1 Seleccionado',
+        '=2': 'Ver 2 Seleccionados',
+        'other': 'Ver # Seleccionados'
+      }
 
 }

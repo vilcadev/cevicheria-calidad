@@ -31,7 +31,7 @@ export class DueniaService {
     return response;
   }
 
-   addDishe1(data: Dishes1): Observable<any>{
+   addDishe1(data: Dishes1): Observable<string>{
     console.log(data);
     return this.http.post(`${this.miapiUrl}Agregar`, data, { responseType: 'text' }).pipe(
       catchError(error =>{

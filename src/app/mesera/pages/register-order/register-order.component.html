@@ -3,7 +3,7 @@
 <div class="col-12">
     <div class="card card-w-title flex flex-wrap">
         <div class="col-12 md:col-8 h-full">
-            <h5>TabMenu</h5>
+            <h5>Registrar Orden</h5>
             <p-tabMenu styleClass="mb-5" [model]="routeItems" ></p-tabMenu>
 
             <span class="p-buttonset">
@@ -11,6 +11,60 @@
 				<button pButton pRipple label="{{mesaNombre | uppercase}}" icon="" style="cursor:default"></button>
 			</span>
             <hr>
+
+            <!-- Tabla de patillos registrados -->
+          <p-table #dt [value]="platosList" [columns]="cols" responsiveLayout="scroll" [rows]="10" [globalFilterFields]="['name','country.name','representative.name','status']" [paginator]="true" [rowsPerPageOptions]="[10,20,30]" [showCurrentPageReport]="true" selectionMode="multiple" [rowHover]="true" dataKey="id" let i = index>
+            <ng-template pTemplate="caption">
+                <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
+                    <h5 class="m-0">Platillos</h5>
+                </div>
+            </ng-template>
+            <ng-template pTemplate="header">
+                <tr>
+                    <th>Nombre <p-sortIcon field="name"></p-sortIcon></th>
+                    <th>Cantidad <p-sortIcon field="category"></p-sortIcon></th>
+                    <th>Precio Unitario <p-sortIcon field="category"></p-sortIcon></th>
+                    <th>Acciones<p-sortIcon field="category"></p-sortIcon></th>
+                    <!-- <th>Status <p-sortIcon field="inventoryStatus"></p-sortIcon></th> -->
+
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-dishe>
+                <tr>
+                    <td >
+                        <span class="p-column-title">Nombre</span>
+                        {{dishe.nombre}}
+                    </td>
+                    <td>
+                        <div class="flex">
+
+                            <button pButton pRipple type="button" icon="pi pi-minus" class="p-button-rounded p-button-info mr-2" (click)="disminuirCantidad(dishe)"></button>
+                            <!-- <span class="p-column-title">Categoria</span>
+                        {{dishe.cantidad}} -->
+
+                        <input [(ngModel)]="dishe.cantidad" style="width: 50px; text-align: center;"[value]="dishe.cantidad">
+                            <button pButton pRipple type="button" icon="pi pi-plus" class="p-button-rounded p-button-danger" (click)="aumentarCantidad(dishe)"></button>
+                        </div>
+                    </td>
+                    <td >
+                      <span class="p-column-title">Precio Unitario</span>
+                      {{dishe.precio}}
+                  </td>
+
+                    <!-- <td><span class="p-column-title">Status</span>
+                        <span>{{dishe.status}}</span>
+                    </td> -->
+                    <td>
+                         <button pButton pRipple type="button" icon="pi pi-trash" class="p-button-rounded p-button-danger"(click)="eliminarPlato(dishe.id)"></button>
+                    </td>
+                </tr>
+            </ng-template>
+
+
+        </p-table>
+
+
+
             <span class="p-buttonset">
 				<button pButton pRipple type="button" label="Pre - Cuenta" class="p-button-raised p-button-secondary" icon="pi pi-print"></button>
 				<button pButton pRipple type="button" label="Guardar" class="p-button-raised p-button-success"></button>
@@ -37,8 +91,8 @@
                         <input type="search" pInputText placeholder="Buscar Por Nombre" (input)="onFilter(dv, $event)">
                     </span>
 
-
-                    <p-dataViewLayoutOptions></p-dataViewLayoutOptions>
+                    <!-- Añadir si quieres el listItem -->
+                    <!-- <p-dataViewLayoutOptions></p-dataViewLayoutOptions> -->
 
                 </div>
                 <div class="flex flex-wrap gap-2" style="padding-top: 15px;">
@@ -48,7 +102,7 @@
                 </div>
             </ng-template>
 
-            <ng-template let-product pTemplate="listItem">
+            <!-- <ng-template let-product pTemplate="listItem">
                 <div class="col-12" style="cursor: pointer;" [routerLink]="['/ruta-de-destino', product.id]">
                     <div class="flex flex-column md:flex-row align-items-center p-3 w-full">
                         <img src="assets/demo/images/product/plato.png" [alt]="product.name" class="my-4 md:my-0 w-9 md:w-10rem  mr-5"/>
@@ -62,14 +116,14 @@
                             </div>
                         </div>
                         <div class="flex flex-row md:flex-column justify-content-between w-full md:w-auto align-items-center md:align-items-end mt-5 md:mt-0">
-                            <!-- <span [class]="'product-badge status-' + product.inventoryStatus.toLowerCase()">{{product.inventoryStatus}}</span> -->
+                             <span [class]="'product-badge status-' + product.inventoryStatus.toLowerCase()">{{product.inventoryStatus}}</span>
                         </div>
                     </div>
                 </div>
-            </ng-template>
+            </ng-template> -->
 
             <ng-template let-product pTemplate="gridItem">
-                <div class="col-12 md:col-4" style="cursor: pointer;" (click)="redirectToOrderPage(product)">
+                <div class="col-12 md:col-4" style="cursor: pointer;" (click)="seleccionarPlato(product)">
                     <div class="card m-3 border-1 surface-border">
                         <div class="flex flex-wrap gap-2 align-items-center justify-content-between mb-2">
 
@@ -79,7 +133,6 @@
                             <img src="assets/demo/images/product/plato.png" [alt]="product.name" class="w-9  my-3 mx-0"/>
                             <div class="text-2xl font-bold">{{product.nombrePlatillo}}</div>
                             <div class="mb-3" [class]="'product-badge status-instock'">{{product.precio}}</div>
-                            <p-rating [ngModel]="product.rating" [readonly]="true" [cancel]="false"></p-rating>
                         </div>
 
                     </div>
@@ -87,14 +140,16 @@
             </ng-template>
         </p-dataView>
 
-    <!-- <button pButton pRipple type="button" label="Guardar" class="p-button-raised p-button-success center-button"></button> -->
+
       <!-- Botón Guardar fuera del área desplazable -->
-    <div class="fixed-button" style="cursor: pointer;" >
-        <i icon="pi pi-shopping-bag"></i>
-        <!-- <button pButton pRipple type="button" label="Guardar" class="p-button-raised p-button-success"></button> -->
+    <!-- <div class="fixed-button" style="cursor: pointer;" >
+        <i class="pi pi-shopping-bag" style="color: white; font-size: 30px;"></i>
+       <span style="color: white;">Productos </span>
+    </div> -->
 
-
-    </div>
+    <button pButton pRipple type="button" [label]="(selectedPlatillos.length | i18nPlural: clientsMap)" class="p-button-success fixed-button" style="width: 100%;" (click)="transferirPlatillos()">
+        <i class="pi pi-shopping-bag" style="color: white; font-size: 30px;"></i>
+    </button>
 </p-dialog>
 
 <h1>{{mesaNombre}}</h1>

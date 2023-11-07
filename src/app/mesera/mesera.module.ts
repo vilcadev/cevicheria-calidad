@@ -22,6 +22,8 @@ import { RippleModule } from 'primeng/ripple';
 import { DialogModule } from 'primeng/dialog';
 import { InputTextModule } from 'primeng/inputtext';
 
+import { Table, TableModule } from 'primeng/table';
+
 @NgModule({
   declarations:[
 
@@ -42,7 +44,8 @@ import { InputTextModule } from 'primeng/inputtext';
     ButtonModule,
     RippleModule,
     DialogModule,
-    InputTextModule
+    InputTextModule,
+    TableModule
   ],
   })
   export class MeseraModule { }
