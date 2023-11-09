@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import {CommonModule} from '@angular/common';
+import {CommonModule, DatePipe} from '@angular/common';
 import { SelectTablesComponent } from './pages/select-tables/select-tables.component';
 import { MeseraRoutingModule } from './mesera.routing.module';
 
@@ -23,6 +23,10 @@ import { DialogModule } from 'primeng/dialog';
 import { InputTextModule } from 'primeng/inputtext';
 
 import { Table, TableModule } from 'primeng/table';
+import { MeseraService } from './services/mesera.service';
+import { ChipsModule } from 'primeng/chips';
+import { DropdownModule } from 'primeng/dropdown';
+
 
 @NgModule({
   declarations:[
@@ -45,7 +49,11 @@ import { Table, TableModule } from 'primeng/table';
     RippleModule,
     DialogModule,
     InputTextModule,
-    TableModule
+    TableModule,
+    ChipsModule,
+    DropdownModule
+
   ],
+  providers:[  DatePipe,MeseraService]
   })
   export class MeseraModule { }

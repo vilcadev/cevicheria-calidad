@@ -9,6 +9,7 @@ import { HttpClient} from '@angular/common/http';
 import { environment } from 'src/config';
 
 import { Observable, catchError } from 'rxjs';
+import { Platillo } from '../interfaces/platillos.interface';
 // import { createClient } from '@supabase/supabase-js';
 
 @Injectable({
@@ -21,19 +22,20 @@ export class DueniaService {
 
   constructor(private http: HttpClient) {
     this.endpoint1 = environment.endPoint
-    this.miapiUrl = this.endpoint1+"platillos/"
+    this.miapiUrl = this.endpoint1+"api/Platillo"
   }
 
 
   // Método para obtener los platillos
-  obtenerPlatillos():Observable<Dishes1[]>{
-    const response = this.http.get<Dishes1[]>(`${this.miapiUrl}ListaCompleta`);
+  obtenerPlatillos():Observable<Platillo>{
+    const response = this.http.get<Platillo>(`${this.miapiUrl}`);
     return response;
   }
 
-   addDishe1(data: Dishes1): Observable<string>{
-    console.log(data);
-    return this.http.post(`${this.miapiUrl}Agregar`, data, { responseType: 'text' }).pipe(
+   addDishe1(nombre: string, categoriaId: number): Observable<string>{
+    // console.log(data);
+    const body = { nombre: nombre, categoriaId: categoriaId };
+    return this.http.post(`${this.miapiUrl}`, body, { responseType: 'text' }).pipe(
       catchError(error =>{
         console.error("Error al agregar platillo",error);
         throw error;

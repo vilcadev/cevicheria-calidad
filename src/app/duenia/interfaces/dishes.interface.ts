@@ -16,3 +16,4 @@ export interface Dishes {
     precio? : number
     esMenuDelDia? : boolean;
   }
+

@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Dishes, Dishes1 } from '../../interfaces/dishes.interface';
 import { DueniaService } from '../../services/duenia.service';
 import { MessageService } from 'primeng/api';
+import {  Platillo } from '../../interfaces/platillos.interface';
+import { map } from 'rxjs';
 
 
 
@@ -72,37 +74,73 @@ selectedPlato1: Dishes1 = {
 };
 
 
+platillos: Platillo[]=[];
+
+// Inicializar un objeto de tipo Platillo
+miPlatillo: Platillo = {
+    id: 0,
+    nombre: '',
+    categoria: {
+      id: 0,
+      nombre: ''
+    }
+  };
+
+//   miPlatillo: Platillo | null = null;
+
 
 //Funciona
-obtenerPlatillos(){
-  this.dueniaService.obtenerPlatillos().subscribe({
-    next:(data)=>{
-      this.dishes1 = data;
-    },error:(e)=>{}
-
-  });
-}
+obtenerPlatillos() {
+    this.dueniaService.obtenerPlatillos().pipe(
+      map((response: any) => response.data) // Extrae la lista de platillos de la respuesta
+    ).subscribe({
+      next: (data) => {
+        this.platillos = data; // Asigna la lista completa de platillos
+        console.log(this.platillos);
+      },
+      error: (e) => {
+        console.error('Error al obtener platillos:', e);
+      }
+    });
+  }
 
 //Agregar Platillo - funciona
-addDishe1() {
-  const dishe1: Dishes1 = {
-    nombrePlatillo: this.nuevoPlato1.nombrePlatillo,
-    categoriaID: this.nuevoPlato1.categoriaID
-  };
-  this.dueniaService.addDishe1(dishe1).subscribe(
-    response => {
-      console.log('Platillo agregado correctamente:', response);
-      this.obtenerPlatillos();
-      // Resto del código para manejar la respuesta exitosa
-    },
-    error => {
-      console.error('Error al agregar platillo:', error);
-      // Resto del código para manejar el error
-    }
-  );
-  this.nuevoPlato1.nombrePlatillo ='';
-  this.nuevoPlato1.categoriaID = '';
-  this.visible = false;
+// addDishe1() {
+//   const dishe1: Dishes1 = {
+//     nombrePlatillo: this.nuevoPlato1.nombrePlatillo,
+//     categoriaID: this.nuevoPlato1.categoriaID
+//   };
+//   this.dueniaService.addDishe1(dishe1).subscribe(
+//     response => {
+//       console.log('Platillo agregado correctamente:', response);
+//       this.obtenerPlatillos();
+//       // Resto del código para manejar la respuesta exitosa
+//     },
+//     error => {
+//       console.error('Error al agregar platillo:', error);
+//       // Resto del código para manejar el error
+//     }
+//   );
+//   this.nuevoPlato1.nombrePlatillo ='';
+//   this.nuevoPlato1.categoriaID = '';
+//   this.visible = false;
+// }
+
+
+agregarPlatillo(){
+
+    this.dueniaService.addDishe1(this.miPlatillo.nombre, this.miPlatillo.categoria.id).subscribe(
+        response =>{
+            console.log('Platillo agregado correctamente:', response);
+            this.obtenerPlatillos();
+        },
+        error =>{
+            console.error('Error al agregar platillo:', error);
+        }
+    );
+    this.miPlatillo.nombre ='';
+      this.miPlatillo.categoria.id = 0;
+    this.visible = false;
 }
 
 getOneDishe1(dishe1:Dishes1){

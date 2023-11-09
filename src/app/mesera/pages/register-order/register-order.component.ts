@@ -5,6 +5,11 @@ import { DataView } from 'primeng/dataview';
 import { Dishes1 } from 'src/app/duenia/interfaces/dishes.interface';
 import { platos } from '../../interfaces/platos.interface';
 
+
+import { MeseraService } from '../../services/mesera.service';
+
+
+
 @Component({
   selector: 'app-register-order',
   templateUrl: './register-order.component.html',
@@ -12,12 +17,22 @@ import { platos } from '../../interfaces/platos.interface';
 })
 export class RegisterOrderComponent implements OnInit{
 
+    generarPDF(){
+        if(this.platosList.length === 0){
+            alert('Ningún platillo encontrado para la Pre - cuenta')
+        }
+        else{
+            this.meseraService.generatePDF(this.mesaNombre,this.platosList);
+        }
+
+    }
+
     routeItems: MenuItem[] = [];
 
 
     mesaNombre: string;
     constructor(private route: ActivatedRoute,
-        private router: Router) { }
+        private router: Router, private meseraService:MeseraService) { }
     ngOnInit(): void {
 
         // Recuperar el número de Plato de la URL

@@ -18,11 +18,16 @@ import { FormsModule } from '@angular/forms';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { MainMenuComponent } from './pages/main-menu/main-menu.component';
 import { InputSwitchModule } from 'primeng/inputswitch';
+import { SideBarComponent } from './components/side-bar/side-bar.component';
+import { SidebarModule } from 'primeng/sidebar';
+import { ManageMenuComponent } from './pages/manage-menu/manage-menu.component';
 
 @NgModule({
     declarations:[
         ManageDishesComponent,
-        MainMenuComponent
+        MainMenuComponent,
+        SideBarComponent,
+        ManageMenuComponent
     ],
     imports:[
       CommonModule,
@@ -38,6 +43,10 @@ import { InputSwitchModule } from 'primeng/inputswitch';
 
       DueniaRoutingModule,
       FormsModule,
+      SidebarModule
     ],
+    exports:[
+        MainMenuComponent
+    ]
     })
     export class DueniaModule { }

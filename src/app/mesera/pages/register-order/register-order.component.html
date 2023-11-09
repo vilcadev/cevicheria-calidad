@@ -1,8 +1,9 @@
-<p>register-order works!</p>
+
+
 
 <div class="col-12">
     <div class="card card-w-title flex flex-wrap">
-        <div class="col-12 md:col-8 h-full">
+        <div class="col-12 md:col-8 h-full w-full">
             <h5>Registrar Orden</h5>
             <p-tabMenu styleClass="mb-5" [model]="routeItems" ></p-tabMenu>
 
@@ -66,7 +67,7 @@
 
 
             <span class="p-buttonset">
-				<button pButton pRipple type="button" label="Pre - Cuenta" class="p-button-raised p-button-secondary" icon="pi pi-print"></button>
+				<button (click)="generarPDF()" pButton pRipple type="button" label="Pre - Cuenta" class="p-button-raised p-button-secondary" icon="pi pi-print"></button>
 				<button pButton pRipple type="button" label="Guardar" class="p-button-raised p-button-success"></button>
 			</span>
 
@@ -152,4 +153,6 @@
     </button>
 </p-dialog>
 
+
 <h1>{{mesaNombre}}</h1>
+
