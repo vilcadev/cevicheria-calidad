@@ -10,6 +10,10 @@ const appRoutes: Routes = [
         path:'mesera',
         loadChildren: () => import('./mesera/mesera.module').then(m => m.MeseraModule)
       },
+      {
+        path:'cocinero',
+        loadChildren: () => import('./cocinero/cocinero.module').then(m => m.CocineroModule)
+      },
 ]
 
 @NgModule({
