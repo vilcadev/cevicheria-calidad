@@ -23,6 +23,7 @@ import { SidebarModule } from 'primeng/sidebar';
 import { ManageOrderComponent } from './pages/manage-order/manage-order.component';
 import { CocineroRoutingModule } from './cocinero-routing.module';
 import { MessageService } from 'primeng/api';
+import { BadgeModule } from 'primeng/badge';
 
 
 
@@ -42,6 +43,7 @@ import { MessageService } from 'primeng/api';
       RadioButtonModule,
       InputTextModule,
       InputSwitchModule,
+      BadgeModule,
 
       CocineroRoutingModule,
       FormsModule,

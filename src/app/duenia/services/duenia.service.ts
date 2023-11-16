@@ -32,6 +32,17 @@ export class DueniaService {
     return response;
   }
 
+  actualizarPlatillo(data:Platillo){
+    const body = { id:data.id, nombre: data.nombre, categoriaId: data.categoria.id };
+    const response = this.http.put(`${this.miapiUrl}`,body, { responseType: 'text' });
+    return response;
+  }
+
+  eliminarPlatillo(id: number){
+    const response= this.http.delete(`${this.miapiUrl}/${id}`,{ responseType: 'text' });
+    return response;
+  }
+
    addDishe1(nombre: string, categoriaId: number): Observable<string>{
     // console.log(data);
     const body = { nombre: nombre, categoriaId: categoriaId };

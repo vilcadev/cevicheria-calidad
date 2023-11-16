@@ -86,6 +86,24 @@ miPlatillo: Platillo = {
     }
   };
 
+  loadPlatillo: Platillo = {
+    id: 0,
+    nombre: '',
+    categoria: {
+      id: 0,
+      nombre: ''
+    }
+  };
+
+  loadDeletePlatillo: Platillo = {
+    id: 0,
+    nombre: '',
+    categoria: {
+      id: 0,
+      nombre: ''
+    }
+  };
+
 //   miPlatillo: Platillo | null = null;
 
 
@@ -104,27 +122,6 @@ obtenerPlatillos() {
     });
   }
 
-//Agregar Platillo - funciona
-// addDishe1() {
-//   const dishe1: Dishes1 = {
-//     nombrePlatillo: this.nuevoPlato1.nombrePlatillo,
-//     categoriaID: this.nuevoPlato1.categoriaID
-//   };
-//   this.dueniaService.addDishe1(dishe1).subscribe(
-//     response => {
-//       console.log('Platillo agregado correctamente:', response);
-//       this.obtenerPlatillos();
-//       // Resto del código para manejar la respuesta exitosa
-//     },
-//     error => {
-//       console.error('Error al agregar platillo:', error);
-//       // Resto del código para manejar el error
-//     }
-//   );
-//   this.nuevoPlato1.nombrePlatillo ='';
-//   this.nuevoPlato1.categoriaID = '';
-//   this.visible = false;
-// }
 
 
 agregarPlatillo(){
@@ -133,14 +130,62 @@ agregarPlatillo(){
         response =>{
             console.log('Platillo agregado correctamente:', response);
             this.obtenerPlatillos();
+            this.miPlatillo.nombre ='';
+            this.miPlatillo.categoria.id = 0;
+            this.visible = false;
+            this.messageService.add({ severity: 'success', summary: 'Agregado ^_^', detail: 'Platillo Agregado', life: 3000 });
         },
         error =>{
             console.error('Error al agregar platillo:', error);
         }
     );
-    this.miPlatillo.nombre ='';
-      this.miPlatillo.categoria.id = 0;
-    this.visible = false;
+
+
+}
+
+cargarPlatillo(data: Platillo){
+    this.productDialog=true;
+    this.loadPlatillo.id =data.id
+    this.loadPlatillo.nombre = data.nombre
+    this.loadPlatillo.categoria.id = data.categoria.id
+}
+
+cargarIDBorrar(data: Platillo){
+    this.deleteProductDialog=true;
+    this.loadDeletePlatillo.id =data.id
+    this.loadDeletePlatillo.nombre = data.nombre
+}
+
+
+actualizarPlatillo(data: Platillo){
+
+    this.dueniaService.actualizarPlatillo(data).subscribe(
+        response =>{
+            console.log('Platillo actualizado correctamente:', response);
+            this.obtenerPlatillos();
+            this.productDialog=false;
+            this.messageService.add({ severity: 'info', summary: 'Editado ^_^', detail: 'Platillo Editado', life: 3000 });
+        },
+        error =>{
+            console.error('Error al actualizar platillo:', error);
+        }
+    );
+
+}
+
+eliminarPLatillo(data: Platillo){
+    this.dueniaService.eliminarPlatillo(data.id).subscribe(
+        response =>{
+            console.log('Platillo actualizado correctamente:', response);
+            this.obtenerPlatillos();
+            this.deleteProductDialog=false;
+            this.messageService.add({ severity: 'error', summary: 'Eliminado ._.', detail: 'Platillo Eliminado', life: 3000 });
+        },
+        error =>{
+            console.error('Error al eliminar platillo:', error);
+            this.messageService.add({ severity: 'warn', summary: '', detail: 'No puede eliminar este Platillo', life: 3000 });
+        }
+    );
 }
 
 getOneDishe1(dishe1:Dishes1){

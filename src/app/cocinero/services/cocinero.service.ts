@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { RootObject } from '../interfaces/order.interface';
+import { Datum, RootObject } from '../interfaces/order.interface';
 import { environment } from 'src/config';
 
 @Injectable({
@@ -12,17 +12,17 @@ export class CocineroService {
   private endpoint1: string ;
   private miapiUrl: string ;
 
-  constructor(private http: HttpClient) { 
+  constructor(private http: HttpClient) {
 
     this.endpoint1 = environment.endPoint
     this.miapiUrl = this.endpoint1+"api/Orden/getOrden"
   }
 
-  
 
 
-  obtenerOrdenes():Observable<RootObject>{
-    const response = this.http.get<RootObject>(`${this.miapiUrl}`);
+
+  obtenerOrdenes():Observable<Datum>{
+    const response = this.http.get<Datum>(`${this.miapiUrl}`);
     return response;
   }
 

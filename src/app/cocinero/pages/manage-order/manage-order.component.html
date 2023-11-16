@@ -8,7 +8,7 @@
                 </ng-template>
             </p-toolbar>
             <!-- Boton Nuevo -->
-  
+
           <!-- Tabla de patillos registrados -->
             <p-table #dt [value]="ordenes" [columns]="cols" responsiveLayout="scroll" [rows]="10" [globalFilterFields]="['name','country.name','representative.name','status']" [paginator]="true" [rowsPerPageOptions]="[10,20,30]" [showCurrentPageReport]="true" selectionMode="multiple" [rowHover]="true" dataKey="id">
                 <ng-template pTemplate="caption">
@@ -28,7 +28,7 @@
                     </tr>
                 </ng-template>
                 <ng-template pTemplate="body" let-orden>
-                    <tr>
+                    <tr  (click)="obtenerDetalle(orden)" style="cursor: pointer;">
                         <td >
                             <span class="p-column-title">Name</span>
                             {{ orden.id }}
@@ -36,12 +36,13 @@
 
                         <td >
                             <span class="p-column-title">Name</span>
-                            {{ orden.fecha}}
+                            {{orden.ordenEstado}}
                         </td>
-  
+
                         <td >
                             <span class="p-column-title">Category</span>
-                            {{orden.ordenEstado}}
+                            {{ orden.fecha | date:'H:mm':'es-PE'}}
+
                         </td>
                         <!-- <td >
                           <span class="p-column-title">Precio</span>
@@ -49,18 +50,14 @@
                       </td> -->
                       <!-- <td >
                           <span class="p-column-title">Estado</span>
-  
+
                           <span [class]="dishe.esMenuDelDia ? 'product-badge status-instock' : 'product-badge status-outofstock'">{{dishe.esMenuDelDia ? 'Habilitado':'Deshabilitado'}}</span>
                       </td> -->
                         <!-- <td><span class="p-column-title">Status</span>
                             <span>{{dishe.status}}</span>
                         </td> -->
                         <td>
-                            <div class="flex">
-  
-                                <button pButton pRipple type="button" icon="pi pi-pencil" class="p-button-rounded p-button-info mr-2"(click)="getOneDishe1(dishe)"></button>
-                                <button pButton pRipple type="button" icon="pi pi-trash" class="p-button-rounded p-button-danger"(click)="getOneDishetoDelete1(dishe)"></button>
-                            </div>
+                            <button pButton pRipple label="Terminar Orden" disabled="true"></button>
                         </td>
                     </tr>
                 </ng-template>
@@ -68,3 +65,47 @@
         </div>
     </div>
 </div>
+
+<p-dialog  [(visible)]="visible" [style]="{width: '900px'}" [modal]="true" class="p-fluid">
+
+    <h1>Detalle Orden</h1>
+
+
+    <p-toolbar styleClass="mb-4" [style]="{height:'150px'}">
+        <div class="flex xl:gap-8 align-items-end" style="font-size: 15px;
+        font-weight: bold;">
+            <div>Nro Orden: {{miOrden.id}}</div>
+            <div>Estado:  <span [class]="miOrden.ordenEstado ? 'product-badge status-instock' : 'product-badge status-outofstock'">{{estado ? 'Preparado':'Recibido'}}</span></div>
+            <div>Hora Pedido: {{miOrden.fecha | date:'H:mm':'es-PE'}}</div>
+        </div>
+    </p-toolbar>
+
+    <h2>Platos Elegidos</h2>
+    <hr style="border-top: solid #000000;
+    border-width: 3px 0 0 0;">
+
+    <p-toolbar styleClass="mb-4" [style]="{height:'100%'}">
+        <div class="flex flex-column row-gap-6" style="font-size: 15px;
+        font-weight: bold;">
+            <div class="flex align-items-end sm:gap-2">
+                <p-badge value="4" size="large" severity="warning"></p-badge>
+                <div>Arroz Chaufa</div>
+                <span [class]="estado ? 'product-badge status-instock' : 'product-badge status-outofstock'">{{estado ? 'Preparado':'Recibido'}}</span>
+            </div>
+            <div class="flex align-items-end sm:gap-2">
+                <p-badge value="4" size="large" severity="warning"></p-badge>
+                <div>Arroz Chaufa</div>
+                <span [class]="!estado ? 'product-badge status-lowstock' : 'product-badge status-outofstock'">{{estado ? 'Recibido':'En preparación'}}</span>
+            </div>
+            <div class="flex align-items-end sm:gap-2">
+                <p-badge value="4" size="large" severity="warning"></p-badge>
+                <div>Arroz Chaufa</div>
+                <span [class]="estado ? 'product-badge status-instock' : 'product-badge status-outofstock'">{{estado ? 'Preparado':'Recibido'}}</span>
+            </div>
+        </div>
+    </p-toolbar>
+
+    <div class="flex justify-content-center ">
+        <button icon="fa-solid fa-utensils" pButton pRipple type="button" label="Preparar" [style]="{ width: '15%'}"></button>
+      </div>
+</p-dialog>
