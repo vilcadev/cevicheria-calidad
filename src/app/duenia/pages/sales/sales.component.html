@@ -1,0 +1,74 @@
+<div class="grid">
+    <div class="col-12">
+        <div class="card px-6 py-6">
+            <p-toast></p-toast>
+            <p-toolbar styleClass="mb-4" >
+                <ng-template pTemplate="left">
+                    <h1 style="color: black;">Gestionar Platillos</h1>
+                </ng-template>
+            </p-toolbar>
+            <!-- Boton Nuevo -->
+
+          <!-- Tabla de patillos registrados -->
+            <p-table #dt [value]="ventas" [columns]="cols" responsiveLayout="scroll" [rows]="10" [globalFilterFields]="['name','country.name','representative.name','status']" [paginator]="true" [rowsPerPageOptions]="[10,20,30]" [showCurrentPageReport]="true" selectionMode="multiple" [rowHover]="true" dataKey="id">
+                <ng-template pTemplate="caption">
+                    <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
+                        <h5 class="m-0">Platillos</h5>
+                    </div>
+                </ng-template>
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th>Nro Orden <p-sortIcon field="name"></p-sortIcon></th>
+                        <th>Cliente <p-sortIcon field="estado"></p-sortIcon></th>
+                        <th>Emitido<p-sortIcon field="Hora pedido"></p-sortIcon></th>
+                        <!-- <th>Precio <p-sortIcon field="category"></p-sortIcon></th>
+                        <th>Estado <p-sortIcon field="category"></p-sortIcon></th> -->
+                        <!-- <th>Status <p-sortIcon field="inventoryStatus"></p-sortIcon></th> -->
+                        <th>PDF<p-sortIcon field="Acciones"></p-sortIcon></th>
+                        <th>Total<p-sortIcon field="Acciones"></p-sortIcon></th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-orden>
+                    <tr >
+                        <td >
+                            <span class="p-column-title"></span>
+                            {{ orden.id }}
+                        </td>
+
+                        <td >
+                            <span class="p-column-title"></span>
+                            {{orden.cliente}}
+                        </td>
+
+                        <td >
+                            <span class="p-column-title">Category</span>
+                            {{ orden.emitido | date:'H:mm':'es-PE'}}
+
+                        </td>
+                        <td>
+                            <button pButton pRipple label="Ver PDF" ></button>
+                        </td>
+                        <td >
+                            <span class="p-column-title">Category</span>
+                            {{ 'S/' + orden.total }}
+
+                        </td>
+                        <!-- <td >
+                          <span class="p-column-title">Precio</span>
+                          {{dishe.precio}}
+                      </td> -->
+                      <!-- <td >
+                          <span class="p-column-title">Estado</span>
+
+                          <span [class]="dishe.esMenuDelDia ? 'product-badge status-instock' : 'product-badge status-outofstock'">{{dishe.esMenuDelDia ? 'Habilitado':'Deshabilitado'}}</span>
+                      </td> -->
+                        <!-- <td><span class="p-column-title">Status</span>
+                            <span>{{dishe.status}}</span>
+                        </td> -->
+
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
+    </div>
+</div>

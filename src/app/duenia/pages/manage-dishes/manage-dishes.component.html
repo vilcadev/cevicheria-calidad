@@ -10,24 +10,6 @@
       <label for="nombre">Nombre del plato:</label>
       <input pInputText  required autofocus type="text" id="nombrePlatillo" [(ngModel)]="miPlatillo.nombre" name="nombre" >
 
-      <!-- <label for="nombre">Precio</label>
-
-      <input pInputText  required autofocus type="number" id="precio" [(ngModel)]="nuevoPlato1.precio" name="precio" required> -->
-
-
-
-    <!-- <div class="field">
-        <label for="status">Inventory Status</label>
-        <p-dropdown [(ngModel)]="nuevoPlato.status" inputId="status" optionValue="label" [options]="status" placeholder="Select" name="status">
-            <ng-template pTemplate="selectedItem">
-                <span *ngIf="nuevoPlato && nuevoPlato.status" [class]="'product-badge status-' + nuevoPlato.status.toString().toLowerCase()">{{nuevoPlato.status}}</span>
-            </ng-template>
-            <ng-template let-option pTemplate="item">
-                <span [class]="'product-badge status-' + option.value">{{option.label}}</span>
-            </ng-template>
-        </p-dropdown>
-    </div> -->
-
     <div class="field">
       <label class="mb-3">Categoria</label>
       <div class="formgrid grid">
@@ -46,9 +28,6 @@
 
       </div>
   </div>
-  <!-- <label class="mb-3" style="display: block;">Estado (Inhabilitado - Habilitado)</label>
-  <p-inputSwitch [(ngModel)]="valSwitch"></p-inputSwitch> -->
-      <!-- <button type="submit">Agregar Plato</button> -->
       <button pButton pRipple type="submit" label="Agregar Plato" class="p-button-raised p-button-success"></button>
     </form>
   </p-dialog>
@@ -86,8 +65,7 @@
                           <span class="p-column-title">Name</span>
                           {{ platillo.nombre }}
                       </td>
-
-                      <td >
+                     <td >
                           <span class="p-column-title">Category</span>
                           {{platillo.categoria.nombre}}
                       </td>
@@ -105,7 +83,6 @@
       <!-- Modal Editar Platillo -->
       <p-dialog [(visible)]="productDialog" [style]="{width: '450px'}" header="Editar Platillo" [modal]="true" class="p-fluid">
           <ng-template pTemplate="content">
-            <!-- ----- -->
 
             <div class="field">
               <label for="name">Name</label>
@@ -114,21 +91,7 @@
               <small class="ng-dirty ng-invalid" *ngIf="!loadPlatillo.nombre">Name is required.</small>
           </div>
 
-          <!-- <label for="nombre">Precio</label>
 
-      <input pInputText  required autofocus type="number" id="precio" [(ngModel)]="nuevoPlato1.precio" name="precio" required> -->
-
-          <!-- <div class="field">
-              <label for="status">Inventory Status</label>
-              <p-dropdown [(ngModel)]="selectedPlato.status" inputId="status" optionValue="label" [options]="status" placeholder="Select">
-                  <ng-template pTemplate="selectedItem">
-                      <span *ngIf="selectedPlato && selectedPlato.status" [class]="'product-badge status-' + selectedPlato.status.toString().toLowerCase()">{{selectedPlato.status}}</span>
-                  </ng-template>
-                  <ng-template let-option pTemplate="item">
-                      <span [class]="'product-badge status-' + option.value">{{option.label}}</span>
-                  </ng-template>
-              </p-dropdown>
-          </div> -->
 
           <div class="field">
               <label class="mb-3">Categoria</label>
@@ -145,17 +108,9 @@
                       <p-radioButton id="category3" name="category" value="3" [(ngModel)]="loadPlatillo.categoria.id"></p-radioButton>
                       <label for="category3">Sopas</label>
                   </div>
-                  <!-- <div class="field-radiobutton col-6">
-                      <p-radioButton id="category4" name="category" value="Bebidas" [(ngModel)]="selectedPlato1.categoriaID"></p-radioButton>
-                      <label for="category4">Bebidas</label>
-                  </div> -->
               </div>
           </div>
-
-          <!-- <label class="mb-3" style="display: block;">Estado (Inhabilitado - Habilitado)</label>
-          <p-inputSwitch [(ngModel)]="valSwitch"></p-inputSwitch> -->
           </ng-template>
-
 
 
           <ng-template pTemplate="footer">

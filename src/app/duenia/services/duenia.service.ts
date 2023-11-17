@@ -25,7 +25,7 @@ export class DueniaService {
     this.miapiUrl = this.endpoint1+"api/Platillo"
   }
 
-
+// ***************Métodos Manage Dishes********************
   // Método para obtener los platillos
   obtenerPlatillos():Observable<Platillo>{
     const response = this.http.get<Platillo>(`${this.miapiUrl}`);
@@ -43,7 +43,7 @@ export class DueniaService {
     return response;
   }
 
-   addDishe1(nombre: string, categoriaId: number): Observable<string>{
+   agregarPlatillo(nombre: string, categoriaId: number): Observable<string>{
     // console.log(data);
     const body = { nombre: nombre, categoriaId: categoriaId };
     return this.http.post(`${this.miapiUrl}`, body, { responseType: 'text' }).pipe(
@@ -53,6 +53,8 @@ export class DueniaService {
       })
     );
   };
+  // ************************
+//   ***********Métodos Manage Menu*************
 
   getOneDishe1(dishe: Dishes1):Observable<Dishes1>{
     const dishe1= this.http.get<Dishes1>(`${this.miapiUrl}BuscarID/${dishe.id}`);

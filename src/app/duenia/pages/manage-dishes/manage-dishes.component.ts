@@ -126,7 +126,7 @@ obtenerPlatillos() {
 
 agregarPlatillo(){
 
-    this.dueniaService.addDishe1(this.miPlatillo.nombre, this.miPlatillo.categoria.id).subscribe(
+    this.dueniaService.agregarPlatillo(this.miPlatillo.nombre, this.miPlatillo.categoria.id).subscribe(
         response =>{
             console.log('Platillo agregado correctamente:', response);
             this.obtenerPlatillos();
