@@ -26,6 +26,8 @@ valSwitch: boolean = false;
 
 visible: boolean = false;
 
+loading = false;
+
 
 // Side bar
 sidebarVisible: boolean = false;
@@ -109,6 +111,7 @@ miPlatillo: Platillo = {
 
 //Funciona
 obtenerPlatillos() {
+    this.loading = true;
     this.dueniaService.obtenerPlatillos().pipe(
       map((response: any) => response.data) // Extrae la lista de platillos de la respuesta
     ).subscribe({
@@ -120,20 +123,23 @@ obtenerPlatillos() {
         console.error('Error al obtener platillos:', e);
       }
     });
+    this.loading = false;
   }
 
 
 
 agregarPlatillo(){
-
+    this.visible = false;
+    this.loading = true;
     this.dueniaService.agregarPlatillo(this.miPlatillo.nombre, this.miPlatillo.categoria.id).subscribe(
         response =>{
             console.log('Platillo agregado correctamente:', response);
             this.obtenerPlatillos();
             this.miPlatillo.nombre ='';
             this.miPlatillo.categoria.id = 0;
-            this.visible = false;
-            this.messageService.add({ severity: 'success', summary: 'Agregado ^_^', detail: 'Platillo Agregado', life: 3000 });
+
+            this.loading = false;
+            this.messageService.add({ severity: 'success', summary: 'Agregado', detail: 'Platillo Agregado', life: 3000 });
         },
         error =>{
             console.error('Error al agregar platillo:', error);
@@ -158,13 +164,14 @@ cargarIDBorrar(data: Platillo){
 
 
 actualizarPlatillo(data: Platillo){
-
+    this.productDialog=false;
+    this.loading = true;
     this.dueniaService.actualizarPlatillo(data).subscribe(
         response =>{
             console.log('Platillo actualizado correctamente:', response);
             this.obtenerPlatillos();
-            this.productDialog=false;
-            this.messageService.add({ severity: 'info', summary: 'Editado ^_^', detail: 'Platillo Editado', life: 3000 });
+            this.loading = false;
+            this.messageService.add({ severity: 'info', summary: 'Editado', detail: 'Platillo Editado', life: 3000 });
         },
         error =>{
             console.error('Error al actualizar platillo:', error);
@@ -174,12 +181,14 @@ actualizarPlatillo(data: Platillo){
 }
 
 eliminarPLatillo(data: Platillo){
+    this.deleteProductDialog=false;
+    this.loading = true;
     this.dueniaService.eliminarPlatillo(data.id).subscribe(
         response =>{
             console.log('Platillo actualizado correctamente:', response);
             this.obtenerPlatillos();
-            this.deleteProductDialog=false;
-            this.messageService.add({ severity: 'error', summary: 'Eliminado ._.', detail: 'Platillo Eliminado', life: 3000 });
+            this.loading = false;
+            this.messageService.add({ severity: 'error', summary: 'Eliminado', detail: 'Platillo Eliminado', life: 3000 });
         },
         error =>{
             console.error('Error al eliminar platillo:', error);

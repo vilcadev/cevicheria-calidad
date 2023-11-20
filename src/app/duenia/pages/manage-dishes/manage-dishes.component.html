@@ -43,10 +43,10 @@
               </ng-template>
           </p-toolbar>
           <!-- Boton Nuevo -->
-            <button (click)="showDialog()" pButton pRipple label="Agregar Platillo" class="p-button-success" style="width: 130px;"></button>
+            <button  (click)="showDialog()" pButton pRipple label="Agregar Platillo" class="p-button-success" style="width: 130px;"></button>
 
         <!-- Tabla de patillos registrados -->
-          <p-table #dt [value]="platillos" [columns]="cols" responsiveLayout="scroll" [rows]="10" [globalFilterFields]="['name','country.name','representative.name','status']" [paginator]="true" [rowsPerPageOptions]="[10,20,30]" [showCurrentPageReport]="true" selectionMode="multiple" [rowHover]="true" dataKey="id">
+          <p-table  #dt [value]="platillos" [columns]="cols" responsiveLayout="scroll" [rows]="10" [globalFilterFields]="['name','country.name','representative.name','status']" [paginator]="true" [rowsPerPageOptions]="[10,20,30]" [showCurrentPageReport]="true" selectionMode="multiple" [rowHover]="true" dataKey="id">
               <ng-template pTemplate="caption">
                   <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
                       <h5 class="m-0">Platillos</h5>
@@ -132,10 +132,13 @@
     </p-dialog>
   </div>
 
-  <p-button routerLink="/duenia">volver al menu</p-button>
-
-
+  <p-button routerLink="/duenia" >volver al menu</p-button>
 </div>
+
+<div class="overlay" *ngIf="loading">
+    <div class="loader"></div>
+  </div>
+
 
 
 

@@ -10,20 +10,24 @@
                 </ng-template>
             </p-toolbar>
 
-            <h5>Agregar Platillo</h5>
-            <div style="width: 100%; margin-bottom: 5rem;">
-                <p-autoComplete [(ngModel)]="selectedCountryAdvanced" [suggestions]="filteredDishes" (completeMethod)="filterCountry($event)" field="nombre" [dropdown]="true"  (onSelect)="onDishSelect($event)">
-			</p-autoComplete>
-
-
-            <h5>Fecha</h5>
-			<p-calendar [showIcon]="true" inputId="icon"></p-calendar>
-
-
-
-
-
+            <div style="display: flex; gap:0 3rem" class="date" >
+                <div style="width: 15rem;">
+                    <h5>Agregar Platillo</h5>
+                    <div style="width: 100%; margin-bottom: 5rem;">
+                    <p-autoComplete [(ngModel)]="selectedCountryAdvanced" [suggestions]="filteredDishes" (completeMethod)="filterCountry($event)" field="nombre" [dropdown]="true"  (onSelect)="onDishSelect($event)">
+                    </p-autoComplete>
+                    </div>
+                </div>
+                <div>
+                    <h5>Fecha</h5>
+                    <p-calendar [showIcon]="true" inputId="icon"></p-calendar>
+                </div>
+                <!-- <div>
+                    <h5>Fecha</h5>
+                    <p-calendar [showIcon]="true" inputId="icon"></p-calendar>
+                </div> -->
             </div>
+
             {{selectedCountryAdvanced | json}}
 
 
@@ -56,8 +60,9 @@
                     </td>
                     <td>
                         <div class="flex">
-                            <button pButton pRipple type="button" icon="pi pi-pencil" class="p-button-rounded p-button-info mr-2"(click)="cargarPlatillo(platillo)"></button>
-                            <button pButton pRipple type="button" icon="pi pi-trash" class="p-button-rounded p-button-danger"(click)="cargarIDBorrar(platillo)"></button>
+                            <!-- <button pButton pRipple type="button" icon="pi pi-pencil" class="p-button-rounded p-button-info mr-2"(click)="cargarPlatillo(platillo)"></button>
+                            <button pButton pRipple type="button" icon="pi pi-trash" class="p-button-rounded p-button-danger"(click)="cargarIDBorrar(platillo)"></button> -->
+                            <button pButton pRipple type="button" icon="pi pi-times" class="p-button-rounded p-button-danger"></button>
                         </div>
                     </td>
                 </tr>

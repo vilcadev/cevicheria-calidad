@@ -43,6 +43,14 @@ export class RegisterOrderComponent implements OnInit{
         { label: 'Platillos',routerLink:['/mesera/register-order',this.mesaNombre]},
         { label: 'Pagos',routerLink:['/mesera/payments',this.mesaNombre]},
     ];
+
+     // Try to retrieve the stored array from localStorage based on mesaId
+     const storedPlatosList = localStorage.getItem(`platosList_${this.mesaNombre}`);
+
+     if (storedPlatosList) {
+       // Parse the JSON string to get the array
+       this.platosList = JSON.parse(storedPlatosList);
+     }
     }
 
 
@@ -200,6 +208,14 @@ export class RegisterOrderComponent implements OnInit{
         '=1': 'Ver 1 Seleccionado',
         '=2': 'Ver 2 Seleccionados',
         'other': 'Ver # Seleccionados'
+      }
+
+      guardarOrden(){
+         // Save the updated array to localStorage
+        localStorage.setItem('platosList', JSON.stringify(this.platosList));
+
+        // Save the updated array to localStorage based on mesaId
+        localStorage.setItem(`platosList_${this.mesaNombre}`, JSON.stringify(this.platosList));
       }
 
 }
