@@ -24,6 +24,8 @@ import { ManageMenuComponent } from './pages/manage-menu/manage-menu.component';
 import { ReportComponent } from './pages/report/report.component';
 import { ChartModule } from 'primeng/chart';
 import { SalesComponent } from './pages/sales/sales.component';
+import { AutoCompleteModule } from 'primeng/autocomplete';
+import { CalendarModule } from 'primeng/calendar';
 
 @NgModule({
     declarations:[
@@ -46,6 +48,8 @@ import { SalesComponent } from './pages/sales/sales.component';
       InputTextModule,
       InputSwitchModule,
       ChartModule,
+      AutoCompleteModule,
+      CalendarModule,
 
       DueniaRoutingModule,
       FormsModule,

@@ -1,3 +1,68 @@
 <side-bar></side-bar>
-<p>manage-menu works!</p>
-<h1>hola</h1>
+
+<div class="grid" style="margin-top: 5rem!important;">
+    <div class="col-12">
+        <div class="card px-6 py-6">
+            <p-toast></p-toast>
+            <p-toolbar styleClass="mb-4">
+                <ng-template pTemplate="left">
+                    <h1 style="color: black;">Gestionar Menú</h1>
+                </ng-template>
+            </p-toolbar>
+
+            <h5>Agregar Platillo</h5>
+            <div style="width: 100%; margin-bottom: 5rem;">
+                <p-autoComplete [(ngModel)]="selectedCountryAdvanced" [suggestions]="filteredDishes" (completeMethod)="filterCountry($event)" field="nombre" [dropdown]="true"  (onSelect)="onDishSelect($event)">
+			</p-autoComplete>
+
+
+            <h5>Fecha</h5>
+			<p-calendar [showIcon]="true" inputId="icon"></p-calendar>
+
+
+
+
+
+            </div>
+            {{selectedCountryAdvanced | json}}
+
+
+            <!-- Tabla de patillos registrados -->
+          <p-table #dt [value]="tableData" [columns]="cols" responsiveLayout="scroll" [rows]="10" [globalFilterFields]="['name','country.name','representative.name','status']" [paginator]="true" [rowsPerPageOptions]="[10,20,30]" [showCurrentPageReport]="true" selectionMode="multiple" [rowHover]="true" dataKey="id">
+            <ng-template pTemplate="caption">
+                <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
+                    <h5 class="m-0">Platillos</h5>
+                </div>
+            </ng-template>
+            <ng-template pTemplate="header">
+                <tr>
+                    <th>Nombre <p-sortIcon field="name"></p-sortIcon></th>
+                    <th>Precio <p-sortIcon field="category"></p-sortIcon></th>
+                    <th>Acciones<p-sortIcon field="category"></p-sortIcon></th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-platillo>
+                <tr>
+                    <td >
+                        <span class="p-column-title">Name</span>
+                        {{ platillo.nombre }}
+                    </td>
+                   <!-- <td >
+                        <span class="p-column-title">Category</span>
+                        {{platillo.categoria.nombre}}
+                    </td> -->
+                    <td>
+                        <input type="number" pInputText placeholder="Precio">
+                    </td>
+                    <td>
+                        <div class="flex">
+                            <button pButton pRipple type="button" icon="pi pi-pencil" class="p-button-rounded p-button-info mr-2"(click)="cargarPlatillo(platillo)"></button>
+                            <button pButton pRipple type="button" icon="pi pi-trash" class="p-button-rounded p-button-danger"(click)="cargarIDBorrar(platillo)"></button>
+                        </div>
+                    </td>
+                </tr>
+            </ng-template>
+        </p-table>
+        </div>
+    </div>
+</div>
