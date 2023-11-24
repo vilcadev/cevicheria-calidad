@@ -1,9 +1,9 @@
-export interface Menu{
+export interface MenuI{
     fecha:string;
-    dishes: Dishes[]
+    detalles: Dishes[]
 }
 
 export interface Dishes {
-    name: string;
+    platilloId: number;
     price: number;
 }

@@ -12,7 +12,7 @@ export class AuthService {
 
   user: User;
 
-  private token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyLCJyb2xlIjoiYWRtaW4ifQ.HEvMnFJ5dU18e-VvYEBVXvoY3lsYxf-Onel3RCfb0Bc'
+  private token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyLCJyb2xlIjoibWVzZXJhIn0.oHYfgm7Vus6A3JlyvjFKzDFv6VK5Okm1GFrnj_VhwjY'
 
   login(): string{
     localStorage.setItem('Token_User', this.token);

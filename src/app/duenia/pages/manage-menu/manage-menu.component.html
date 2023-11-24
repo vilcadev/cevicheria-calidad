@@ -11,16 +11,20 @@
             </p-toolbar>
 
             <div style="display: flex; gap:0 3rem" class="date" >
-                <div style="width: 15rem;">
-                    <h5>Agregar Platillo</h5>
+                <div style="width: 25rem;">
+                    <h5>Platillos</h5>
                     <div style="width: 100%; margin-bottom: 5rem;">
-                    <p-autoComplete [(ngModel)]="selectedCountryAdvanced" [suggestions]="filteredDishes" (completeMethod)="filterCountry($event)" field="nombre" [dropdown]="true"  (onSelect)="onDishSelect($event)">
+                    <p-autoComplete [(ngModel)]="selectedDisheAdvanced" [suggestions]="filteredDishes" (completeMethod)="filterDishes($event)" field="nombre" [dropdown]="true"  (onSelect)="onDishSelect($event)" class="width-autocomplete">
                     </p-autoComplete>
                     </div>
                 </div>
                 <div>
                     <h5>Fecha</h5>
-                    <p-calendar [showIcon]="true" inputId="icon"></p-calendar>
+                    <p-calendar [showIcon]="true" inputId="icon" [(ngModel)]="fechaSeleccionada"></p-calendar>
+                </div>
+                <div style="margin-top: 2.4rem;
+                margin-bottom: 2rem;">
+                    <button pButton pRipple type="button" label="Guardar" (click)="guardar()"></button>
                 </div>
                 <!-- <div>
                     <h5>Fecha</h5>
@@ -28,7 +32,7 @@
                 </div> -->
             </div>
 
-            {{selectedCountryAdvanced | json}}
+            {{selectedDisheAdvanced | json}}
 
 
             <!-- Tabla de patillos registrados -->
@@ -40,12 +44,12 @@
             </ng-template>
             <ng-template pTemplate="header">
                 <tr>
-                    <th>Nombre <p-sortIcon field="name"></p-sortIcon></th>
-                    <th>Precio <p-sortIcon field="category"></p-sortIcon></th>
+                    <th>Nombre</th>
+                    <th>Precio</th>
                     <th>Acciones<p-sortIcon field="category"></p-sortIcon></th>
                 </tr>
             </ng-template>
-            <ng-template pTemplate="body" let-platillo>
+            <ng-template pTemplate="body" let-platillo let-i="index">
                 <tr>
                     <td >
                         <span class="p-column-title">Name</span>
@@ -56,13 +60,13 @@
                         {{platillo.categoria.nombre}}
                     </td> -->
                     <td>
-                        <input type="number" pInputText placeholder="Precio">
+                        <input type="number" [(ngModel)]="platillo.precio" pInputText placeholder="Precio">
                     </td>
                     <td>
                         <div class="flex">
                             <!-- <button pButton pRipple type="button" icon="pi pi-pencil" class="p-button-rounded p-button-info mr-2"(click)="cargarPlatillo(platillo)"></button>
                             <button pButton pRipple type="button" icon="pi pi-trash" class="p-button-rounded p-button-danger"(click)="cargarIDBorrar(platillo)"></button> -->
-                            <button pButton pRipple type="button" icon="pi pi-times" class="p-button-rounded p-button-danger"></button>
+                            <button pButton pRipple type="button" icon="pi pi-times" class="p-button-rounded p-button-danger" (click)="quitarPlatillo(platillo.id)"></button>
                         </div>
                     </td>
                 </tr>

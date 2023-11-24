@@ -7,6 +7,8 @@ import { platos } from '../../interfaces/platos.interface';
 
 
 import { MeseraService } from '../../services/mesera.service';
+import { map } from 'rxjs';
+import { MenuData, MenuResponse } from '../../interfaces/menuI.interface';
 
 
 
@@ -51,6 +53,8 @@ export class RegisterOrderComponent implements OnInit{
        // Parse the JSON string to get the array
        this.platosList = JSON.parse(storedPlatosList);
      }
+
+     this.obtenerPlatillos();
     }
 
 
@@ -62,6 +66,7 @@ export class RegisterOrderComponent implements OnInit{
     cols: any[] = [];
 
 
+    platos2: any[] =[]
     //Platillos
     platos: Dishes1[] = [
         {
@@ -103,8 +108,12 @@ export class RegisterOrderComponent implements OnInit{
       ];
 
 
+
+
+
     showDialog(){
         this.menuDialog=true;
+
     }
 
     onFilter(dv: DataView, event: Event) {
@@ -112,7 +121,7 @@ export class RegisterOrderComponent implements OnInit{
     }
 
 
-
+    menuList: MenuResponse | null = null;
     // Lista de Platillos
      platosList: platos[] = [];
 
@@ -157,7 +166,7 @@ export class RegisterOrderComponent implements OnInit{
 
       seleccionarPlato(product: any) {
         const platilloSeleccionado = {
-          nombre: product.nombrePlatillo,
+          nombre: product.nombre,
           cantidad: 1, // Empieza con una cantidad de 1
           precioUnitario: product.precio,
           precio:product.precio
@@ -216,6 +225,34 @@ export class RegisterOrderComponent implements OnInit{
 
         // Save the updated array to localStorage based on mesaId
         localStorage.setItem(`platosList_${this.mesaNombre}`, JSON.stringify(this.platosList));
+      }
+
+
+    //   ***************** OBTENER MENU DEL DIA
+
+    //Funciona
+    obtenerPlatillos() {
+        this.meseraService.obtenerMenu().subscribe(
+          (response: MenuResponse) => {
+            this.menuList = response;
+
+             // Verifica si hay datos antes de extraer
+            if (this.menuList && this.menuList.data) {
+                // Usa flatMap para aplanar la estructura y obtener un arreglo plano
+                this.platos2 = this.menuList.data.flatMap((item: MenuData) =>
+                item.menuDetalles.map((detalle) => ({
+                    nombre: detalle.platillo.nombre,
+                    precio: detalle.precio,
+                }))
+                );
+            }
+            console.log(this.menuList);
+            console.log(this.platos2);
+          },
+          (error) => {
+            console.error('Error al obtener platillos:', error);
+          }
+        );
       }
 
 }

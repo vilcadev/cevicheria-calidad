@@ -19,10 +19,12 @@ export class DueniaService {
 
   private endpoint1: string ;
   private miapiUrl: string ;
+  private miapiUrl2: string ;
 
   constructor(private http: HttpClient) {
     this.endpoint1 = environment.endPoint
     this.miapiUrl = this.endpoint1+"api/Platillo"
+    this.miapiUrl2 = this.endpoint1+"api/Menu/"
   }
 
 // ***************Métodos Manage Dishes********************
@@ -73,6 +75,15 @@ export class DueniaService {
     const response= this.http.delete(`${this.miapiUrl}Eliminar/${id}`,{ responseType: 'text' });
     return response;
   }
+
+
+  agregarMenu(data:any){
+    const response = this.http.post(`${this.miapiUrl2}addMenuDetalle`,data, { responseType: 'text' });
+    return response;
+  }
+
+
+
 
 
   // https://stackblitz.com/edit/f1xdm1?file=src%2Fexample%2Fautocomplete-require-selection-example.ts

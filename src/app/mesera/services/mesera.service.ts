@@ -5,6 +5,8 @@ import { variable64 } from 'src/assets/64';
 import * as pdfMake from 'pdfmake/build/pdfMake';
 import * as pdfFonts from 'pdfmake/build/vfs_fonts';
 import { DatePipe } from '@angular/common';
+import { HttpClient } from '@angular/common/http';
+import { environment } from 'src/config';
 
 (pdfMake as any).vfs = pdfFonts.pdfMake.vfs;
 
@@ -13,9 +15,27 @@ import { DatePipe } from '@angular/common';
 })
 export class MeseraService {
 
+    private endpoint: string ;
+    private miapiUrl: string ;
+
     public customDate:Date = new Date();
 
-  constructor(private datePipe: DatePipe) { }
+  constructor(private datePipe: DatePipe,
+    private http: HttpClient
+    )
+    {
+     this.endpoint = environment.endPoint
+     this.miapiUrl = this.endpoint+"api/Menu/"
+    }
+
+    // Obtener Menu del Día
+    obtenerMenu(){
+        const response = this.http.get(`${this.miapiUrl}getMenu?fecha=2023-11-21T00%3A00%3A00`);
+        return response;
+    }
+
+
+
 
     //Funcionalidad generar PDF Angular:
     generatePDF( mesaNombre: string, lista: any){
@@ -94,4 +114,5 @@ export class MeseraService {
 
 
     }
+
 }
