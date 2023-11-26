@@ -78,6 +78,8 @@ export class DueniaService {
 
 
   agregarMenu(data:any){
+    console.log("Dentro de service")
+    console.log({data});
     const response = this.http.post(`${this.miapiUrl2}addMenuDetalle`,data, { responseType: 'text' });
     return response;
   }

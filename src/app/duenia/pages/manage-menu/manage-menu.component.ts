@@ -5,6 +5,7 @@ import { Platillo } from '../../interfaces/platillos.interface';
 import { Dishes } from '../../interfaces/dishes.interface';
 import { MenuI } from '../../interfaces/menu.interface';
 import { format } from 'date-fns';
+import { MessageService } from 'primeng/api';
 
 
 @Component({
@@ -13,7 +14,7 @@ import { format } from 'date-fns';
 })
 export class ManageMenuComponent implements OnInit{
 
-    constructor(private dueniaService: DueniaService){
+    constructor(private dueniaService: DueniaService, private messageService: MessageService){
 
     }
 
@@ -50,7 +51,7 @@ export class ManageMenuComponent implements OnInit{
         // Obtén los detalles de los platillos desde tableData y los precios desde la interfaz
         const detalles: any[] = this.tableData.map((platillo: Platillo) => ({
             platilloId: platillo.id,
-            price: platillo.precio || 0,
+            precio: platillo.precio,
         }))
 
         const data: MenuI = {
@@ -63,6 +64,7 @@ export class ManageMenuComponent implements OnInit{
         this.dueniaService.agregarMenu(data).subscribe(
             response =>{
                 console.log('Menú agregado correctamente:', response);
+                this.messageService.add({ severity: 'success', summary: 'Agregado', detail: 'Menú Creado', life: 3000 });
             },
             error =>{
                 console.error('Error al agregar el menú:', error);

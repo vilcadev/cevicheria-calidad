@@ -26,6 +26,8 @@ import { Table, TableModule } from 'primeng/table';
 import { MeseraService } from './services/mesera.service';
 import { ChipsModule } from 'primeng/chips';
 import { DropdownModule } from 'primeng/dropdown';
+import { ToolbarModule } from 'primeng/toolbar';
+
 
 
 @NgModule({
@@ -51,7 +53,9 @@ import { DropdownModule } from 'primeng/dropdown';
     InputTextModule,
     TableModule,
     ChipsModule,
-    DropdownModule
+    DropdownModule,
+    ToolbarModule,
+
 
   ],
   providers:[  DatePipe,MeseraService]

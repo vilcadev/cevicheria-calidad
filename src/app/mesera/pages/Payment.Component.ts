@@ -8,7 +8,11 @@ import { MenuItem } from 'primeng/api';
         <div class="col-12">
             <div class="card card-w-title flex flex-wrap">
                 <div class="col-12 md:col-8 h-full">
-                    <h5>Registrar Orden</h5>
+                <p-toolbar styleClass="mb-4" >
+              <ng-template pTemplate="left">
+                  <h1 style="color: black;">Registrar Orden</h1>
+              </ng-template>
+          </p-toolbar>
                     <p-tabMenu
                         styleClass="mb-5"
                         [model]="routeItems"

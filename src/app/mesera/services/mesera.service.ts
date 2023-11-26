@@ -6,7 +6,9 @@ import * as pdfMake from 'pdfmake/build/pdfMake';
 import * as pdfFonts from 'pdfmake/build/vfs_fonts';
 import { DatePipe } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-import { environment } from 'src/config';
+import { environment, environmentJson } from 'src/config';
+import { Order } from '../interfaces/order.interface';
+import { Observable } from 'rxjs';
 
 (pdfMake as any).vfs = pdfFonts.pdfMake.vfs;
 
@@ -18,7 +20,13 @@ export class MeseraService {
     private endpoint: string ;
     private miapiUrl: string ;
 
+
+    // ****** Environment JSON **
+    private endpointJson:string;
+    private miapiUrlJson:string;
+
     public customDate:Date = new Date();
+
 
   constructor(private datePipe: DatePipe,
     private http: HttpClient
@@ -26,11 +34,23 @@ export class MeseraService {
     {
      this.endpoint = environment.endPoint
      this.miapiUrl = this.endpoint+"api/Menu/"
+
+    //  ***********Api JSON
+    this.endpointJson = environmentJson.endPoint;
+    this.miapiUrlJson = this.endpointJson
     }
 
     // Obtener Menu del Día
     obtenerMenu(){
-        const response = this.http.get(`${this.miapiUrl}getMenu?fecha=2023-11-21T00%3A00%3A00`);
+        const response = this.http.get(`${this.miapiUrl}getMenu?fecha=2023-10-07`);
+        return response;
+    }
+
+    agregarOrden(data: Order): Observable<any>{
+
+        console.log("Todo Correcto")
+        console.log({data});
+        const response = this.http.post(`${this.miapiUrlJson}`,data);
         return response;
     }
 

@@ -5,5 +5,5 @@ export interface MenuI{
 
 export interface Dishes {
     platilloId: number;
-    price: number;
+    precio: number;
 }

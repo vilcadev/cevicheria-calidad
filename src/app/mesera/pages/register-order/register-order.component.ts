@@ -9,6 +9,7 @@ import { platos } from '../../interfaces/platos.interface';
 import { MeseraService } from '../../services/mesera.service';
 import { map } from 'rxjs';
 import { MenuData, MenuResponse } from '../../interfaces/menuI.interface';
+import { DetalleOrden, Order } from '../../interfaces/order.interface';
 
 
 
@@ -221,11 +222,61 @@ export class RegisterOrderComponent implements OnInit{
 
       guardarOrden(){
          // Save the updated array to localStorage
-        localStorage.setItem('platosList', JSON.stringify(this.platosList));
+        // localStorage.setItem('platosList', JSON.stringify(this.platosList));
 
-        // Save the updated array to localStorage based on mesaId
-        localStorage.setItem(`platosList_${this.mesaNombre}`, JSON.stringify(this.platosList));
+        if(this.platosList.length === 0){
+            alert('Ningún platillo encontrado para Guardar')
+        }
+        else{
+             // Save the updated array to localStorage based on mesaId
+            localStorage.setItem(`platosList_${this.mesaNombre}`, JSON.stringify(this.platosList));
+            this.agregarOrden();
+
+        }
       }
+
+      agregarOrden(){
+
+        let idDetalleCounter = 1; // Contador para el idDetalle
+        let totalAcumulado = 0; // Acumulador para el total
+
+        // Construir el array de detalle_orden utilizando map
+        const detalleOrden: DetalleOrden[] = this.platosList.map((platillo) => {
+            totalAcumulado += platillo.precio;
+            return {
+            idDetalle: idDetalleCounter,
+            idOrden: 3, // Backend
+            idPlatillo: platillo.id, //Frontend
+            cantidad: platillo.cantidad, //Frontend
+            total: platillo.precio, //Frontend
+            estado: 2, // Frontend
+            };
+
+
+        });
+
+        const nuevaOrden:Order ={
+            id:3, // Backend
+            idMesa:3, // Frontend
+            fecha:"2023-11-25", // Frontend
+            idEstado:2, // Frontend
+            MontoTotal:totalAcumulado, // Frontend
+            detalle_orden:detalleOrden // Frontend
+        }
+
+
+
+        this.meseraService.agregarOrden(nuevaOrden).subscribe(
+            (response)=>{
+                console.log("La orden se registro correctamente ",response);
+            },
+            (error) =>{
+                console.log("Hubo un error al registrar la orden ",error);
+            }
+        )
+      }
+
+
 
 
     //   ***************** OBTENER MENU DEL DIA
@@ -241,11 +292,14 @@ export class RegisterOrderComponent implements OnInit{
                 // Usa flatMap para aplanar la estructura y obtener un arreglo plano
                 this.platos2 = this.menuList.data.flatMap((item: MenuData) =>
                 item.menuDetalles.map((detalle) => ({
+                    id: detalle.platillo.id,
                     nombre: detalle.platillo.nombre,
                     precio: detalle.precio,
                 }))
                 );
             }
+            console.log("Debajo mio");
+            console.log(this.platos2[0]);
             console.log(this.menuList);
             console.log(this.platos2);
           },
