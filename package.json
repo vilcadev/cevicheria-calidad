@@ -4,7 +4,7 @@
     "license": "PrimeNG Commercial",
     "scripts": {
         "ng": "ng",
-        "backend":"json-server --watch data/db.json",
+        "backend": "json-server --watch data/db.json",
         "start": "ng serve",
         "build": "ng build",
         "test": "ng test",

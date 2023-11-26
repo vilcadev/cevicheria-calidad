@@ -2,13 +2,28 @@
     <div class="col-12">
         <div class="card px-6 py-6">
             <p-toast></p-toast>
+
             <p-toolbar styleClass="mb-4" >
                 <ng-template pTemplate="left">
-                    <h1 style="color: black;">Gestionar Platillos</h1>
+                    <h1 style="color: black;">Gestionar Ventas</h1>
+
                 </ng-template>
             </p-toolbar>
-            <!-- Boton Nuevo -->
 
+            <!-- Boton Nuevo -->
+            <div class="block">
+                <div>
+                    <p-button routerLink="/duenia/report" >Generar Reporte</p-button>
+                </div>
+                <div>
+                    <h5>Fecha</h5>
+                    <p-calendar [showIcon]="true" inputId="icon"></p-calendar>
+                </div>
+                <div>
+                    <h5>Fecha</h5>
+                    <p-calendar [showIcon]="true" inputId="icon"></p-calendar>
+                </div>
+            </div>
           <!-- Tabla de patillos registrados -->
             <p-table #dt [value]="ventas" [columns]="cols" responsiveLayout="scroll" [rows]="10" [globalFilterFields]="['name','country.name','representative.name','status']" [paginator]="true" [rowsPerPageOptions]="[10,20,30]" [showCurrentPageReport]="true" selectionMode="multiple" [rowHover]="true" dataKey="id">
                 <ng-template pTemplate="caption">

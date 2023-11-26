@@ -94,25 +94,55 @@ export class ManageOrderComponent implements OnInit{
       }
 
 
-    // obtenerDetalle(orden: Datum){
+
+    // obtenerDetalle(orden: number){
     //     this.visible = true;
 
-    //     // Encuentra la orden correspondiente en this.ordenes
-    //     const ordenEncontrada = this.ordenesJson.find(o => o. === orden.id);
+    //     // // Encuentra la orden correspondiente en this.ordenes
+    //     // const ordenEncontrada = this.ordenesJson.find(o => o. === orden.id);
 
-    //     if (ordenEncontrada) {
-    //         // Asigna los detalles de la orden encontrada a miOrden
-    //         this.miOrden.detalleOrdenes = ordenEncontrada.detalle_orden;
-    //         this.miOrdenJson.fecha = ordenEncontrada.fecha;
-    //         this.miOrden.id = ordenEncontrada.id;
-    //         this.miOrden.mesa = ordenEncontrada.mesa;
-    //         this.miOrden.ordenEstado = ordenEncontrada.ordenEstado;
-    //         this.miOrden.total = ordenEncontrada.total;
+    //     // if (ordenEncontrada) {
+    //     //     // Asigna los detalles de la orden encontrada a miOrden
+    //     //     this.miOrden.detalleOrdenes = ordenEncontrada.detalle_orden;
+    //     //     this.miOrdenJson.fecha = ordenEncontrada.fecha;
+    //     //     this.miOrden.id = ordenEncontrada.id;
+    //     //     this.miOrden.mesa = ordenEncontrada.mesa;
+    //     //     this.miOrden.ordenEstado = ordenEncontrada.ordenEstado;
+    //     //     this.miOrden.total = ordenEncontrada.total;
 
-    //         console.log('Detalles de la orden asignados a miOrden:', this.miOrden);
-    //     } else {
-    //         console.error('No se encontró la orden correspondiente en this.ordenes');
-    //     }
+    //     //     console.log('Detalles de la orden asignados a miOrden:', this.miOrden);
+    //     // } else {
+    //     //     console.error('No se encontró la orden correspondiente en this.ordenes');
+    //     // }
+
+    //    // Obtén un array plano de detalle_orden
+    //     this.detalleOrdenes = this.ordenesJson.flatMap((orden) =>
+    //     orden.detalle_orden.map((detalle) => ({ ...detalle, idOrden: orden.id }))
+    //     );
+    // }
+      ordenConDetalles:Order;
+    obtenerOrdenConDetalles(idOrden: number): Order | null {
+        this.visible = true;
+        const ordenEncontrada = this.ordenesJson.find((orden) => orden.id === idOrden);
+
+        if (ordenEncontrada) {
+            // Clonar la orden para evitar modificar la referencia original
+            this.ordenConDetalles = { ...ordenEncontrada };
+
+            // Clonar y modificar cada detalle de orden
+            this.ordenConDetalles.detalle_orden = this.ordenConDetalles.detalle_orden.map((detalle) => ({ ...detalle }));
+
+
+
+            return this.ordenConDetalles;
+        } else {
+            console.error('No se encontró la orden correspondiente en this.ordenesJson');
+            return null;
+        }
+    }
+
+    // mostrarDetalleOrden(orden: number){
+    //     const platillosCoincidente:Order[] = this.obtenerDetalle(orden)
     // }
 
 

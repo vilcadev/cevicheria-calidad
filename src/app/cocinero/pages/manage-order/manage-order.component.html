@@ -28,7 +28,7 @@
                     </tr>
                 </ng-template>
                 <ng-template pTemplate="body" let-orden>
-                    <tr  (click)="obtenerDetalle(orden)" style="cursor: pointer;">
+                    <tr  (click)="obtenerOrdenConDetalles(orden.id)" style="cursor: pointer;">
                         <td >
                             <span class="p-column-title">Name</span>
                             {{ orden.id }}
@@ -74,9 +74,9 @@
     <p-toolbar styleClass="mb-4" [style]="{height:'150px'}">
         <div class="flex xl:gap-8 align-items-end" style="font-size: 15px;
         font-weight: bold;">
-            <div>Nro Orden: {{miOrden.id}}</div>
-            <div>Estado:  <span [class]="miOrden.ordenEstado ? 'product-badge status-instock' : 'product-badge status-outofstock'">{{estado ? 'Preparado':'Recibido'}}</span></div>
-            <div>Hora Pedido: {{miOrden.fecha | date:'H:mm':'es-PE'}}</div>
+            <div>Nro Orden: {{ ordenConDetalles?.id }}</div>
+            <div>Estado:  <span [class]="ordenConDetalles?.idEstado ? 'product-badge status-instock' : 'product-badge status-outofstock'">{{estado ? 'Preparado':'Recibido'}}</span></div>
+            <div>Hora Pedido: {{ordenConDetalles?.fecha | date:'H:mm':'es-PE'}}</div>
         </div>
     </p-toolbar>
 
@@ -87,22 +87,23 @@
     <p-toolbar styleClass="mb-4" [style]="{height:'100%'}">
         <div class="flex flex-column row-gap-6" style="font-size: 15px;
         font-weight: bold;">
-            <div class="flex align-items-end sm:gap-2">
+            <div class="flex align-items-end sm:gap-2" *ngFor="let detalle of ordenConDetalles?.detalle_orden">
                 <p-badge value="4" size="large" severity="warning"></p-badge>
-                <div>Arroz Chaufa</div>
-                <span [class]="estado ? 'product-badge status-instock' : 'product-badge status-outofstock'">{{estado ? 'Preparado':'Recibido'}}</span>
-            </div>
-            <div class="flex align-items-end sm:gap-2">
-                <p-badge value="4" size="large" severity="warning"></p-badge>
-                <div>Arroz Chaufa</div>
-                <span [class]="!estado ? 'product-badge status-lowstock' : 'product-badge status-outofstock'">{{estado ? 'Recibido':'En preparación'}}</span>
-            </div>
-            <div class="flex align-items-end sm:gap-2">
-                <p-badge value="4" size="large" severity="warning"></p-badge>
-                <div>Arroz Chaufa</div>
+                <div>{{ detalle.idPlatillo}}</div>
+
                 <span [class]="estado ? 'product-badge status-instock' : 'product-badge status-outofstock'">{{estado ? 'Preparado':'Recibido'}}</span>
             </div>
         </div>
+
+        <!-- <ul>
+            <li *ngFor="let detalle of ordenConDetalles?.detalle_orden">
+              <div class="flex align-items-end sm:gap-2">
+                <p-badge value="4" size="large" severity="warning"></p-badge>
+                <div>Platillo: {{ detalle.idPlatillo }}, Cantidad: {{ detalle.cantidad }}, Total: {{ detalle.total }}</div>
+                <span [class]="estado ? 'product-badge status-instock' : 'product-badge status-outofstock'">{{ estado ? 'Preparado' : 'Recibido' }}</span>
+              </div>
+            </li>
+          </ul> -->
     </p-toolbar>
 
     <div class="flex justify-content-center ">
