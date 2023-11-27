@@ -25,6 +25,8 @@ export class SelectTablesComponent implements OnInit{
 
 
     estadoMesa(mesaNombre: string): string {
+
+        // TODO TRAER EL ESTADO DE LA MESA, OSEA HAZ UN GET DE ORDEN, Y SIEMPRE EN EL ON INIT
         // Recuperar el estado de localStorage
         const estadoMesa = localStorage.getItem(`mesa_Status_${mesaNombre}`);
 
