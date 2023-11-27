@@ -46,7 +46,7 @@ export class MeseraService {
 
     // Obtener Menu del Día
     obtenerMenu(){
-        const response = this.http.get(`${this.miapiUrl}getMenu?fecha=2023-11-29`);
+        const response = this.http.get(`${this.miapiUrl}getMenu?fecha=2023-11-27`);
         return response;
     }
 

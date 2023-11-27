@@ -14,6 +14,8 @@ import { OrderHCocinero } from '../../interfaces/orderHCocinero.interface';
 })
 export class ManageOrderComponent implements OnInit{
 
+    loading = false;
+    finishOrder:boolean = false;
 
   constructor(private cocineroService: CocineroService){}
 
@@ -147,11 +149,13 @@ export class ManageOrderComponent implements OnInit{
     }
 
     obtenerOrdenesH(){
+        this.loading=true;
         this.cocineroService.obtenerOrdenesH().pipe(
                     map((response: any) => response.data) // Extrae la lista de platillos de la respuesta
                   ).subscribe({
                     next: (data) => {
                       this.ordenH = data; // Asigna la lista completa de platillos
+                      this.loading=false;
                       console.log(this.ordenH);
                     },
                     error: (e) => {
@@ -176,12 +180,28 @@ export class ManageOrderComponent implements OnInit{
     }
     }
 
+    ordenEliminar: OrderHCocinero | null = null;
+    obtenerOrdenEliminarH(ordenId:number):void{
+        this.finishOrder=true;
+        // Buscar la orden correspondiente en el array ordenH
+    const orden = this.ordenH.find((o) => o.id === ordenId);
+
+    if (orden) {
+        // Asignar la orden seleccionada
+        this.ordenEliminar = orden;
+    } else {
+        console.error('No se encontró la orden correspondiente');
+    }
+    }
+
     // mostrarDetalleOrden(orden: number){
     //     const platillosCoincidente:Order[] = this.obtenerDetalle(orden)
     // }
 
 
     actualizarEstadoOrden(orderId:number, nuevoEstadoId:number){
+        this.visible = false;
+        this.loading=true;
         this.cocineroService.actualizarEstadoOrden(orderId,nuevoEstadoId).subscribe(
             (response) =>{
                 console.log("Se actualizo correctamente la data",response);
@@ -193,6 +213,33 @@ export class ManageOrderComponent implements OnInit{
         this.cocineroService.editarEstadoDetalles(orderId,nuevoEstadoId).subscribe(
             (response) =>{
                 console.log("Se actualizo correctamente el detalle de la data",response);
+                this.loading=false;
+            },
+            (error) =>{
+                console.log("Hubo un error al actualizar el detalle de la data",error);
+            }
+        )
+        this.obtenerOrdenesH();
+    }
+
+    terminarOrden(orderId:number, nuevoEstadoId:number){
+
+        console.log({orderId,nuevoEstadoId})
+        this.loading=true;
+        this.finishOrder=false;
+        this.cocineroService.actualizarEstadoOrden(orderId,nuevoEstadoId).subscribe(
+            (response) =>{
+                console.log("Se actualizo correctamente la data",response);
+            },
+            (error) =>{
+                console.log("Hubo un error al actualizar la orden",error);
+            }
+        )
+        this.cocineroService.editarEstadoDetalles(orderId,nuevoEstadoId).subscribe(
+            (response) =>{
+                console.log("Se actualizo correctamente el detalle de la data",response);
+                this.loading=false;
+                this.obtenerOrdenesH();
             },
             (error) =>{
                 console.log("Hubo un error al actualizar el detalle de la data",error);

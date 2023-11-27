@@ -93,5 +93,33 @@
         }
       ]
     }
+  ],
+  "users":[
+          {
+            "id": "maritza@gmail.com",
+            "name": "Maritza",
+            "email": "maritza@gmail.com",
+            "password": "abc123$",
+            "role": "admin",
+            "jwt":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Im1hcml0emFAZ21haWwuY29tIiwibmFtZSI6Ik1hcml0emEiLCJlbWFpbCI6Im1hcml0emFAZ21haWwuY29tIiwicGFzc3dvcmQiOiJhYmMxMjMkIiwicm9sZSI6ImFkbWluIiwiand0IjoiZXlKcFpDSTZNU3dpYm1GdFpTSTZJazFoY21sMGVtRWlMQ0psYldGcGJDSTZJbTFoY25ScGVtRkFaMjFoYVd3dVkyOXRJaXdpY205c1pTSTZJbUZrYldsdUluMCJ9.hQ9OkoQaqXi6EMIYTsaPUUTxydepEmupzd5UcCvMs9E"
+          },
+          {
+            "id": "katy@gmail.com",
+            "name": "Katy",
+            "email": "katy@gmail.com",
+            "password": "abc123$",
+            "role": "mesera",
+            "jwt":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImthdHlAZ21haWwuY29tIiwibmFtZSI6IkthdHkiLCJlbWFpbCI6ImthdHlAZ21haWwuY29tIiwicGFzc3dvcmQiOiJhYmMxMjMkIiwicm9sZSI6Im1lc2VyYSIsImp3dCI6ImV5SmhiR2NpT2lKSVV6STFOaUlzSW5SNWNDSTZJa3BYVkNKOS5leUpwWkNJNkltdGhkSGxBWjIxaGFXd3VZMjl0SWl3aWJtRnRaU0k2SWt0aGRIa2lMQ0psYldGcGJDSTZJbXRoZEhsQVoyMWhhV3d1WTI5dElpd2ljR0Z6YzNkdmNtUWlPaUpoWW1NeE1qTWtJaXdpY205c1pTSTZJbTFsYzJWeVlTSjkuY19lc3dQWXZ1U0IwSmVKNWMtc3RaWUVic2JGVFBSNlB1a0Fqa3F3SWNKcyJ9.L61GzDEDR2bAHTt0DqZQaMMvSIOU-hOfxuUvN2-ORpo"
+          },
+          {
+            "id": "lucho@gmail.com",
+            "name": "Lucho",
+            "email": "lucho@gmail.com",
+            "password": "abc123$",
+            "role": "cocinero",
+            "jwt":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Imx1Y2hvQGdtYWlsLmNvbSIsIm5hbWUiOiJMdWNobyIsImVtYWlsIjoibHVjaG9AZ21haWwuY29tIiwicGFzc3dvcmQiOiJhYmMxMjMkIiwicm9sZSI6ImNvY2luZXJvIiwiand0IjoiZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SnBaQ0k2SW14MVkyaHZRR2R0WVdsc0xtTnZiU0lzSW01aGJXVWlPaUpNZFdOb2J5SXNJbVZ0WVdsc0lqb2liSFZqYUc5QVoyMWhhV3d1WTI5dElpd2ljR0Z6YzNkdmNtUWlPaUpoWW1NeE1qTWtJaXdpY205c1pTSTZJbU52WTJsdVpYSnZJbjAuamRhSDQ2UU5RWTB6YzZZbU5tWFZYd2N1dGFEbVJjakJTdzVySHVYaGtyVSJ9.M4RsTrruyRi2emcn2l2NYIfLiwO7JExmB3wiKmxjYFc"
+          }
+
   ]
 }
+

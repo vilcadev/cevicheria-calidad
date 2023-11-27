@@ -4,3 +4,12 @@ export interface User{
     iat: number;
     role: string;
 }
+
+export interface Usuario{
+    id:string;
+    name:string;
+    email:string;
+    passwrod:string;
+    role?:string;
+    jwt:string;
+}

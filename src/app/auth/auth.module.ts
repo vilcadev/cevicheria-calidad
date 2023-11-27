@@ -5,6 +5,7 @@ import { PasswordModule } from 'primeng/password';
 import { ButtonModule } from 'primeng/button';
 import { LoginComponent } from './pages/login/login.component';
 import { InputTextModule } from 'primeng/inputtext';
+import { FormsModule } from '@angular/forms';
 
 
 
@@ -19,6 +20,7 @@ import { InputTextModule } from 'primeng/inputtext';
         InputTextModule,
 
         AuthRoutingModule,
+        FormsModule,
     ],
     exports:[
     ]
