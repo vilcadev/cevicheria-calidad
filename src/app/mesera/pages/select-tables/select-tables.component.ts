@@ -28,24 +28,37 @@ export class SelectTablesComponent implements OnInit{
 
     ngOnInit(): void {
 
-        // Inicia el intervalo y ejecuta la función cada 3 segundos
-     interval(this.pollingInterval)
-     .pipe(
-       startWith(0), // Para que se ejecute inmediatamente al inicio
-       switchMap(() => this.cocineroService.obtenerOrdenesH()), // Realiza la llamada HTTP
-       map((response: any) => response.data),
-       takeUntil(this.destroy$) // Detiene el intervalo cuando el componente se destruye
-     )
-     .subscribe({
-       next: (data) => {
-         this.ordenH = data;
-         console.log(this.ordenH);
-       },
-       error: (e) => {
-         console.error('Error al obtener platillos:', e);
-       },
-     });
+      // Inicia el intervalo y ejecuta la función cada 3 segundos
+  interval(this.pollingInterval)
+  .pipe(
+    startWith(0), // Para que se ejecute inmediatamente al inicio
+    switchMap(() => this.cocineroService.obtenerOrdenesH()), // Realiza la llamada HTTP
+    map((response: any) => response.data),
+    takeUntil(this.destroy$) // Detiene el intervalo cuando el componente se destruye
+  )
+  .subscribe({
+    next: (data) => {
+      this.actualizarOrdenes(data);
+    },
+    error: (e) => {
+      console.error('Error al obtener platillos:', e);
+    },
+  });
     }
+
+    actualizarOrdenes(data: any): void {
+  this.ordenH = data; // Asigna la lista completa de platillos
+
+  // Recorre cada orden y establece el estado en el localStorage
+  this.ordenH.forEach((orden) => {
+    const mesaNombre = `mesa_Status_${orden.mesa.nombre}`;
+    const estadoMesaId = orden.estado.id;
+    localStorage.setItem(mesaNombre, estadoMesaId.toString());
+  });
+
+  console.log(this.ordenH);
+  this.loading = false;
+}
     ngOnDestroy(): void {
         // Al destruir el componente, completa el observable y detiene el intervalo
         this.destroy$.next();
