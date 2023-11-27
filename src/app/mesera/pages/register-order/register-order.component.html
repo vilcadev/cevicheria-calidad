@@ -74,6 +74,7 @@
             <span class="p-buttonset">
 				<button (click)="generarPDF()" pButton pRipple type="button" label="Pre - Cuenta" class="p-button-raised p-button-secondary" icon="pi pi-print"></button>
 				<button (click)="guardarOrden()" pButton pRipple type="button" label="Guardar" class="p-button-raised p-button-success"></button>
+                <!-- <button (click)="actualizarOrden()" pButton pRipple type="button" label="Aztualizar" class="p-button-raised p-button-success"></button> -->
 			</span>
 
 
@@ -158,7 +159,8 @@
     </button>
 </p-dialog>
 
-<!-- Tu código HTML para renderizar el menú -->
+<div class="overlay" *ngIf="loading">
+    <div class="loader"></div>
+  </div>
 
-<h1>{{mesaNombre}}</h1>
 

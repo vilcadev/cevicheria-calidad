@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 
 import { Datum, RootObject, DetalleOrden } from '../../interfaces/order.interface';
 import { CocineroService } from '../../services/cocinero.service';
-import { map } from 'rxjs';
+import { Subject, interval, map, startWith, switchMap, takeUntil } from 'rxjs';
 import { Order } from 'src/app/mesera/interfaces/order.interface';
 import { OrderHCocinero } from '../../interfaces/orderHCocinero.interface';
 
@@ -21,12 +21,33 @@ export class ManageOrderComponent implements OnInit{
 
  public estado = false;
 
+ private destroy$ = new Subject<void>(); // Para manejar la destrucción del componente
+  private pollingInterval = 3000; // Intervalo de 3 segundos
+
   ngOnInit(): void {
-    // this.obtenerOrdenes();
-    // this.obtenerOrdenesJson();
+     // Inicia el intervalo y ejecuta la función cada 3 segundos
+     interval(this.pollingInterval)
+     .pipe(
+       startWith(0), // Para que se ejecute inmediatamente al inicio
+       switchMap(() => this.cocineroService.obtenerOrdenesH()), // Realiza la llamada HTTP
+       map((response: any) => response.data),
+       takeUntil(this.destroy$) // Detiene el intervalo cuando el componente se destruye
+     )
+     .subscribe({
+       next: (data) => {
+         this.ordenH = data;
+         console.log(this.ordenH);
+       },
+       error: (e) => {
+         console.error('Error al obtener platillos:', e);
+       },
+     });
+  }
 
-    this.obtenerOrdenesH();
-
+  ngOnDestroy(): void {
+    // Al destruir el componente, completa el observable y detiene el intervalo
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   cols: any[] = [];
@@ -70,21 +91,6 @@ export class ManageOrderComponent implements OnInit{
     };
 
 
-
-//   obtenerOrdenes() {
-//       this.cocineroService.obtenerOrdenes().pipe(
-//         map((response: any) => response.data) // Extrae la lista de platillos de la respuesta
-//       ).subscribe({
-//         next: (data) => {
-//           this.ordenes = data; // Asigna la lista completa de platillos
-//           console.log(this.ordenes);
-//         },
-//         error: (e) => {
-//           console.error('Error al obtener platillos:', e);
-//         }
-//       });
-//     }
-
     obtenerOrdenesJson() {
         this.cocineroService.obtenerOrdenesJson().subscribe(
           (data: any) => {
@@ -102,31 +108,7 @@ export class ManageOrderComponent implements OnInit{
 
 
 
-    // obtenerDetalle(orden: number){
-    //     this.visible = true;
 
-    //     // // Encuentra la orden correspondiente en this.ordenes
-    //     // const ordenEncontrada = this.ordenesJson.find(o => o. === orden.id);
-
-    //     // if (ordenEncontrada) {
-    //     //     // Asigna los detalles de la orden encontrada a miOrden
-    //     //     this.miOrden.detalleOrdenes = ordenEncontrada.detalle_orden;
-    //     //     this.miOrdenJson.fecha = ordenEncontrada.fecha;
-    //     //     this.miOrden.id = ordenEncontrada.id;
-    //     //     this.miOrden.mesa = ordenEncontrada.mesa;
-    //     //     this.miOrden.ordenEstado = ordenEncontrada.ordenEstado;
-    //     //     this.miOrden.total = ordenEncontrada.total;
-
-    //     //     console.log('Detalles de la orden asignados a miOrden:', this.miOrden);
-    //     // } else {
-    //     //     console.error('No se encontró la orden correspondiente en this.ordenes');
-    //     // }
-
-    //    // Obtén un array plano de detalle_orden
-    //     this.detalleOrdenes = this.ordenesJson.flatMap((orden) =>
-    //     orden.detalle_orden.map((detalle) => ({ ...detalle, idOrden: orden.id }))
-    //     );
-    // }
       ordenConDetalles:Order;
     obtenerOrdenConDetalles(idOrden: number): Order | null {
         this.visible = true;
@@ -182,6 +164,7 @@ export class ManageOrderComponent implements OnInit{
 
     ordenEliminar: OrderHCocinero | null = null;
     obtenerOrdenEliminarH(ordenId:number):void{
+        event.stopPropagation();
         this.finishOrder=true;
         // Buscar la orden correspondiente en el array ordenH
     const orden = this.ordenH.find((o) => o.id === ordenId);

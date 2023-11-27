@@ -1,5 +1,5 @@
 export interface OrderH {
-    fechaOrden: string;
+    fechaOrden: Date;
     total: number;
     mesaId: number;
     estadoId: number;

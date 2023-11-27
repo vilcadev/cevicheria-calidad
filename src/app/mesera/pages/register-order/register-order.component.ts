@@ -33,6 +33,8 @@ export class RegisterOrderComponent implements OnInit{
 
     routeItems: MenuItem[] = [];
 
+    loading = false;
+
 
     mesaNombre: string;
     constructor(private route: ActivatedRoute,
@@ -233,12 +235,10 @@ export class RegisterOrderComponent implements OnInit{
         }
         else{
              // Save the updated array to localStorage based on mesaId
-            localStorage.setItem(`platosList_${this.mesaNombre}`, JSON.stringify(this.platosList));
-            this.agregarOrdenH();
 
+            this.agregarOrdenH();
         }
       }
-
         obtenerFechaHoraFormateada(): string {
         const fechaHoraActual = new Date();
 
@@ -304,18 +304,22 @@ export class RegisterOrderComponent implements OnInit{
                 total: platillo.precio
             }
         });
+        const fechaHoraActual = new Date();
+
 
         const nuevaOrdenH: OrderH ={
-            fechaOrden: "2023-11-26T22:57:24.931Z",
+            fechaOrden: fechaHoraActual,
             total: totalAcumulado,
             mesaId: parseInt(this.mesaNombre.match(/\d+/)[0], 10),
             estadoId: 1,
             detalles: detallerOrdenH
         }
-        localStorage.setItem(`mesa_Status_${this.mesaNombre}`,nuevaOrdenH.estadoId.toString());
+
         this.meseraService.agregarOrdenH(nuevaOrdenH).subscribe(
             (response)=>{
                 console.log("La orden se registro correctamente ",response);
+                localStorage.setItem(`mesa_Status_${this.mesaNombre}`,nuevaOrdenH.estadoId.toString());
+                localStorage.setItem(`platosList_${this.mesaNombre}`, JSON.stringify(this.platosList));
             },
             (error) =>{
                 console.log("Hubo un error al registrar la orden ",error);
@@ -323,6 +327,12 @@ export class RegisterOrderComponent implements OnInit{
         )
         this.router.navigate(['/mesera/select-tables']);  // Ruta para la mesera
       }
+
+    //   actualizarOrden(){
+    //     this.meseraService.actualizarOrden().subscribe(
+
+    //     )
+    //   }
 
 
 

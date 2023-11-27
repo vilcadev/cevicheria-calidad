@@ -31,7 +31,7 @@ export class CocineroService {
 
 
   obtenerOrdenesH():Observable<OrderHCocinero[]>{
-    const response = this.http.get<OrderHCocinero[]>(`${this.miapiUrl}getOrdenesPorFecha/2023-11-26`);
+    const response = this.http.get<OrderHCocinero[]>(`${this.miapiUrl}getOrdenesPorFecha/2023-11-27`);
     return response;
   }
 

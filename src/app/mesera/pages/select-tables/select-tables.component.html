@@ -20,6 +20,7 @@
 								<!-- <span [class]="'product-badge status-' + product.inventoryStatus.toLowerCase()">{{product.inventoryStatus}}</span> -->
 							</div>
 							<div class="flex flex-column align-items-center text-center mb-3">
+                                <span style="margin-left: 14rem;" (click)="cancelarOrden(mesa)"><i class="fa-solid fa-ban fa-2xl"></i></span>
 								<!-- <img [src]="'assets/demo/images/product/' + product.image" [alt]="product.name" class="w-9 shadow-2 my-3 mx-0"/> -->
 								<div class="text-2xl font-bold">{{mesa}}</div>
 								<div class="mb-3">{{mesa}}</div>
@@ -33,3 +34,21 @@
 		</div>
 	</div>
 </div>
+
+<!-- MODAL TERMINAR ORDEN -->
+<p-dialog [(visible)]="finishOrder" header="Eliminar PLatillo" [modal]="true" [style]="{width:'450px'}">
+    <div class="flex align-items-center justify-content-center">
+        <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
+        <span>Desea cancelar la Orden?</span>
+    </div>
+    <ng-template pTemplate="footer">
+        <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No" (click)="finishOrder = false"></button>
+        <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Si"  (click)="deleteOrderForMesa(selectedTable)"></button>
+    </ng-template>
+</p-dialog>
+
+<div class="overlay" *ngIf="loading">
+    <div class="loader"></div>
+  </div>
+
+

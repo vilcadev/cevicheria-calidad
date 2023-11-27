@@ -71,11 +71,11 @@
  <p-dialog [(visible)]="finishOrder" header="Eliminar PLatillo" [modal]="true" [style]="{width:'450px'}">
     <div class="flex align-items-center justify-content-center">
         <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
-        <span>Desea terminar la Orden?</span>
+        <span>Se actualizará la orden a "Terminado"</span>
     </div>
     <ng-template pTemplate="footer">
-        <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No" (click)="finishOrder = false"></button>
-        <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Si" (click)="terminarOrden(ordenSeleccionada.id,3)"></button>
+        <button pButton pRipple icon="pi pi-times" class="p-button-text" label="Cancelar" (click)="finishOrder = false"></button>
+        <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Aceptar" (click)="terminarOrden(ordenSeleccionada.id,3)"></button>
     </ng-template>
 </p-dialog>
 
@@ -95,7 +95,7 @@
             <div>Estado:   <span [class]="ordenSeleccionada?.estado?.id === 1 ? 'product-badge status-outofstock' : 'product-badge status-lowstock'">
                 {{ ordenSeleccionada?.estado.id === 1 ? 'Recibido' : 'En Preparación'}}
               </span></div>
-            <div>Hora Pedido: {{ordenSeleccionada?.fechaOrden}}</div>
+            <div>Hora Pedido: {{ordenSeleccionada?.fechaOrden | date:'H:mm':'es-PE'}}</div>
         </div>
     </p-toolbar>
 

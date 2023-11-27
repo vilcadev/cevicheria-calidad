@@ -9,7 +9,7 @@ import { HttpClient } from '@angular/common/http';
 import { environment, environmentJson } from 'src/config';
 import { Order } from '../interfaces/order.interface';
 import { Observable } from 'rxjs';
-import { OrderH } from '../interfaces/orderH.interface';
+import { DetallesH, OrderH } from '../interfaces/orderH.interface';
 
 (pdfMake as any).vfs = pdfFonts.pdfMake.vfs;
 
@@ -67,6 +67,17 @@ export class MeseraService {
         console.log({data});
 
         const response = this.http.post(`${this.miapiUrlOrden}createOrden`,data,{ responseType: 'text' })
+        return response;
+    }
+
+    cancelarOrden(ordenId:number){
+        const response = this.http.delete(`${this.miapiUrlOrden}eliminarOrden/${ordenId}`);
+        return response;
+    }
+
+    actualizarOrden(idOrden: string, data:DetallesH){
+
+        const response = this.http.patch(`${this.miapiUrlOrden}addDetalle/${idOrden}`,data);
         return response;
     }
 

@@ -1,6 +1,6 @@
 export interface OrderHCocinero {
     id: number;
-    fechaOrden: string;
+    fechaOrden: Date;
     total: number;
     mesa: Mesa;
     estado: Estado;
