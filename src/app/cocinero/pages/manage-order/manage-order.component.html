@@ -4,13 +4,13 @@
             <p-toast></p-toast>
             <p-toolbar styleClass="mb-4" >
                 <ng-template pTemplate="left">
-                    <h1 style="color: black;">Gestionar Platillos</h1>
+                    <h1 style="color: black;">Gestionar Órdenes Registradas</h1>
                 </ng-template>
             </p-toolbar>
             <!-- Boton Nuevo -->
 
           <!-- Tabla de patillos registrados -->
-            <p-table #dt [value]="ordenesJson" [columns]="cols" responsiveLayout="scroll" [rows]="10" [globalFilterFields]="['name','country.name','representative.name','status']" [paginator]="true" [rowsPerPageOptions]="[10,20,30]" [showCurrentPageReport]="true" selectionMode="multiple" [rowHover]="true" dataKey="id">
+            <p-table #dt [value]="ordenH" [columns]="cols" responsiveLayout="scroll" [rows]="10" [globalFilterFields]="['name','country.name','representative.name','status']" [paginator]="true" [rowsPerPageOptions]="[10,20,30]" [showCurrentPageReport]="true" selectionMode="multiple" [rowHover]="true" dataKey="id">
                 <ng-template pTemplate="caption">
                     <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
                         <h5 class="m-0">Platillos</h5>
@@ -28,7 +28,7 @@
                     </tr>
                 </ng-template>
                 <ng-template pTemplate="body" let-orden>
-                    <tr  (click)="obtenerOrdenConDetalles(orden.id)" style="cursor: pointer;">
+                    <tr  (click)="obtenerOrdenConDetallesH(orden.id)" style="cursor: pointer;">
                         <td >
                             <span class="p-column-title">Name</span>
                             {{ orden.id }}
@@ -36,12 +36,13 @@
 
                         <td >
                             <span class="p-column-title">Name</span>
-                            {{orden.idEstado}}
+                            <span [class]="orden.estado.id === 1 ? 'product-badge status-outofstock' : 'product-badge status-lowstock'">
+                                {{ orden.estado.id === 1 ? 'Recibido' : 'En Preparación'}}</span>
                         </td>
 
                         <td >
                             <span class="p-column-title">Category</span>
-                            {{ orden.fecha | date:'H:mm':'es-PE'}}
+                            {{ orden.fechaOrden | date:'H:mm':'es-PE'}}
 
                         </td>
                         <!-- <td >
@@ -57,7 +58,7 @@
                             <span>{{dishe.status}}</span>
                         </td> -->
                         <td>
-                            <button pButton pRipple label="Terminar Orden" disabled="true"></button>
+                            <button pButton pRipple label="Terminar Orden" [disabled]="orden.estado.id === 1"></button>
                         </td>
                     </tr>
                 </ng-template>
@@ -74,9 +75,11 @@
     <p-toolbar styleClass="mb-4" [style]="{height:'150px'}">
         <div class="flex xl:gap-8 align-items-end" style="font-size: 15px;
         font-weight: bold;">
-            <div>Nro Orden: {{ ordenConDetalles?.id }}</div>
-            <div>Estado:  <span [class]="ordenConDetalles?.idEstado ? 'product-badge status-instock' : 'product-badge status-outofstock'">{{estado ? 'Preparado':'Recibido'}}</span></div>
-            <div>Hora Pedido: {{ordenConDetalles?.fecha | date:'H:mm':'es-PE'}}</div>
+            <div>Nro Orden: {{ ordenSeleccionada?.id }}</div>
+            <div>Estado:   <span [class]="ordenSeleccionada?.estado?.id === 1 ? 'product-badge status-outofstock' : 'product-badge status-lowstock'">
+                {{ ordenSeleccionada?.estado.id === 1 ? 'Recibido' : 'En Preparación'}}
+              </span></div>
+            <div>Hora Pedido: {{ordenSeleccionada?.fechaOrden}}</div>
         </div>
     </p-toolbar>
 
@@ -87,26 +90,16 @@
     <p-toolbar styleClass="mb-4" [style]="{height:'100%'}">
         <div class="flex flex-column row-gap-6" style="font-size: 15px;
         font-weight: bold;">
-            <div class="flex align-items-end sm:gap-2" *ngFor="let detalle of ordenConDetalles?.detalle_orden">
-                <p-badge value="4" size="large" severity="warning"></p-badge>
-                <div>{{ detalle.idPlatillo}}</div>
+            <div class="flex align-items-end sm:gap-2" *ngFor="let detalle of ordenSeleccionada?.detalleOrden">
+                <p-badge [value]="detalle.cantidad" size="large" severity="warning"></p-badge>
+                <div>{{ detalle?.platillo?.nombre}}</div>
 
-                <span [class]="estado ? 'product-badge status-instock' : 'product-badge status-outofstock'">{{estado ? 'Preparado':'Recibido'}}</span>
+                <span [class]="detalle?.estado?.id ===1 ? 'product-badge status-outofstock' : 'product-badge status-lowstock'">{{detalle.estado.id ===1 ? 'Recibido' : 'En Preparación'}}</span>
             </div>
         </div>
-
-        <!-- <ul>
-            <li *ngFor="let detalle of ordenConDetalles?.detalle_orden">
-              <div class="flex align-items-end sm:gap-2">
-                <p-badge value="4" size="large" severity="warning"></p-badge>
-                <div>Platillo: {{ detalle.idPlatillo }}, Cantidad: {{ detalle.cantidad }}, Total: {{ detalle.total }}</div>
-                <span [class]="estado ? 'product-badge status-instock' : 'product-badge status-outofstock'">{{ estado ? 'Preparado' : 'Recibido' }}</span>
-              </div>
-            </li>
-          </ul> -->
     </p-toolbar>
 
     <div class="flex justify-content-center ">
-        <button icon="fa-solid fa-utensils" pButton pRipple type="button" label="Preparar" [style]="{ width: '15%'}"></button>
+        <button icon="fa-solid fa-utensils" pButton pRipple type="button" label="Preparar" [style]="{ width: '15%'}" (click)="actualizarEstadoOrden(ordenSeleccionada.id,2)"></button>
       </div>
 </p-dialog>

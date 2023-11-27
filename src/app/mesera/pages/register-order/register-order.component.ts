@@ -10,6 +10,7 @@ import { MeseraService } from '../../services/mesera.service';
 import { map } from 'rxjs';
 import { MenuData, MenuResponse } from '../../interfaces/menuI.interface';
 import { DetalleOrden, Order } from '../../interfaces/order.interface';
+import { DetallesH, OrderH } from '../../interfaces/orderH.interface';
 
 
 
@@ -167,6 +168,7 @@ export class RegisterOrderComponent implements OnInit{
 
       seleccionarPlato(product: any) {
         const platilloSeleccionado = {
+          id:product.id,
           nombre: product.nombre,
           cantidad: 1, // Empieza con una cantidad de 1
           precioUnitario: product.precio,
@@ -193,7 +195,7 @@ export class RegisterOrderComponent implements OnInit{
             // Si el producto no existe, agregarlo a platosList
             const nuevoId = this.platosList.length + 1;
             const nuevoPlatillo: platos = {
-              id: nuevoId,
+              id: platillo.id,
               nombre: platillo.nombre,
               cantidad: platillo.cantidad,
               precioUnitario: platillo.precioUnitario,
@@ -220,6 +222,8 @@ export class RegisterOrderComponent implements OnInit{
         'other': 'Ver # Seleccionados'
       }
 
+      estado:string;
+
       guardarOrden(){
          // Save the updated array to localStorage
         // localStorage.setItem('platosList', JSON.stringify(this.platosList));
@@ -230,42 +234,53 @@ export class RegisterOrderComponent implements OnInit{
         else{
              // Save the updated array to localStorage based on mesaId
             localStorage.setItem(`platosList_${this.mesaNombre}`, JSON.stringify(this.platosList));
-            this.agregarOrden();
+            this.agregarOrdenH();
 
         }
       }
 
-      agregarOrden(){
+        obtenerFechaHoraFormateada(): string {
+        const fechaHoraActual = new Date();
 
+        // Formatear la fecha y hora en el formato deseado
+        const fechaFormateada = `${fechaHoraActual.getFullYear()}-${(fechaHoraActual.getMonth() + 1).toString().padStart(2, '0')}-${fechaHoraActual.getDate().toString().padStart(2, '0')}`;
+        const horaFormateada = `${fechaHoraActual.getHours().toString().padStart(2, '0')}:${fechaHoraActual.getMinutes().toString().padStart(2, '0')}`;
+
+        // Combinar la fecha y hora formateadas
+        return `${fechaFormateada} ${horaFormateada}`;
+      }
+
+      agregarOrden(){
         let idDetalleCounter = 1; // Contador para el idDetalle
         let totalAcumulado = 0; // Acumulador para el total
+
+        // Obtener la fecha y hora formateada utilizando la función
+        const fechaHoraFormateada = this.obtenerFechaHoraFormateada();
 
         // Construir el array de detalle_orden utilizando map
         const detalleOrden: DetalleOrden[] = this.platosList.map((platillo) => {
             totalAcumulado += platillo.precio;
             return {
-            idDetalle: idDetalleCounter,
-            idOrden: 3, // Backend
-            idPlatillo: platillo.id, //Frontend
-            cantidad: platillo.cantidad, //Frontend
-            total: platillo.precio, //Frontend
-            estado: 2, // Frontend
+                idDetalle: idDetalleCounter,
+                idOrden: 3,  // Backend
+                platillo: {
+                  id: platillo.id, //Frontend
+                  nombre: platillo.nombre,  //Frontend
+                },
+                cantidad: platillo.cantidad,  // Frontend
+                total: platillo.precio,  // Frontend
+                estado: 1,  // Frontend
             };
-
-
         });
-
         const nuevaOrden:Order ={
             id:3, // Backend
             idMesa:3, // Frontend
-            fecha:"2023-11-25", // Frontend
-            idEstado:2, // Frontend
+            fecha:fechaHoraFormateada, // Frontend
+            idEstado:1, // Frontend
             MontoTotal:totalAcumulado, // Frontend
             detalle_orden:detalleOrden // Frontend
         }
-
-
-
+        localStorage.setItem(`mesa_Status_${this.mesaNombre}`,nuevaOrden.idEstado.toString())
         this.meseraService.agregarOrden(nuevaOrden).subscribe(
             (response)=>{
                 console.log("La orden se registro correctamente ",response);
@@ -274,8 +289,40 @@ export class RegisterOrderComponent implements OnInit{
                 console.log("Hubo un error al registrar la orden ",error);
             }
         )
+        this.router.navigate(['/mesera/select-tables']);  // Ruta para la mesera
       }
 
+      agregarOrdenH(){
+        let totalAcumulado = 0; // Acumulador para el total
+
+        const detallerOrdenH:DetallesH[] = this.platosList.map((platillo)=>{
+            totalAcumulado += platillo.precio;
+            return{
+                platilloId: platillo.id,
+                estadoId: 1,
+                cantidad: platillo.cantidad,
+                total: platillo.precio
+            }
+        });
+
+        const nuevaOrdenH: OrderH ={
+            fechaOrden: "2023-11-26T22:57:24.931Z",
+            total: totalAcumulado,
+            mesaId: parseInt(this.mesaNombre.match(/\d+/)[0], 10),
+            estadoId: 1,
+            detalles: detallerOrdenH
+        }
+        localStorage.setItem(`mesa_Status_${this.mesaNombre}`,nuevaOrdenH.estadoId.toString());
+        this.meseraService.agregarOrdenH(nuevaOrdenH).subscribe(
+            (response)=>{
+                console.log("La orden se registro correctamente ",response);
+            },
+            (error) =>{
+                console.log("Hubo un error al registrar la orden ",error);
+            }
+        )
+        this.router.navigate(['/mesera/select-tables']);  // Ruta para la mesera
+      }
 
 
 

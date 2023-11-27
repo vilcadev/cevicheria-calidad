@@ -5,6 +5,7 @@ import { Datum, RootObject, DetalleOrden } from '../../interfaces/order.interfac
 import { CocineroService } from '../../services/cocinero.service';
 import { map } from 'rxjs';
 import { Order } from 'src/app/mesera/interfaces/order.interface';
+import { OrderHCocinero } from '../../interfaces/orderHCocinero.interface';
 
 @Component({
   selector: 'app-manage-order',
@@ -20,7 +21,9 @@ export class ManageOrderComponent implements OnInit{
 
   ngOnInit(): void {
     // this.obtenerOrdenes();
-    this.obtenerOrdenesJson();
+    // this.obtenerOrdenesJson();
+
+    this.obtenerOrdenesH();
 
   }
 
@@ -29,6 +32,8 @@ export class ManageOrderComponent implements OnInit{
   ordenes: Datum []=[];
 
   ordenesJson:Order[] =[];
+
+  ordenH:OrderHCocinero[] =[];
 
   miOrdenJson:Order;
 
@@ -64,19 +69,19 @@ export class ManageOrderComponent implements OnInit{
 
 
 
-  obtenerOrdenes() {
-      this.cocineroService.obtenerOrdenes().pipe(
-        map((response: any) => response.data) // Extrae la lista de platillos de la respuesta
-      ).subscribe({
-        next: (data) => {
-          this.ordenes = data; // Asigna la lista completa de platillos
-          console.log(this.ordenes);
-        },
-        error: (e) => {
-          console.error('Error al obtener platillos:', e);
-        }
-      });
-    }
+//   obtenerOrdenes() {
+//       this.cocineroService.obtenerOrdenes().pipe(
+//         map((response: any) => response.data) // Extrae la lista de platillos de la respuesta
+//       ).subscribe({
+//         next: (data) => {
+//           this.ordenes = data; // Asigna la lista completa de platillos
+//           console.log(this.ordenes);
+//         },
+//         error: (e) => {
+//           console.error('Error al obtener platillos:', e);
+//         }
+//       });
+//     }
 
     obtenerOrdenesJson() {
         this.cocineroService.obtenerOrdenesJson().subscribe(
@@ -141,9 +146,59 @@ export class ManageOrderComponent implements OnInit{
         }
     }
 
+    obtenerOrdenesH(){
+        this.cocineroService.obtenerOrdenesH().pipe(
+                    map((response: any) => response.data) // Extrae la lista de platillos de la respuesta
+                  ).subscribe({
+                    next: (data) => {
+                      this.ordenH = data; // Asigna la lista completa de platillos
+                      console.log(this.ordenH);
+                    },
+                    error: (e) => {
+                      console.error('Error al obtener platillos:', e);
+                    }
+                  });
+    }
+
+
+    ordenSeleccionada: OrderHCocinero | null = null;
+
+    obtenerOrdenConDetallesH(ordenId: number): void {
+        this.visible = true;
+    // Buscar la orden correspondiente en el array ordenH
+    const orden = this.ordenH.find((o) => o.id === ordenId);
+
+    if (orden) {
+        // Asignar la orden seleccionada
+        this.ordenSeleccionada = orden;
+    } else {
+        console.error('No se encontró la orden correspondiente');
+    }
+    }
+
     // mostrarDetalleOrden(orden: number){
     //     const platillosCoincidente:Order[] = this.obtenerDetalle(orden)
     // }
+
+
+    actualizarEstadoOrden(orderId:number, nuevoEstadoId:number){
+        this.cocineroService.actualizarEstadoOrden(orderId,nuevoEstadoId).subscribe(
+            (response) =>{
+                console.log("Se actualizo correctamente la data",response);
+            },
+            (error) =>{
+                console.log("Hubo un error al actualizar la orden",error);
+            }
+        )
+        this.cocineroService.editarEstadoDetalles(orderId,nuevoEstadoId).subscribe(
+            (response) =>{
+                console.log("Se actualizo correctamente el detalle de la data",response);
+            },
+            (error) =>{
+                console.log("Hubo un error al actualizar el detalle de la data",error);
+            }
+        )
+    }
 
 
 }

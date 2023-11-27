@@ -1,62 +1,97 @@
 {
-    "orders": [
-      {
-        "id": 1,
-        "idMesa": 1,
-        "fecha": "2023-11-25",
-        "idEstado": 2,
-        "MontoTotal": 170,
-        "detalle_orden": [
-          {
-            "idDetalle": 1,
-            "idOrden": 1,
-            "idPlatillo": "9",
-            "cantidad": 2,
-            "total": 50,
-            "estado":2
+  "orders": [
+    {
+      "id": 1,
+      "idMesa": 1,
+      "fecha": "2023-11-25",
+      "idEstado": 1,
+      "MontoTotal": 170,
+      "detalle_orden": [
+        {
+          "idDetalle": 1,
+          "idOrden": 1,
+          "platillo": {
+            "id": 11,
+            "nombre": "Arroz Con Mariscos"
           },
-          {
-            "idDetalle": 2,
-            "idOrden": 1,
-            "idPlatillo": "10",
-            "cantidad": 1,
-            "total": 20,
-            "estado":2
+          "cantidad": 2,
+          "total": 50,
+          "estado": 1
+        },
+        {
+          "idDetalle": 2,
+          "idOrden": 1,
+          "platillo": {
+            "id": 13,
+            "nombre": "Pescado Frito"
           },
-          {
-            "idDetalle": 3,
-            "idOrden": 1,
-            "idPlatillo": "11",
-            "cantidad": 5,
-            "total": 100,
-            "estado":2
-          }
-        ]
-      },
-      {
-        "id": 2,
-        "idMesa": 2,
-        "fecha": "2023-11-25",
-        "idEstado": 2,
-        "MontoTotal": 80,
-        "detalle_orden": [
-          {
-            "idDetalle": 1,
-            "idOrden": 2,
-            "idPlatillo": "12",
-            "cantidad": 1,
-            "total": 20,
-            "estado":2
+          "cantidad": 1,
+          "total": 20,
+          "estado": 1
+        },
+        {
+          "idDetalle": 3,
+          "idOrden": 1,
+          "platillo": {
+            "id": 12,
+            "nombre": "Arroz Chaufa"
           },
-          {
-            "idDetalle": 2,
-            "idOrden": 2,
-            "idPlatillo": "13",
-            "cantidad": 3,
-            "total": 60,
-            "estado":2
-          }
-        ]
-      }
-    ]
-  }
+          "cantidad": 5,
+          "total": 100,
+          "estado": 1
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "idMesa": 2,
+      "fecha": "2023-11-25",
+      "idEstado": 1,
+      "MontoTotal": 80,
+      "detalle_orden": [
+        {
+          "idDetalle": 1,
+          "idOrden": 2,
+          "platillo": {
+            "id": 13,
+            "nombre": "Pescado Frito"
+          },
+          "cantidad": 1,
+          "total": 20,
+          "estado": 1
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "idMesa": 3,
+      "fecha": "2023-11-26 15:28",
+      "idEstado": 1,
+      "MontoTotal": 0,
+      "detalle_orden": [
+        {
+          "idDetalle": 1,
+          "idOrden": 3,
+          "platillo": {
+            "id": 1,
+            "nombre": "Chilcano"
+          },
+          "cantidad": 1,
+          "total": 0,
+          "estado": 1
+        },
+        {
+          "idDetalle": 1,
+          "idOrden": 3,
+          "platillo": {
+            "id": 2,
+            "nombre": "Arroz con mariscos"
+          },
+          "cantidad": 1,
+          "total": 0,
+          "estado": 1
+        }
+      ]
+    }
+  ]
+}

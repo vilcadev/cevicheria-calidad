@@ -12,8 +12,12 @@ export interface Order {
   export interface DetalleOrden {
     idDetalle: number;
     idOrden: number;
-    idPlatillo: number;
+    platillo: Platillo;
     cantidad: number;
     total: number;
     estado: number;
+  }
+  export interface Platillo{
+    id: number;
+    nombre:string;
   }
