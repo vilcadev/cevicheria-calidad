@@ -43,7 +43,7 @@
               </ng-template>
           </p-toolbar>
           <!-- Boton Nuevo -->
-            <button  (click)="showDialog()" pButton pRipple label="Agregar Platillo" class="p-button-success" style="width: 130px;"></button>
+            <button  (click)="showDialog()" pButton pRipple label="Agregar Platillo" class="p-button-success" style="width: 140px; margin-bottom: 30px;"></button>
 
         <!-- Tabla de patillos registrados -->
           <p-table  #dt [value]="platillos" [columns]="cols" responsiveLayout="scroll" [rows]="10" [globalFilterFields]="['name','country.name','representative.name','status']" [paginator]="true" [rowsPerPageOptions]="[10,20,30]" [showCurrentPageReport]="true" selectionMode="multiple" [rowHover]="true" dataKey="id">
@@ -132,7 +132,7 @@
     </p-dialog>
   </div>
 
-  <p-button routerLink="/duenia" >volver al menu</p-button>
+
 </div>
 
 <div class="overlay" *ngIf="loading">
