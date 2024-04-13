@@ -20,6 +20,7 @@ export class ManageDishesComponent implements OnInit{
 
 async ngOnInit() {
   this.obtenerPlatillos();
+  this.obtenerCategorias();
 }
 
 valSwitch: boolean = false;
@@ -273,5 +274,13 @@ getOneDishetoDelete1(dishe1: Dishes1){
   console.log('producto eliminado, ID:',dishe1.id);
   this.deleteProductDialog= false;
   //Cargamos la lista
+}
+
+//***************************** */
+
+obtenerCategorias(){
+    this.dueniaService.obtenerCategoriaSomee().subscribe((response)=>{
+        console.log(response);
+    })
 }
 }

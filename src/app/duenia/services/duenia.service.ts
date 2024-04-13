@@ -6,7 +6,7 @@ import { Dishes1 } from '../interfaces/dishes.interface';
 
 
 import { HttpClient} from '@angular/common/http';
-import { environment } from 'src/config';
+import { environment, environmentSomee } from 'src/config';
 
 import { Observable, catchError } from 'rxjs';
 import { Platillo } from '../interfaces/platillos.interface';
@@ -20,9 +20,12 @@ export class DueniaService {
   private endpoint1: string ;
   private miapiUrl: string ;
   private miapiUrl2: string ;
+  private endpointSomee: string ;
+
 
   constructor(private http: HttpClient) {
     this.endpoint1 = environment.endPoint
+    this.endpointSomee = environmentSomee.endPoint
     this.miapiUrl = this.endpoint1+"api/Platillo"
     this.miapiUrl2 = this.endpoint1+"api/Menu/"
   }
@@ -84,6 +87,10 @@ export class DueniaService {
     return response;
   }
 
+
+  obtenerCategoriaSomee(){
+    return this.http.get(`${this.endpointSomee}/api/categoria`);
+  }
 
 
 
