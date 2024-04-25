@@ -22,3 +22,9 @@ export interface MenuResponse {
     nombre: string;
     categoriaId: number;
   }
+
+  export interface EMenu{
+    idPlatillo: string;
+    nombre: string;
+    precioUnitario: number;
+  }

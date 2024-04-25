@@ -21,3 +21,26 @@ export interface Order {
     id: number;
     nombre:string;
   }
+
+
+  export interface OrdenRequest {
+    fecha:    string;
+    mesaId: string;
+    observacion: string;
+    orden: PlatilloRequest[];
+}
+
+export interface PlatilloRequest {
+    idPlatillo:     string;
+    cantidad: number;
+    precioTotal: number;
+}
+
+export interface EPlatilloM {
+    idPlatillo:     string;
+    nombre: string;
+    cantidad: number;
+    precioUnitario: number;
+    precioTotal: number;
+}
+

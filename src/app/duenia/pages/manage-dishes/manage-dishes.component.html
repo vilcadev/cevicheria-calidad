@@ -4,34 +4,51 @@
 <!-- <main-menu></main-menu> -->
 <div class="card flex justify-content-center">
 
-  <p-dialog header="Agregar Platillo" [(visible)]="visible" [style]="{width: '450px'}" [modal]="true" class="p-fluid">
+  <p-dialog header="Agregar Platillo" [(visible)]="visible" [style]="{width: '500px'}" [modal]="true" class="p-fluid" (onHide)="resetFormPlatillo()">
     <!-- Modal Agregar Platillo -->
-    <form (ngSubmit)="agregarPlatillo()">
-      <label for="nombre">Nombre del plato:</label>
-      <input pInputText  required autofocus type="text" id="nombrePlatillo" [(ngModel)]="miPlatillo.nombre" name="nombre" >
-
-    <div class="field">
-      <label class="mb-3">Categoria</label>
+    <form [formGroup]="form" (ngSubmit)="agregarProductoSomme()">
+      <!-- <input pInputText  required autofocus type="text" id="nombrePlatillo" [(ngModel)]="miPlatillo.nombre" name="nombre" > -->
       <div class="formgrid grid">
-          <div class="field-radiobutton col-6">
-              <p-radioButton id="categoriaID" name="id" value="1" [(ngModel)]="miPlatillo.categoria.id" required></p-radioButton>
-              <label for="category1">Mariscos</label>
-          </div>
-          <div class="field-radiobutton col-6">
-              <p-radioButton id="categoriaID" name="id" value="2" [(ngModel)]="miPlatillo.categoria.id" required></p-radioButton>
-              <label for="category2">Jaleas</label>
-          </div>
-          <div class="field-radiobutton col-6">
-              <p-radioButton id="categoriaID" name="id" value="3" [(ngModel)]="miPlatillo.categoria.id" required></p-radioButton>
-              <label for="category3">Sopas</label>
-          </div>
+        <div class="field col">
+      <label >Nombre:</label>
 
+            <input pInputText  type="text"  formControlName="nombrePlatillo" placeholder="Ingrese nombre del platillo" style="width: 100%;">
+            <small *ngIf="isRequerido('nombrePlatillo')" id="username-help" class="p-error">El nombre del platillo es requerido</small>
+        </div>
+        <div class="field col">
+      <label >Categoria:</label>
+
+            <p-dropdown [options]="listaCategorias" formControlName="categoriaPlatillo"
+             placeholder="Selecciona una categoria" [style]="{width:'220px'}"></p-dropdown>
+            <small *ngIf="isRequerido('categoriaPlatillo')" id="username-help" class="p-error">El nombre de la categoria es requerido</small>
+        </div>
       </div>
+
+
+
+
+  <div>
+    <label >Imagen:</label>
+
+    <ngx-dropzone (change)="onSelect($event)" accept="image/jpeg,image/jpg,image/png" [disableClick]="disableZone" >
+        <ngx-dropzone-label>Sube una imagen</ngx-dropzone-label>
+        <ngx-dropzone-preview *ngFor="let f of files" [removable]="true" (removed)="onRemove(f)">
+          <ngx-dropzone-label>{{ f.name }} ({{ f.type }})</ngx-dropzone-label>
+        </ngx-dropzone-preview>
+      </ngx-dropzone>
   </div>
+
+  <div style="padding: 5vh;">
+    <ngx-dropzone-image-preview ngProjectAs="ngx-dropzone-preview" *ngFor="let f of files" [file]="f">
+    </ngx-dropzone-image-preview>
+  </div>
+
       <button pButton pRipple type="submit" label="Agregar Plato" class="p-button-raised p-button-success"></button>
     </form>
   </p-dialog>
 </div>
+
+
 
 <div class="grid" >
   <div class="col-12" >
@@ -46,7 +63,7 @@
             <button  (click)="showDialog()" pButton pRipple label="Agregar Platillo" class="p-button-success" style="width: 140px; margin-bottom: 30px;"></button>
 
         <!-- Tabla de patillos registrados -->
-          <p-table  #dt [value]="platillos" [columns]="cols" responsiveLayout="scroll" [rows]="10" [globalFilterFields]="['name','country.name','representative.name','status']" [paginator]="true" [rowsPerPageOptions]="[10,20,30]" [showCurrentPageReport]="true" selectionMode="multiple" [rowHover]="true" dataKey="id">
+          <p-table  #dt [value]="listaPlatillosSomme" [columns]="cols" responsiveLayout="scroll" [rows]="10" [globalFilterFields]="['name','country.name','representative.name','status']" [paginator]="true" [rowsPerPageOptions]="[10,20,30]" [showCurrentPageReport]="true" selectionMode="multiple" [rowHover]="true" dataKey="id">
               <ng-template pTemplate="caption">
                   <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
                       <h5 class="m-0">Platillos</h5>
@@ -62,17 +79,17 @@
               <ng-template pTemplate="body" let-platillo>
                   <tr>
                       <td >
-                          <span class="p-column-title">Name</span>
-                          {{ platillo.nombre }}
+                          <span class="p-column-title">Nombre</span>
+                          {{ platillo.nombre}}
                       </td>
                      <td >
-                          <span class="p-column-title">Category</span>
-                          {{platillo.categoria.nombre}}
+                          <span class="p-column-title">Categoria</span>
+                          {{platillo.nombreCategoria}}
                       </td>
                       <td>
                           <div class="flex">
-                              <button pButton pRipple type="button" icon="pi pi-pencil" class="p-button-rounded p-button-info mr-2"(click)="cargarPlatillo(platillo)"></button>
-                              <button pButton pRipple type="button" icon="pi pi-trash" class="p-button-rounded p-button-danger"(click)="cargarIDBorrar(platillo)"></button>
+                              <button pButton pRipple type="button" icon="pi pi-pencil" class="p-button-rounded p-button-info mr-2"(click)="cargarPlatilloSomee(platillo)"></button>
+                              <button pButton pRipple type="button" icon="pi pi-trash" class="p-button-rounded p-button-danger"(click)="eliminarPlatilloSomee(platillo.idPlatillo)"></button>
                           </div>
                       </td>
                   </tr>
@@ -81,42 +98,50 @@
       </div>
 
       <!-- Modal Editar Platillo -->
-      <p-dialog [(visible)]="productDialog" [style]="{width: '450px'}" header="Editar Platillo" [modal]="true" class="p-fluid">
-          <ng-template pTemplate="content">
+      <p-dialog [(visible)]="productDialog" [style]="{width: '450px'}" header="Editar Platillo" [modal]="true" class="p-fluid" (onHide)="resetFormPlatillo()" >
+        <form [formGroup]="form" (ngSubmit)="editarPlatilloSomee()">
+            <!-- <input pInputText  required autofocus type="text" id="nombrePlatillo" [(ngModel)]="miPlatillo.nombre" name="nombre" > -->
+            <div class="formgrid grid">
+              <div class="field col">
+            <label >Nombre:</label>
 
-            <div class="field">
-              <label for="name">Name</label>
-              <input type="text" pInputText id="name" [(ngModel)]="loadPlatillo.nombre" required autofocus [ngClass]="{'ng-invalid ng-dirty' : submitted && !selectedPlato.nombre}" name="
-              nombre"/>
-              <small class="ng-dirty ng-invalid" *ngIf="!loadPlatillo.nombre">Name is required.</small>
-          </div>
-
-
-
-          <div class="field">
-              <label class="mb-3">Categoria</label>
-              <div class="formgrid grid">
-                  <div class="field-radiobutton col-6">
-                      <p-radioButton id="category1" name="category" value="1" [(ngModel)]="loadPlatillo.categoria.id"></p-radioButton>
-                      <label for="category1">Mariscos</label>
-                  </div>
-                  <div class="field-radiobutton col-6">
-                      <p-radioButton id="category2" name="category" value="2" [(ngModel)]="loadPlatillo.categoria.id"></p-radioButton>
-                      <label for="category2">Jaleas</label>
-                  </div>
-                  <div class="field-radiobutton col-6">
-                      <p-radioButton id="category3" name="category" value="3" [(ngModel)]="loadPlatillo.categoria.id"></p-radioButton>
-                      <label for="category3">Sopas</label>
-                  </div>
+                  <input pInputText  type="text"  formControlName="nombrePlatillo" placeholder="Ingrese nombre del platillo" style="width: 100%;">
+                  <small *ngIf="isRequerido('nombrePlatillo')" id="username-help" class="p-error">El nombre del platillo es requerido</small>
               </div>
-          </div>
-          </ng-template>
+              <div class="field col">
+            <label >Categoria:</label>
+
+                  <p-dropdown [options]="listaCategorias" formControlName="categoriaPlatillo"
+                   placeholder="Selecciona una categoria" [style]="{width:'220px'}" ></p-dropdown>
+                  <small *ngIf="isRequerido('categoriaPlatillo')" id="username-help" class="p-error">El nombre de la categoria es requerido</small>
+              </div>
+            </div>
+        <div>
+          <label >Imagen:</label>
+
+          <ngx-dropzone (change)="onSelect($event)" accept="image/jpeg,image/jpg,image/png" [disableClick]="disableZone" >
+              <ngx-dropzone-label>Sube una imagen</ngx-dropzone-label>
+              <ngx-dropzone-preview *ngFor="let f of files" [removable]="true" (removed)="onRemove(f)">
+                <ngx-dropzone-label>{{ f.name }} ({{ f.type }})</ngx-dropzone-label>
+              </ngx-dropzone-preview>
+            </ngx-dropzone>
+        </div>
+
+        <div style="padding: 5vh;">
+          <ngx-dropzone-image-preview ngProjectAs="ngx-dropzone-preview" *ngFor="let f of files" [file]="f">
+          </ngx-dropzone-image-preview>
+        </div>
 
 
-          <ng-template pTemplate="footer">
+
+        <div class="flex">
             <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text" (click)="this.productDialog =false"></button>
-            <button pButton pRipple label="Guardar" icon="pi pi-check" class="p-button-text" (click)="actualizarPlatillo(loadPlatillo)"></button>
-        </ng-template>
+            <button pButton pRipple label="Guardar" icon="pi pi-check" class="p-button-text"type="submit"></button>
+        </div>
+
+
+
+    </form>
       </p-dialog>
 
        <!-- Modal Eliminar Platillo -->

@@ -8,8 +8,11 @@ import { Dishes1 } from '../interfaces/dishes.interface';
 import { HttpClient} from '@angular/common/http';
 import { environment, environmentSomee } from 'src/config';
 
-import { Observable, catchError } from 'rxjs';
-import { Platillo } from '../interfaces/platillos.interface';
+import { Observable, catchError, map, throwError } from 'rxjs';
+import { EPlatillo, Platillo } from '../interfaces/platillos.interface';
+import { Categoria } from '../interfaces/categoria.interface';
+import Swal from 'sweetalert2';
+import { Menu, MenuRequest } from '../interfaces/menu.interface';
 // import { createClient } from '@supabase/supabase-js';
 
 @Injectable({
@@ -86,10 +89,57 @@ export class DueniaService {
     const response = this.http.post(`${this.miapiUrl2}addMenuDetalle`,data, { responseType: 'text' });
     return response;
   }
+// *******************************************************************************
+
+  obtenerCategoriaSomee():Observable<Categoria[]>{
+    return this.http.get<Categoria[]>(`${this.endpointSomee}/api/categoria`);
+  }
+
+  obtenerPlatillosSommee():Observable<EPlatillo[]>{
+    return this.http.get<EPlatillo[]>(`${this.endpointSomee}/api/platillo`);
+  }
+
+  agregarPlatillosSommee(platillo:FormData):Observable<any>{
+    return this.http.post<any>(`${this.endpointSomee}/api/platillo`,platillo).pipe(
+        catchError(error => {
+            Swal.fire('Error al agregar el platillo',error, 'warning');
+            return throwError(() => error);
+        })
+    );
+  }
+
+  actualizarPlatilloSommee(platillo:FormData,platilloId:string):Observable<any>{
+    return this.http.put<any>(`${this.endpointSomee}/api/platillo/${platilloId}`,platillo).pipe(
+        map(response => response.response.isSuccess),
+        catchError(error => {
+          Swal.fire('Error', error, 'warning');
+          throw error;
+        })
+      );
+  }
+
+  eliminarPlatilloSommee(platilloId:string):Observable<any>{
+    return this.http.delete<any>(`${this.endpointSomee}/api/platillo/${platilloId}`).pipe(
+        map(response => response.response.isSuccess),
+        catchError(error => {
+          Swal.fire('Error', error, 'warning');
+          throw error;
+        })
+      );
+  }
 
 
-  obtenerCategoriaSomee(){
-    return this.http.get(`${this.endpointSomee}/api/categoria`);
+  obtenerMenu(fecha:string):Observable<Menu[]>{
+    return this.http.get<Menu[]>(`${this.endpointSomee}/api/Menu?fecha=${fecha}`);
+  }
+
+  agregarMenuSommee(menuRequest:MenuRequest):Observable<any>{
+    return this.http.post<any>(`${this.endpointSomee}/api/Menu`,menuRequest).pipe(
+        catchError(error => {
+            Swal.fire('Ya existe un menú registrado para esta fecha',error, 'warning');
+            return throwError(() => error);
+        })
+    );
   }
 
 

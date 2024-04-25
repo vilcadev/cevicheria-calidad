@@ -1,98 +1,303 @@
+<div class="grid">
+    <div class="col-12 xl:col-7" style="padding-right: 0;">
+        <div class="card " style="height: calc(1000px); border-radius: 0;">
 
 
+            <!-- <p-toolbar styleClass="mb-4" >
+                <ng-template pTemplate="left">
+                    <h1 style="color: black;">Registrar Orden</h1>
+                </ng-template>
+            </p-toolbar> -->
 
-<div class="col-12">
-    <div class="card card-w-title flex flex-wrap">
-        <div class="col-12 md:col-8 h-full w-full">
+            <div *ngIf="mesaObj">
+                <!-- <p-tabMenu styleClass="mb-5" [model]="routeItems" ></p-tabMenu> -->
 
-          <p-toolbar styleClass="mb-4" >
-              <ng-template pTemplate="left">
-                  <h1 style="color: black;">Registrar Orden</h1>
-              </ng-template>
-          </p-toolbar>
-            <p-tabMenu styleClass="mb-5" [model]="routeItems" ></p-tabMenu>
+                <!-- <span class="p-buttonset">
+                    <button pButton pRipple label="Buscar Menú del Día" icon="pi pi-search" (click)="showDialog()"></button>
+                    <button pButton pRipple label="{{mesaObj.nombreMesa| uppercase}}" icon="" style="cursor:default"></button>
+                </span>
+                <hr> -->
+                <div class="grid">
 
-            <span class="p-buttonset">
-				<button pButton pRipple label="Buscar Menú del Día" icon="pi pi-search" (click)="showDialog()"></button>
-				<button pButton pRipple label="{{mesaNombre | uppercase}}" icon="" style="cursor:default"></button>
-			</span>
-            <hr>
+                    <div>
+                        <h4>{{ mesaObj.nombreMesa }}</h4>
+                    </div>
 
-            <!-- Tabla de patillos registrados -->
-          <p-table #dt [value]="platosList" [columns]="cols" responsiveLayout="scroll" [rows]="10" [globalFilterFields]="['name','country.name','representative.name','status']" [paginator]="true" [rowsPerPageOptions]="[10,20,30]" [showCurrentPageReport]="true" selectionMode="multiple" [rowHover]="true" dataKey="id" let i = index>
-            <ng-template pTemplate="caption">
-                <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
-                    <h5 class="m-0">Platillos</h5>
                 </div>
-            </ng-template>
-            <ng-template pTemplate="header">
-                <tr>
-                    <th>Nombre <p-sortIcon field="name"></p-sortIcon></th>
-                    <th>Cantidad <p-sortIcon field="category"></p-sortIcon></th>
-                    <th>Precio Unitario <p-sortIcon field="category"></p-sortIcon></th>
-                    <th>Acciones<p-sortIcon field="category"></p-sortIcon></th>
-                    <!-- <th>Status <p-sortIcon field="inventoryStatus"></p-sortIcon></th> -->
 
-                </tr>
-            </ng-template>
-            <ng-template pTemplate="body" let-dishe>
-                <tr>
-                    <td >
-                        <span class="p-column-title">Nombre</span>
-                        {{dishe.nombre}}
-                    </td>
-                    <td>
-                        <div class="flex">
+                <div style="flex: 1 1 0% !important;">
+                    <!-- Tabla de patillos registrados -->
+                    <p-table #dt [value]="platillosList" [columns]="cols" responsiveLayout="scroll" [rows]="10"
+                        [globalFilterFields]="['name','country.name','representative.name','status']"
+                        [showCurrentPageReport]="true" selectionMode="multiple" [rowHover]="true" dataKey="id" let
+                        i=index class="p-table-scrollable">
+                        <!-- <ng-template pTemplate="caption">
+                                <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
+                                    <h5 class="m-0">Platillos</h5>
+                                </div>
+                            </ng-template> -->
+                        <ng-template pTemplate="header">
+                            <tr>
+                                <th>Nombre </th>
+                                <th>Cantidad </th>
+                                <th>Precio Unitario </th>
+                                <th>Acciones</th>
+                                <!-- <th>Status <p-sortIcon field="inventoryStatus"></p-sortIcon></th> -->
 
-                            <button pButton pRipple type="button" icon="pi pi-minus" class="p-button-rounded p-button-info mr-2" (click)="disminuirCantidad(dishe)"></button>
-                            <!-- <span class="p-column-title">Categoria</span>
-                        {{dishe.cantidad}} -->
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="body" let-platillo >
+                            <tr>
+                                <td>
+                                    <span class="p-column-title">Nombre</span>
+                                    {{platillo.nombre}}
+                                </td>
+                                <td >
+                                    <div class="flex">
 
-                        <input [(ngModel)]="dishe.cantidad" style="width: 50px; text-align: center;"[value]="dishe.cantidad">
-                            <button pButton pRipple type="button" icon="pi pi-plus" class="p-button-rounded p-button-danger" (click)="aumentarCantidad(dishe)"></button>
+                                        <button pButton pRipple type="button" icon="pi pi-minus"
+                                            class="p-button-rounded  mr-2 buttons-list"
+                                            (click)="restarPlatillo(platillo)"></button>
+                                        <!-- <span class="p-column-title">Categoria</span>
+                            {{dishe.cantidad}} -->
+
+                                        <input [(ngModel)]="platillo.cantidad"
+                                        (keyup.enter)="onEnterKeyPressed(platillo, $event.target.value)"
+                                            style="width: 50px; text-align: center;" >
+
+                                        <button pButton pRipple type="button" icon="pi pi-plus"
+                                            class="p-button-rounded ml-2 buttons-list"
+
+                                            (click)="sumarPlatillo(platillo)"></button>
+                                    </div>
+                                </td>
+                                <td>
+                                    <span class="p-column-title">Precio Unitario</span>
+                                    {{platillo.precioTotal}}
+                                </td>
+
+                                <!-- <td><span class="p-column-title">Status</span>
+                            <span>{{dishe.status}}</span>
+                        </td> -->
+                                <td>
+                                    <button pButton pRipple type="button" icon="pi pi-trash"
+                                        class="p-button-rounded  buttons-list"
+                                        (click)="quitarPlatilloSomee(platillo)"></button>
+                                </td>
+                            </tr>
+                        </ng-template>
+
+
+                    </p-table>
+                </div>
+
+                <div data-v-1dde7998="" data-v-7565b8e2="">
+                    <div data-v-1dde7998="" data-v-7565b8e2=""
+                        class="tw-h-9 tw-flex tw-items-center tw-mb-4 tw-mt-4 tw-px-5 lg:tw-px-8">
+                        <div data-v-1dde7998="" data-v-7565b8e2=""
+                            class="tw-flex tw-items-center tw-flex-1 tw-text-sm tw-font-semibold"></div>
+                        <div data-v-1dde7998="" data-v-7565b8e2=""
+                            class="tw-whitespace-nowrap tw-font-bold tw-text-base"><span data-v-1dde7998=""
+                                data-v-7565b8e2="" class="tw-mr-4 lg:tw-mr-6">Total</span>
+                            S/
+                            {{total}}
                         </div>
-                    </td>
-                    <td >
-                      <span class="p-column-title">Precio Unitario</span>
-                      {{dishe.precio}}
-                  </td>
+                    </div> <!---->
+                    <div  class="tw-relative tw-px-5 lg:tw-px-8 tw-mb-5">
+                        <div  class="tw-flex tw-flex-col tw-mt-4">
+                            <div data-v-1dde7998="" data-v-7565b8e2="" class=""><textarea
+                                    placeholder="Mensaje de impresión para la cocina." rows="2"
+                                    class="tw-block tw-resize-none tw-border-2 tw-border-gray-075 tw-text-base tw-py-3 tw-w-full tw-font-semibold tw-text-gray-700 tw-bg-gray-075 focus:tw-border-black tw-rounded-2xl tw-pl-5 tw-pr-11 p-3 "
+                                    [(ngModel)]="observacion" ></textarea></div>
+                        </div>
+                    </div> <!----> <!---->
+                    <div data-v-1dde7998="" data-v-7565b8e2=""
+                        class="tw-flex xl:tw-mt-4 tw-h-16 tw-mb-0 xl:tw-mb-8 tw-px-0 xl:tw-px-8 tw-gap-0 xl:tw-gap-2 2xl:tw-gap-4">
+                        <div data-v-1dde7998="" data-v-7565b8e2="" class="tw-flex-grow"><button data-v-1dde7998=""
+                                data-v-7565b8e2=""
+                                class="tw-rounded-none xl:tw-rounded-2xl tw-w-full tw-h-full tw-flex tw-items-center tw-justify-center tw-bg-gray-100 hover:tw-bg-gray-200 tw-font-medium tw-py-2.5"
+                                data-dashlane-rid="9debda2b38ff9b99" data-dashlane-label="true"
+                                data-form-type="action"><!----> <img data-v-1dde7998="" data-v-7565b8e2=""
+                                    src="/_nuxt/img/pre-order-icon.8d3be52.svg"
+                                    class="tw-hidden lg:tw-block tw-mr-2.5 2xl:tw-mr-3.5" style="height: 20px;"> <span
+                                    data-v-1dde7998="" data-v-7565b8e2=""
+                                    class="tw-text-lg lg:tw-text-base 2xl:tw-text-lg">Pre - cuenta</span></button></div>
+                        <div data-v-1dde7998="" data-v-7565b8e2="" class="tw-flex-grow"><button data-v-1dde7998=""
+                                data-v-7565b8e2="" split=""
+                                class="tw-rounded-none xl:tw-rounded-l-2xl tw-w-full tw-h-full tw-flex tw-items-center tw-justify-center tw-bg-susii-red-500 hover:tw-bg-susii-red-600 tw-text-white tw-font-semibold tw-py-2.5"
+                                data-dashlane-rid="b9135939baf3f208" data-dashlane-label="true"
+                                data-form-type="other"><span data-v-1dde7998="" data-v-7565b8e2=""
+                                    class="tw-text-xl"><svg data-v-1dde7998="" data-v-7565b8e2="" aria-hidden="true"
+                                        focusable="false" data-prefix="far" data-icon="print" role="img"
+                                        xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"
+                                        class="tw-hidden lg:tw-block tw-mr-2.5 2xl:tw-mr-3.5 svg-inline--fa fa-print">
+                                        <path data-v-1dde7998="" data-v-7565b8e2="" fill="currentColor"
+                                            d="M111.1 48h254.1L400 81.94V160H448V81.94c0-12.73-5.057-24.94-14.06-33.94l-33.94-33.94C391 5.057 378.8 0 366.1 0H111.1C85.49 0 64.01 21.48 64 47.98l.002 82.28c-.002 0 .002 0 0 0L64 160h48.01L111.1 48zM440 192H72C32.3 192 0 224.3 0 264v112c0 13.25 10.75 24 24 24H80V480c0 17.67 14.33 32 32 32h288c17.67 0 32-14.33 32-32v-80h56c13.25 0 24-10.75 24-24v-112C512 224.3 479.7 192 440 192zM384 464H128v-96h256V464zM464 352h-32c0-17.67-14.33-32-32-32h-288c-17.67 0-32 14.33-32 32h-32V264c0-13.23 10.77-24 24-24h368c13.23 0 24 10.77 24 24V352z"
+                                            class=""></path>
+                                    </svg></span> <span data-v-1dde7998="" data-v-7565b8e2=""
+                                    class="tw-text-lg lg:tw-text-base 2xl:tw-text-lg">Finalizar</span></button></div>
+                        <div data-v-1dde7998="" data-v-7565b8e2="" class="xl:tw--ml-4">
+                            <div data-v-ccada43c="" data-v-1dde7998="" data-v-7565b8e2="">
 
-                    <!-- <td><span class="p-column-title">Status</span>
-                        <span>{{dishe.status}}</span>
-                    </td> -->
-                    <td>
-                         <button pButton pRipple type="button" icon="pi pi-trash" class="p-button-rounded p-button-danger"(click)="eliminarPlato(dishe.id)"></button>
-                    </td>
-                </tr>
-            </ng-template>
+                                <div data-v-ccada43c="" class="tw-relative" style="display: none;">
+                                    <div data-v-ccada43c="" class="arrow"
+                                        style="right: calc(13px); margin-bottom: calc(69px);"></div>
+                                    <div data-v-ccada43c=""
+                                        class="tw-py-2.5 tw-bg-white tw-rounded-xl tw-absolute tw-z-50 tw-bottom-0 tw-right-0 tw-max-h-80 tw-overflow-y-auto scrollbar-custom dropdown-shadow"
+                                        style="margin-bottom: calc(74px);">
+                                        <div data-v-1dde7998="" style="width: 160px;">
+                                            <ul data-v-1dde7998="" class="tw-m-0"><button data-v-1dde7998=""
+                                                    class="tw-w-full tw-text-base tw-flex tw-py-2 tw-px-6 tw-bg-white hover:tw-bg-gray-100 tw-cursor-pointer tw-font-normal tw-whitespace-nowrap">
+                                                    <div data-v-1dde7998=""
+                                                        class="tw-flex-1 tw-text-left tw-capitalize">
+                                                        A4
+                                                    </div> <!---->
+                                                </button><button data-v-1dde7998=""
+                                                    class="tw-w-full tw-text-base tw-flex tw-py-2 tw-px-6 tw-bg-white hover:tw-bg-gray-100 tw-cursor-pointer tw-font-normal tw-whitespace-nowrap">
+                                                    <div data-v-1dde7998=""
+                                                        class="tw-flex-1 tw-text-left tw-capitalize tw-font-bold">
+                                                        ticket
+                                                    </div>
+                                                    <div data-v-1dde7998="" class="tw-text-green-500"><svg
+                                                            data-v-1dde7998="" aria-hidden="true" focusable="false"
+                                                            data-prefix="far" data-icon="check" role="img"
+                                                            xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"
+                                                            class="svg-inline--fa fa-check">
+                                                            <path data-v-1dde7998="" fill="currentColor"
+                                                                d="M440.1 103C450.3 112.4 450.3 127.6 440.1 136.1L176.1 400.1C167.6 410.3 152.4 410.3 143 400.1L7.029 264.1C-2.343 255.6-2.343 240.4 7.029 231C16.4 221.7 31.6 221.7 40.97 231L160 350.1L407 103C416.4 93.66 431.6 93.66 440.1 103V103z"
+                                                                class=""></path>
+                                                        </svg></div>
+                                                </button><button data-v-1dde7998=""
+                                                    class="tw-w-full tw-text-base tw-flex tw-py-2 tw-px-6 tw-bg-white hover:tw-bg-gray-100 tw-cursor-pointer tw-font-normal tw-whitespace-nowrap">
+                                                    <div data-v-1dde7998=""
+                                                        class="tw-flex-1 tw-text-left tw-capitalize">
+                                                        no imprimir
+                                                    </div> <!---->
+                                                </button></ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div data-v-1dde7998="" data-v-7565b8e2="" class="tw-flex-grow"><button data-v-1dde7998=""
+                                data-v-7565b8e2=""
+                                class="tw-rounded-none xl:tw-rounded-2xl tw-w-full tw-h-full tw-font-bold tw-py-2.5 tw-flex tw-items-center tw-justify-center tw-border-2 tw-bg-green-500 hover:tw-bg-green-600 tw-text-white tw-border-green-500 hover:tw-border-green-600"
+                                data-dashlane-rid="26430b073b003516" data-dashlane-label="true"
+                                data-form-type="action" (click)="ordenClick()"><span data-v-1dde7998="" data-v-7565b8e2=""
+                                    class="tw-hidden lg:tw-block tw-text-xl"><svg data-v-1dde7998="" data-v-7565b8e2=""
+                                        aria-hidden="true" focusable="false" data-prefix="far" data-icon="download"
+                                        role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"
+                                        class="tw-mr-2.5 2xl:tw-mr-3.5 svg-inline--fa fa-download">
+                                        <path data-v-1dde7998="" data-v-7565b8e2="" fill="currentColor"
+                                            d="M448 304h-53.5l-48 48H448c8.822 0 16 7.178 16 16V448c0 8.822-7.178 16-16 16H64c-8.822 0-16-7.178-16-16v-80C48 359.2 55.18 352 64 352h101.5l-48-48H64c-35.35 0-64 28.65-64 64V448c0 35.35 28.65 64 64 64h384c35.35 0 64-28.65 64-64v-80C512 332.7 483.3 304 448 304zM432 408c0-13.26-10.75-24-24-24S384 394.7 384 408c0 13.25 10.75 24 24 24S432 421.3 432 408zM239 368.1C243.7 373.7 249.8 376 256 376s12.28-2.344 16.97-7.031l136-136c9.375-9.375 9.375-24.56 0-33.94s-24.56-9.375-33.94 0L280 294.1V24C280 10.75 269.3 0 256 0S232 10.75 232 24v270.1L136.1 199c-9.375-9.375-24.56-9.375-33.94 0s-9.375 24.56 0 33.94L239 368.1z"
+                                            class=""></path>
+                                    </svg></span> <span data-v-1dde7998="" data-v-7565b8e2=""
+                                    class="tw-text-lg lg:tw-text-base 2xl:tw-text-lg">Guardar</span></button></div>
+                    </div>
+                </div>
 
 
-        </p-table>
+                <div>
+                    <span class="p-buttonset">
+                        <button (click)="generarPDF()" pButton pRipple type="button" label="Pre - Cuenta"
+                            class="p-button-raised p-button-secondary" icon="pi pi-print"></button>
+                        <button (click)="guardarOrden()" pButton pRipple type="button" label="Guardar"
+                            class="p-button-raised p-button-success"></button>
+                        <!-- <button (click)="actualizarOrden()" pButton pRipple type="button" label="Aztualizar" class="p-button-raised p-button-success"></button> -->
+                    </span>
+                </div>
+
+            </div>
+
+            <div *ngIf="!mesaObj" style="display: flex;
+                justify-content: center;">
+                <div class="loader"></div>
+            </div>
 
 
 
-            <span class="p-buttonset">
-				<button (click)="generarPDF()" pButton pRipple type="button" label="Pre - Cuenta" class="p-button-raised p-button-secondary" icon="pi pi-print"></button>
-				<button (click)="guardarOrden()" pButton pRipple type="button" label="Guardar" class="p-button-raised p-button-success"></button>
-                <!-- <button (click)="actualizarOrden()" pButton pRipple type="button" label="Aztualizar" class="p-button-raised p-button-success"></button> -->
-			</span>
 
-
+            <!-- <div class="col-12 md:col-4 mt-5 md:mt-0">
+                <router-outlet></router-outlet>
+            </div> -->
         </div>
-        <div class="col-12 md:col-4 mt-5 md:mt-0">
-            <router-outlet></router-outlet>
+    </div>
+
+    <div class="col-12 xl:col-5" style="height: calc(1000px); padding-left: 0;  padding-right: 0;">
+        <div class="card" style="height: calc(1000px); border-radius: 0;">
+            <div data-v-1dde7998="" data-v-7565b8e2=""
+                    class="tw-hidden md:tw-flex tw-h-16 tw-border-t xl:tw-border-t-0 xl:tw-border-b tw-order-last xl:tw-order-none">
+                    <button data-v-1dde7998="" data-v-7565b8e2=""
+                        class="tw-flex-1 tw-flex tw-flex-col tw-items-center tw-justify-center tw-text-lg tw-relative"
+                        data-dashlane-rid="2b68c15658a8af1c" data-form-type="other" data-dashlane-label="true" style="background-color: transparent;" (click)="showPlatillosView()"
+                        [ngClass]="{'tw-bg-red-500': platillosView}">
+                        <div data-v-1dde7998="" data-v-7565b8e2="" class="tw-leading-none tw-mb-0.5"><svg
+                                data-v-1dde7998="" data-v-7565b8e2="" aria-hidden="true" focusable="false"
+                                data-prefix="fal" data-icon="box-open-full" role="img"
+                                xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"
+                                class="svg-inline--fa fa-box-open-full" [style.fill]="platillosView ? '#6366F1' : 'black'">
+                                <path data-v-1dde7998="" data-v-7565b8e2=""
+                                    d="M255.1 32C202.1 32 159.1 74.98 159.1 128C159.1 136.8 152.8 144 143.1 144C135.2 144 127.1 136.8 127.1 128C127.1 57.31 185.3 0 255.1 0C326.7 0 384 57.31 384 128C384 136.8 376.8 144 368 144C359.2 144 352 136.8 352 128C352 74.98 309 32 255.1 32zM320 189.2L559.6 161.5C573.7 159.9 587.2 167.7 592.7 180.7L624.7 255.3C634.6 278.2 621.2 304.4 596.1 310L437.7 346.8C418.8 351.2 399.2 343.7 387.9 327.9L319.1 232.9L252.1 327.9C240.8 343.7 221.2 351.1 202.2 346.8L43.04 310C18.75 304.4 5.447 278.2 15.27 255.3L47.26 180.7C52.84 167.7 66.29 159.9 80.35 161.5L320 189.2zM44.68 267.9C42.72 272.5 45.38 277.7 50.23 278.9L209.4 315.6C215.7 317.1 222.3 314.6 226.1 309.3L291.2 218.1L76.67 193.3L44.68 267.9zM413.9 309.3C417.7 314.6 424.2 317.1 430.6 315.6L589.8 278.9C594.6 277.7 597.3 272.5 595.3 267.9L563.3 193.3L348.8 218.1L413.9 309.3zM576 339.6V410.5C576 432.5 561 451.7 539.6 457.1L331.6 509.1C323.1 511 316 511 308.4 509.1L100.4 457.1C78.99 451.7 63.1 432.5 63.1 410.5V339.6L95.1 348.7V410.5C95.1 417.9 100.1 424.3 108.1 426L303.1 475V336C303.1 327.2 311.2 319.1 319.1 319.1C328.8 319.1 336 327.2 336 336V475L531.9 426C539 424.3 543.1 417.9 543.1 410.5V348.7L576 339.6zM463.2 133.1C460.4 141.4 451.3 145.1 442.9 143.2C434.6 140.4 430 131.3 432.8 122.9L464.8 26.94C467.6 18.56 476.7 14.03 485.1 16.82C493.4 19.62 497.1 28.68 495.2 37.06L463.2 133.1z"
+                                    class=""></path>
+                            </svg></div>
+                        <div data-v-1dde7998="" data-v-7565b8e2="" class="tw-text-sm" [style.color]="platillosView ? '#6366F1' : 'black'" style="font-weight: 700 !important;">
+                            Productos
+                        </div> <!---->
+                    </button> <button data-v-1dde7998="" data-v-7565b8e2=""
+                        class="tw-flex-1 tw-flex tw-flex-col tw-items-center tw-justify-center tw-text-lg tw-relative"
+                        data-dashlane-rid="dc74640d2e4b015c" data-form-type="other" data-dashlane-label="true" style="background-color: transparent;" (click)="showPagosView()"
+                        [ngClass]="{ 'tw-bg-red-500': pagosView}">
+                        <div data-v-1dde7998="" data-v-7565b8e2=""
+                            class="tw-leading-none tw-mb-0.5 tw-text-susii-red-500"><svg data-v-1dde7998=""
+                                data-v-7565b8e2="" aria-hidden="true" focusable="false" data-prefix="fas"
+                                data-icon="money-bill" role="img" xmlns="http://www.w3.org/2000/svg"
+                                viewBox="0 0 576 512" class="svg-inline--fa fa-money-bill" [style.fill]="pagosView ? '#6366F1' : 'black'">
+                                <path data-v-1dde7998="" data-v-7565b8e2=""
+                                    d="M512 64C547.3 64 576 92.65 576 128V384C576 419.3 547.3 448 512 448H64C28.65 448 0 419.3 0 384V128C0 92.65 28.65 64 64 64H512zM128 384C128 348.7 99.35 320 64 320V384H128zM64 192C99.35 192 128 163.3 128 128H64V192zM512 384V320C476.7 320 448 348.7 448 384H512zM512 128H448C448 163.3 476.7 192 512 192V128zM288 352C341 352 384 309 384 256C384 202.1 341 160 288 160C234.1 160 192 202.1 192 256C192 309 234.1 352 288 352z"
+                                    class=""></path>
+                            </svg></div>
+                        <div data-v-1dde7998="" data-v-7565b8e2=""
+                            class="tw-text-sm tw-text-susii-red-500 tw-font-bold" [style.color]="pagosView ? '#6366F1' : 'black'" style="font-weight: 700 !important;">
+                            Pagos
+                        </div>
+                    </button>
+            </div>
+
+                <div *ngIf="!mesaObj" style="display: flex;
+                justify-content: center; margin-top: 10vh;">
+                <div class="loader"></div>
+            </div>
+            <div *ngIf="platillosView && mesaObj" style="height: calc(1000px);">
+
+                <platillos-component (listaPlatillos) = "seleccionarPlatilloSomee($event)"/>
+            </div>
+
+
+
+            <div *ngIf="pagosView" style="height: calc(1000px);">
+                <div class="col-12">
+                    <payment-component />
+                </div>
+            </div>
+
+
+
+
+
+            <!-- <div class="col-12 md:col-4 mt-5 md:mt-0">
+                <router-outlet></router-outlet>
+            </div> -->
         </div>
     </div>
 </div>
 
 
+<!-- Modal Buscar Menú del Día -->
+<p-dialog [(visible)]="menuDialog" header="Menú del Día" [modal]="true" [style]="{width:'950px'}">
 
-    <!-- Modal Buscar Menú del Día -->
-    <p-dialog [(visible)]="menuDialog" header="Menú del Día" [modal]="true" [style]="{width:'950px'}">
-
-        <p-dataView #dv [value]="platos2" [paginator]="true" [rows]="9" filterBy="nombrePlatillo" layout="grid">
-            <ng-template pTemplate="header">
-                <!-- <div class="flex flex-column md:flex-row md:justify-content-between gap-2">
+    <p-dataView #dv [value]="platos2" [paginator]="true" [rows]="9" filterBy="nombrePlatillo" layout="grid">
+        <ng-template pTemplate="header">
+            <!-- <div class="flex flex-column md:flex-row md:justify-content-between gap-2">
                     <span class="p-input-icon-left">
                         <i class="pi pi-search"></i>
                         <input type="search" pInputText placeholder="Buscar Por Nombre" (input)="onFilter(dv, $event)">
@@ -101,16 +306,16 @@
 
 
                 </div> -->
-                 <!-- Añadir si quieres el listItem -->
-                    <!-- <p-dataViewLayoutOptions></p-dataViewLayoutOptions> -->
-                <!-- <div class="flex flex-wrap gap-2" style="padding-top: 15px;">
+            <!-- Añadir si quieres el listItem -->
+            <!-- <p-dataViewLayoutOptions></p-dataViewLayoutOptions> -->
+            <!-- <div class="flex flex-wrap gap-2" style="padding-top: 15px;">
                     <button pButton pRipple type="button" label="Mariscos" class="p-button-outlined p-button-help"></button>
                     <button pButton pRipple type="button" label="Arroces" class="p-button-outlined p-button-help"></button>
                     <button pButton pRipple type="button" label="Jalea" class="p-button-outlined p-button-help"></button>
                 </div> -->
-            </ng-template>
+        </ng-template>
 
-            <!-- <ng-template let-product pTemplate="listItem">
+        <!-- <ng-template let-product pTemplate="listItem">
                 <div class="col-12" style="cursor: pointer;" [routerLink]="['/ruta-de-destino', product.id]">
                     <div class="flex flex-column md:flex-row align-items-center p-3 w-full">
                         <img src="assets/demo/images/product/plato.png" [alt]="product.name" class="my-4 md:my-0 w-9 md:w-10rem  mr-5"/>
@@ -130,38 +335,37 @@
                 </div>
             </ng-template> -->
 
-            <ng-template let-product pTemplate="gridItem">
-                <div class="col-12 md:col-4" style="cursor: pointer;" (click)="seleccionarPlato(product)">
-                    <div class="card m-3 border-1 surface-border">
-                        <div class="flex flex-wrap gap-2 align-items-center justify-content-between mb-2">
+        <ng-template let-product pTemplate="gridItem">
+            <div class="col-12 md:col-4" style="cursor: pointer;" (click)="seleccionarPlato(product)">
+                <div class="card m-3 border-1 surface-border">
+                    <div class="flex flex-wrap gap-2 align-items-center justify-content-between mb-2">
 
-                            <!-- <span [class]="'product-badge status-' + product.inventoryStatus.toLowerCase()">{{product.inventoryStatus}}</span> -->
-                        </div>
-                        <div class="flex flex-column align-items-center text-center mb-3">
-                            <img src="assets/demo/images/product/plato.png" [alt]="product.nombre" class="w-9  my-3 mx-0"/>
-                            <div class="text-2xl font-bold">{{product.nombre}}</div>
-                            <div class="mb-3" [class]="'product-badge status-instock'">{{product.precio}}</div>
-                        </div>
-
+                        <!-- <span [class]="'product-badge status-' + product.inventoryStatus.toLowerCase()">{{product.inventoryStatus}}</span> -->
                     </div>
+                    <div class="flex flex-column align-items-center text-center mb-3">
+                        <img src="assets/demo/images/product/plato.png" [alt]="product.nombre" class="w-9  my-3 mx-0" />
+                        <div class="text-2xl font-bold">{{product.nombre}}</div>
+                        <div class="mb-3" [class]="'product-badge status-instock'">{{product.precio}}</div>
+                    </div>
+
                 </div>
-            </ng-template>
-        </p-dataView>
+            </div>
+        </ng-template>
+    </p-dataView>
 
 
-      <!-- Botón Guardar fuera del área desplazable -->
+    <!-- Botón Guardar fuera del área desplazable -->
     <!-- <div class="fixed-button" style="cursor: pointer;" >
         <i class="pi pi-shopping-bag" style="color: white; font-size: 30px;"></i>
        <span style="color: white;">Productos </span>
     </div> -->
 
-    <button pButton pRipple type="button" [label]="(selectedPlatillos.length | i18nPlural: clientsMap)" class="p-button-success fixed-button" style="width: 100%;" (click)="transferirPlatillos()">
+    <button pButton pRipple type="button" [label]="(selectedPlatillos.length | i18nPlural: clientsMap)"
+        class="p-button-success fixed-button" style="width: 100%;" (click)="transferirPlatillos()">
         <i class="pi pi-shopping-bag" style="color: white; font-size: 30px;"></i>
     </button>
 </p-dialog>
 
 <div class="overlay" *ngIf="loading">
     <div class="loader"></div>
-  </div>
-
-
+</div>

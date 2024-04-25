@@ -14,7 +14,7 @@ import { DueniaRoutingModule } from './duenia-routing.module';
 import { ToastModule } from 'primeng/toast';
 import { ToolbarModule } from 'primeng/toolbar';
 import { DropdownModule } from 'primeng/dropdown';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { MainMenuComponent } from './pages/main-menu/main-menu.component';
 import { InputSwitchModule } from 'primeng/inputswitch';
@@ -26,6 +26,7 @@ import { ChartModule } from 'primeng/chart';
 import { SalesComponent } from './pages/sales/sales.component';
 import { AutoCompleteModule } from 'primeng/autocomplete';
 import { CalendarModule } from 'primeng/calendar';
+import { NgxDropzoneModule } from 'ngx-dropzone';
 
 @NgModule({
     declarations:[
@@ -53,7 +54,9 @@ import { CalendarModule } from 'primeng/calendar';
 
       DueniaRoutingModule,
       FormsModule,
-      SidebarModule
+      ReactiveFormsModule,
+      SidebarModule,
+      NgxDropzoneModule
     ],
     providers:[MessageService],
     exports:[

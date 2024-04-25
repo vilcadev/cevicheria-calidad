@@ -8,4 +8,17 @@ export interface Platillo {
       nombre: string;
     };
     precio?: number; // Agregar propiedad precio opcional
-  }
+}
+
+
+
+
+
+    export interface EPlatillo {
+    idPlatillo:      string;
+    nombre:          string;
+    categoriaId:     string;
+    nombreCategoria: string;
+}
+
+

@@ -6,10 +6,13 @@ import * as pdfMake from 'pdfmake/build/pdfMake';
 import * as pdfFonts from 'pdfmake/build/vfs_fonts';
 import { DatePipe } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-import { environment, environmentJson } from 'src/config';
-import { Order } from '../interfaces/order.interface';
-import { Observable } from 'rxjs';
+import { environment, environmentJson, environmentSomee } from 'src/config';
+import { OrdenRequest, Order } from '../interfaces/order.interface';
+import { Observable, catchError, throwError } from 'rxjs';
 import { DetallesH, OrderH } from '../interfaces/orderH.interface';
+import { EMesa } from '../interfaces/mesa.interface';
+import { EMenu } from '../interfaces/menuI.interface';
+import Swal from 'sweetalert2';
 
 (pdfMake as any).vfs = pdfFonts.pdfMake.vfs;
 
@@ -22,6 +25,8 @@ export class MeseraService {
     private miapiUrl: string ;
 
     private miapiUrlOrden: string ;
+
+    private endpointSomee: string ;
 
 
     // ****** Environment JSON **
@@ -36,6 +41,7 @@ export class MeseraService {
     )
     {
      this.endpoint = environment.endPoint
+     this.endpointSomee = environmentSomee.endPoint
      this.miapiUrl = this.endpoint+"api/Menu/"
      this.miapiUrlOrden = this.endpoint+"api/Orden/"
 
@@ -80,10 +86,6 @@ export class MeseraService {
         const response = this.http.patch(`${this.miapiUrlOrden}addDetalle/${idOrden}`,data);
         return response;
     }
-
-
-
-
     //Funcionalidad generar PDF Angular:
     generatePDF( mesaNombre: string, lista: any){
 
@@ -161,5 +163,34 @@ export class MeseraService {
 
 
     }
+
+
+    //****************************************************
+    obtenerMesasSomee():Observable<EMesa[]>{
+        return this.http.get<EMesa[]>(`${this.endpointSomee}/api/Mesa`);
+    }
+
+    obtenerMesaInfoSomee(idMesa: string):Observable<EMesa>{
+        return this.http.get<EMesa>(`${this.endpointSomee}/api/Mesa/GetInfoMesa?idMesa=${idMesa}`);
+    }
+
+
+    obtenerMenuSomee(fecha: string):Observable<EMenu[]>{
+        return this.http.get<EMenu[]>(`${this.endpointSomee}/api/Menu?fecha=${fecha}`);
+    }
+
+    agregarOrdenSomee(orden:OrdenRequest):Observable<any>{
+        return this.http.post<any>(`${this.endpointSomee}/api/orden`,orden).pipe(
+            catchError(error => {
+                Swal.fire('Error al agregar la orden',error, 'warning');
+                return throwError(() => error);
+            })
+        );
+    }
+
+
+
+
+
 
 }

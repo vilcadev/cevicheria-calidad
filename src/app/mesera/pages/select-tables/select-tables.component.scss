@@ -61,3 +61,125 @@
       transform: rotate(360deg);
     }
   }
+
+
+//   ** Mesas Estilo
+
+.tw-clear-both {
+    clear: both !important;
+}
+.tw-flex-wrap {
+    flex-wrap: wrap !important;
+}
+
+.tw-flex {
+    display: flex !important;
+}
+
+
+.md\:tw-w-1\/3 {
+    width: 33.333333% !important;
+}
+.sm\:tw-w-1\/2 {
+    width: 50% !important;
+}
+.xl\:tw-w-1\/4 {
+    width: 25% !important;
+}
+
+.tw-px-2 {
+    padding-left: .5rem !important;
+    padding-right: .5rem !important;
+}
+.tw-mb-10 {
+    margin-bottom: 2.5rem !important;
+}
+
+.tw-justify-center {
+    justify-content: center !important;
+}
+
+.tw-items-center {
+    align-items: center !important;
+}
+
+.tw-w-60 {
+    width: 15rem !important;
+}
+
+.tw-relative {
+    position: relative !important;
+}
+
+.tw-px-8 {
+    padding-left: 2rem !important;
+    padding-right: 2rem !important;
+}
+
+.tw-py-4 {
+    padding-top: 1rem !important;
+    padding-bottom: 1rem !important;
+}
+
+.tw-h-56 {
+    height: 14rem !important;
+}
+
+.tw-justify-center {
+    justify-content: center !important;
+}
+
+.tw-flex-col {
+    flex-direction: column !important;
+}
+
+.tw-flex {
+    display: flex !important;
+}
+
+.tw-cursor-pointer {
+    cursor: pointer !important;
+}
+
+.tw-border-2 {
+    border-width: 2px !important;
+}
+
+.tw-rounded-xl {
+    border-radius: .75rem !important;
+}
+
+.tw-border-gray-200 {
+    --tw-border-opacity: 1 !important;
+    border-color: rgba(228,228,231, 1) !important;
+}
+
+.tw-bg-gray-200 {
+    --tw-bg-opacity: 1 !important;
+    background-color: rgba(228,228,231, 1) !important;
+}
+
+
+.hover\:tw-border-gray-300:hover {
+    --tw-border-opacity: 1 !important;
+    border-color: rgba(212,212,216, 1) !important;
+}
+
+.hover\:tw-bg-gray-300:hover {
+    --tw-bg-opacity: 1 !important;
+    background-color: rgba(212,212,216, 1) !important;
+}
+.table-restaurant-dropdown[data-v-57cabd48] {
+    position: absolute;
+    right: 1px;
+    top: 5px;
+}
+.tw-mb-3 {
+    margin-bottom: .75rem !important;
+}
+.tw-text-lg {
+    font-size: 1.125rem !important;
+}
+.tw-font-bold {
+    font-weight: 700 !important;
+}

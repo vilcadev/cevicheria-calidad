@@ -13,7 +13,6 @@ import { OrderListModule } from 'primeng/orderlist';
 import { TabMenuModule } from 'primeng/tabmenu';
 import { StepsModule } from 'primeng/steps';
 import { RegisterOrderComponent } from './pages/register-order/register-order.component';
-import { PaymentComponent } from './pages/Payment.Component';
 
 import { ToggleButtonModule } from 'primeng/togglebutton';
 import { ButtonModule } from 'primeng/button';
@@ -27,7 +26,10 @@ import { MeseraService } from './services/mesera.service';
 import { ChipsModule } from 'primeng/chips';
 import { DropdownModule } from 'primeng/dropdown';
 import { ToolbarModule } from 'primeng/toolbar';
-
+import { SplitButtonModule } from 'primeng/splitbutton';
+import { PaymentComponentM } from './pages/register-order/payment-component/payment.component';
+import { PlatillosComponentM } from './pages/register-order/platillos-component/platillos.component';
+import { FormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -35,7 +37,8 @@ import { ToolbarModule } from 'primeng/toolbar';
 
     SelectTablesComponent,
     RegisterOrderComponent,
-    PaymentComponent
+    PaymentComponentM,
+    PlatillosComponentM
 
   ],
   imports:[
@@ -55,7 +58,8 @@ import { ToolbarModule } from 'primeng/toolbar';
     ChipsModule,
     DropdownModule,
     ToolbarModule,
-
+    SplitButtonModule,
+    FormsModule
 
   ],
   providers:[  DatePipe,MeseraService]

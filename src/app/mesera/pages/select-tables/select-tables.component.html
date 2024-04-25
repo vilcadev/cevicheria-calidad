@@ -1,7 +1,4 @@
-
-
-
-<div class="grid">
+<!-- <div class="grid">
 	<div class="col-12">
 		<div class="card">
 
@@ -17,11 +14,10 @@
 						<div class="card m-3 border-1 surface-border" [ngClass]="estadoMesa(mesa)">
 							<div class="flex flex-wrap gap-2 align-items-center justify-content-between mb-2">
 
-								<!-- <span [class]="'product-badge status-' + product.inventoryStatus.toLowerCase()">{{product.inventoryStatus}}</span> -->
+
 							</div>
 							<div class="flex flex-column align-items-center text-center mb-3">
                                 <span style="margin-left: 14rem;" (click)="cancelarOrden(mesa)"><i class="fa-solid fa-ban fa-2xl"></i></span>
-								<!-- <img [src]="'assets/demo/images/product/' + product.image" [alt]="product.name" class="w-9 shadow-2 my-3 mx-0"/> -->
 								<div class="text-2xl font-bold">{{mesa}}</div>
 								<div class="mb-3">{{mesa}}</div>
 								<p-rating [ngModel]="mesa.rating" [readonly]="true" [cancel]="false"></p-rating>
@@ -33,22 +29,52 @@
 			</p-dataView>
 		</div>
 	</div>
+</div> -->
+
+<div style="padding: 3.5rem;">
+    <div data-v-57cabd48="" class="tw-flex tw-flex-wrap tw-clear-both">
+
+        <div *ngFor="let mesa of listaMesas" data-v-d883c1f2="" data-v-57cabd48=""
+            class="tw-w-full sm:tw-w-1/2 md:tw-w-1/3 xl:tw-w-1/4 tw-px-2 tw-flex tw-items-center tw-justify-center tw-mb-10 restaurant-table"  >
+            <div data-v-d883c1f2=""
+                class="table-content-container tw-w-60 tw-h-56 tw-rounded-xl tw-cursor-pointer tw-relative tw-bg-gray-200 hover:tw-bg-gray-300 tw-border-2 tw-border-gray-200 hover:tw-border-gray-300 tw-flex tw-flex-col tw-justify-center tw-py-4 tw-px-8" (click)="redirectToOrderPage(mesa.idMesa)">
+                <div data-v-57cabd48="" class="dropdown b-dropdown table-restaurant-dropdown btn-group" data-v-d883c1f2=""
+                    id="__BVID__863"><p-splitButton  [model]="items" styleClass="p-button-info" (click)="$event.stopPropagation();"></p-splitButton >
+                </div>
+                <div data-v-d883c1f2="" class="tw-text-lg tw-font-bold tw-mb-3 tw-line-clamp-2">{{ mesa.nombreMesa }}</div>
+                <div data-v-d883c1f2="" class="tw-text-xs tw-mb-2"><strong data-v-d883c1f2="">Cliente:</strong> <span
+                        data-v-d883c1f2="" class="tw-line-clamp-1"></span></div>
+                <div data-v-d883c1f2="" class="tw-text-xs tw-mb-3.5"><strong data-v-d883c1f2="">Inicio:</strong> </div>
+                <div data-v-d883c1f2="" class="tw-text-xs tw-mb-3.5"><strong data-v-d883c1f2="">N° personas:</strong> </div>
+                <div data-v-d883c1f2="" style="position: absolute; right: 10px; bottom: 0px;">
+                    <div data-v-d883c1f2="" class="tw-text-xs tw-mb-3.5"></div>
+                </div>
+                <div data-v-d883c1f2="">
+                    <div data-v-d883c1f2=""
+                        class="table-badge tw-bg-black rounded text-white tw-px-2 tw-py-1 tw-inline-block tw-text-xs">
+                        Vacío
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
-<!-- MODAL TERMINAR ORDEN -->
+
+
 <p-dialog [(visible)]="finishOrder" header="Eliminar PLatillo" [modal]="true" [style]="{width:'450px'}">
     <div class="flex align-items-center justify-content-center">
         <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
         <span>Desea cancelar la Orden?</span>
     </div>
     <ng-template pTemplate="footer">
-        <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No" (click)="finishOrder = false"></button>
-        <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Si"  (click)="deleteOrderForMesa(selectedTable)"></button>
+        <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No"
+            (click)="finishOrder = false"></button>
+        <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Si"
+            (click)="deleteOrderForMesa(selectedTable)"></button>
     </ng-template>
 </p-dialog>
 
 <div class="overlay" *ngIf="loading">
     <div class="loader"></div>
-  </div>
-
-
+</div>

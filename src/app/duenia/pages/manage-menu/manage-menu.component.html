@@ -14,7 +14,7 @@
                 <div style="width: 25rem;">
                     <h5>Platillos</h5>
                     <div style="width: 100%; margin-bottom: 5rem;">
-                    <p-autoComplete [(ngModel)]="selectedDisheAdvanced" [suggestions]="filteredDishes" (completeMethod)="filterDishes($event)" field="nombre" [dropdown]="true"  (onSelect)="onDishSelect($event)" class="width-autocomplete">
+                    <p-autoComplete [(ngModel)]="selectedDisheAdvanced" [suggestions]="filteredDishes" (completeMethod)="filterDishes($event)" field="nombre" [dropdown]="true"  (onSelect)="onDishSelect(selectedDisheAdvanced)" class="width-autocomplete">
                     </p-autoComplete>
                     </div>
                 </div>
@@ -43,7 +43,7 @@
                 </div>
             </ng-template>
             <ng-template pTemplate="header">
-                <tr>
+                <tr >
                     <th>Nombre</th>
                     <th>Precio</th>
                     <th>Acciones<p-sortIcon field="category"></p-sortIcon></th>
@@ -60,13 +60,14 @@
                         {{platillo.categoria.nombre}}
                     </td> -->
                     <td>
-                        <input type="number" [(ngModel)]="platillo.precio" pInputText placeholder="Precio">
+                        <input type="number" [(ngModel)]="platillo.precioUnitario" pInputText placeholder="Precio"
+                        [ngClass]="{'exceed-stock': validacionRealizada && !platillo.precioUnitario}">
                     </td>
                     <td>
                         <div class="flex">
                             <!-- <button pButton pRipple type="button" icon="pi pi-pencil" class="p-button-rounded p-button-info mr-2"(click)="cargarPlatillo(platillo)"></button>
                             <button pButton pRipple type="button" icon="pi pi-trash" class="p-button-rounded p-button-danger"(click)="cargarIDBorrar(platillo)"></button> -->
-                            <button pButton pRipple type="button" icon="pi pi-times" class="p-button-rounded p-button-danger" (click)="quitarPlatillo(platillo.id)"></button>
+                            <button pButton pRipple type="button" icon="pi pi-times" class="p-button-rounded p-button-danger" (click)="quitarPlatillo(platillo.idPlatillo)"></button>
                         </div>
                     </td>
                 </tr>

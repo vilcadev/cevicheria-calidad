@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { DueniaService } from '../../services/duenia.service';
 import { map } from 'rxjs';
-import { Platillo } from '../../interfaces/platillos.interface';
+import { EPlatillo, Platillo } from '../../interfaces/platillos.interface';
 import { Dishes } from '../../interfaces/dishes.interface';
-import { MenuI } from '../../interfaces/menu.interface';
+import { MenuI, MenuRequest, PlatilloRequest } from '../../interfaces/menu.interface';
 import { format } from 'date-fns';
 import { MessageService } from 'primeng/api';
+import Swal from 'sweetalert2';
 
 
 @Component({
@@ -20,6 +21,7 @@ export class ManageMenuComponent implements OnInit{
 
     ngOnInit(): void {
         this.obtenerPlatillos();
+        this.obtenerPlatillosSomee();
     }
 
     platillos: Platillo[]=[];
@@ -28,12 +30,12 @@ export class ManageMenuComponent implements OnInit{
 
     cols:any;
 
-    tableData:Platillo[]=[];
+    tableData:PlatilloRequest[]=[];
 
     filteredDishes: any[] = [];
 
 
-    selectedDisheAdvanced: Platillo;
+    selectedDisheAdvanced: PlatilloRequest;
 
     // *************
     selectedPlatilloAdvanced: Dishes;
@@ -45,45 +47,70 @@ export class ManageMenuComponent implements OnInit{
     fechaSeleccionada: Date;
 
 
-
+    validacionRealizada: boolean = false;
     guardar(){
+        if(!this.fechaSeleccionada){
+            Swal.fire(`Debe seleccionar un fecha`,'', 'warning');
+            return;
+        }
+        if(this.tableData.length < 1){
+          Swal.fire(`Debe registrar como mínimo un platillo`,'', 'warning');
+          return;
+        }
+
+        if (!this.tableData.every(platillo => platillo.precioUnitario)) {
+            Swal.fire(`Todos los platillos deben tener un precio definido`, '', 'warning');
+            this.validacionRealizada = true;
+            return;
+        }
+
+        Swal.fire('Procesando')
+        Swal.showLoading()
+
         const fechaFormateada: string = format(this.fechaSeleccionada, "yyyy-MM-dd'T'HH:mm:ss.SSSX");
         // Obtén los detalles de los platillos desde tableData y los precios desde la interfaz
-        const detalles: any[] = this.tableData.map((platillo: Platillo) => ({
-            platilloId: platillo.id,
-            precio: platillo.precio,
+
+        // todo: validar que todos los platillos tengan precio
+        const detalles: any[] = this.tableData.map((platillo: PlatilloRequest) => ({
+            idPlatillo: platillo.idPlatillo,
+            precioUnitario: platillo.precioUnitario,
         }))
 
-        const data: MenuI = {
+        const data: MenuRequest = {
             fecha: fechaFormateada, // Puedes ajustar esto según sea necesario
-            detalles: detalles,
+            platillo: detalles,
           };
 
-        console.log({data})
-
-        this.dueniaService.agregarMenu(data).subscribe(
-            response =>{
-                console.log('Menú agregado correctamente:', response);
-                this.messageService.add({ severity: 'success', summary: 'Agregado', detail: 'Menú Creado', life: 3000 });
-            },
-            error =>{
-                console.error('Error al agregar el menú:', error);
-            }
-        )
+          this.dueniaService.agregarMenuSommee(data).subscribe(
+            (response) => {
+              if (response.response.isSuccess) {
+                Swal.close();
+                Swal.fire(response.response.isSuccess,'', 'success');
+                this.selectedDisheAdvanced=null;
+                this.fechaSeleccionada = null;
+                this.tableData=[];
+                this.obtenerPlatillosSomee();
+                return;
+              }
+            });
 
     }
 
 
 
 
-    onDishSelect(event: any) {
-        // event es el objeto seleccionado, puedes acceder a sus propiedades según sea necesario
-        // aquí estás asignando el objeto seleccionado a tableData como un arreglo
-        console.log('tableData antes de la asignación:', this.selectedDisheAdvanced);
-        // Asignar datos estáticos para probar
-        this.tableData.push(this.selectedDisheAdvanced);
+    onDishSelect(platillo: any) {
+        const platilloExistente = this.tableData.find(item => item.idPlatillo === platillo.idPlatillo);
 
-        console.log('tableData después de la asignación:', this.tableData);
+        // Si no existe, agregar el platillo a tableData
+        if (!platilloExistente) {
+        this.tableData.push(platillo);
+        return;
+        }
+        else{
+            Swal.fire(`El platillo ya se encuentra en la lista`,'', 'warning');
+
+        }
       }
 
 
@@ -93,7 +120,6 @@ export class ManageMenuComponent implements OnInit{
         ).subscribe({
           next: (data) => {
             this.platillos = data; // Asigna la lista completa de platillos
-            console.log(this.platillos);
           },
           error: (e) => {
             console.error('Error al obtener platillos:', e);
@@ -104,8 +130,8 @@ export class ManageMenuComponent implements OnInit{
       filterDishes(event: any) {
         const filtered: any[] = [];
         const query = event.query;
-        for (let i = 0; i < this.platillos.length; i++) {
-            const platillo = this.platillos[i];
+        for (let i = 0; i < this.listaPlatillosSomme.length; i++) {
+            const platillo = this.listaPlatillosSomme[i];
             if (platillo.nombre.toLowerCase().indexOf(query.toLowerCase()) == 0) {
                 filtered.push(platillo);
             }
@@ -115,11 +141,22 @@ export class ManageMenuComponent implements OnInit{
     }
 
 
-    quitarPlatillo(platilloId: number) {
-        const index = this.tableData.findIndex(platillo => platillo.id === platilloId);
+    quitarPlatillo(platilloId: string) {
+        const index = this.tableData.findIndex(platillo => platillo.idPlatillo === platilloId);
         if (index !== -1) {
             this.tableData.splice(index, 1);
         }
+    }
+
+
+    // *******
+
+    listaPlatillosSomme: EPlatillo[] = [];
+
+    obtenerPlatillosSomee(){
+        this.dueniaService.obtenerPlatillosSommee().subscribe((response) => {
+            this.listaPlatillosSomme = response;
+        });
     }
 
 }

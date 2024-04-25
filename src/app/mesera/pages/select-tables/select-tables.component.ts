@@ -4,6 +4,9 @@ import { Subject, interval, map, startWith, switchMap, takeUntil } from 'rxjs';
 import { OrderHCocinero } from 'src/app/cocinero/interfaces/orderHCocinero.interface';
 import { CocineroService } from 'src/app/cocinero/services/cocinero.service';
 import { MeseraService } from '../../services/mesera.service';
+import { MenuItem } from 'primeng/api';
+import { EMesa } from '../../interfaces/mesa.interface';
+import { ShareMeseraService } from '../../services/shareMesera.service';
 
 @Component({
   selector: 'app-select-tables',
@@ -21,7 +24,7 @@ export class SelectTablesComponent implements OnInit{
     loading = false;
 
     constructor(private router: Router, private cocineroService: CocineroService,
-        private meseraService: MeseraService){}
+        private meseraService: MeseraService, private shareMesera:ShareMeseraService){}
 
         private destroy$ = new Subject<void>(); // Para manejar la destrucción del componente
         private pollingInterval = 5000; // Intervalo de 3 segundos
@@ -44,6 +47,12 @@ export class SelectTablesComponent implements OnInit{
       console.error('Error al obtener platillos:', e);
     },
   });
+
+  this.items = [
+    { label: 'Cancelar Venta', icon: 'pi pi-refresh' },
+];
+
+    this.obtenerMesasSomee();
     }
 
     actualizarOrdenes(data: any): void {
@@ -66,8 +75,9 @@ export class SelectTablesComponent implements OnInit{
       }
 
 
-    redirectToOrderPage(mesaNombre: string){
-        this.router.navigate(['/mesera/register-order',mesaNombre]);
+    redirectToOrderPage(idMesa: string){
+        this.router.navigate(['/mesera/register-order',idMesa]);
+        this.shareMesera.setMesaId(idMesa);
     }
 
 
@@ -161,5 +171,18 @@ export class SelectTablesComponent implements OnInit{
         this.finishOrder=true;
         this.obtenerOrdenesH();
       }
+
+      items: MenuItem[] = [];
+
+
+      listaMesas:EMesa[] =[];
+    //   *************************************************************************
+
+    obtenerMesasSomee(){
+        this.meseraService.obtenerMesasSomee().subscribe((response:EMesa[])=>{
+            this.listaMesas = response;
+        })
+    }
+
 
 }

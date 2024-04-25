@@ -3,14 +3,17 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { MenuItem } from 'primeng/api';
 import { DataView } from 'primeng/dataview';
 import { Dishes1 } from 'src/app/duenia/interfaces/dishes.interface';
-import { platos } from '../../interfaces/platos.interface';
+import { EPlatillo, platos } from '../../interfaces/platos.interface';
 
 
 import { MeseraService } from '../../services/mesera.service';
 import { map } from 'rxjs';
-import { MenuData, MenuResponse } from '../../interfaces/menuI.interface';
-import { DetalleOrden, Order } from '../../interfaces/order.interface';
+import { EMenu, MenuData, MenuResponse } from '../../interfaces/menuI.interface';
+import { DetalleOrden, EPlatilloM, OrdenRequest, Order, PlatilloRequest } from '../../interfaces/order.interface';
 import { DetallesH, OrderH } from '../../interfaces/orderH.interface';
+import { ShareMeseraService } from '../../services/shareMesera.service';
+import { EMesa } from '../../interfaces/mesa.interface';
+import Swal from 'sweetalert2';
 
 
 
@@ -26,7 +29,7 @@ export class RegisterOrderComponent implements OnInit{
             alert('Ningún platillo encontrado para la Pre - cuenta')
         }
         else{
-            this.meseraService.generatePDF(this.mesaNombre,this.platosList);
+            this.meseraService.generatePDF(this.idMesa,this.platosList);
         }
 
     }
@@ -36,22 +39,51 @@ export class RegisterOrderComponent implements OnInit{
     loading = false;
 
 
-    mesaNombre: string;
+    idMesa: string;
+    mesaObj:EMesa;
     constructor(private route: ActivatedRoute,
-        private router: Router, private meseraService:MeseraService) { }
+        private router: Router, private meseraService:MeseraService, private shareMeseraService:ShareMeseraService) {
+
+
+
+        }
+        mesaId: string;
     ngOnInit(): void {
 
         // Recuperar el número de Plato de la URL
     this.route.params.subscribe(params => {
-        this.mesaNombre = params['mesaNombre']; // El "+" convierte el parámetro en un número
+        // this.idMesa = params['idMesa']; // El "+" convierte el parámetro en un número
+        this.idMesa = params['idMesa']; // El "+" convierte el parámetro en un número
+        console.log(this.idMesa)
+
       });
+    //   const IdMesa = this.shareMeseraService.getMesaId();
+    //   if(IdMesa ===undefined){
+    //     this.meseraService.obtenerMesaInfoSomee(this.idMesa).subscribe((data:EMesa)=>{
+    //         this.mesaObj =  data;
+    //       });
+    //   }
+    //   else{
+    //     this.meseraService.obtenerMesaInfoSomee(IdMesa).subscribe((data:EMesa)=>{
+    //         this.mesaObj =  data;
+    //       });
+    //   }
+
+    this.shareMeseraService.mesaId$.subscribe(id => {
+        this.mesaId = id;
+        this.meseraService.obtenerMesaInfoSomee(this.idMesa).subscribe((data:EMesa)=>{
+            this.mesaObj =  data;
+        });
+    });
+
+
       this.routeItems = [
-        { label: 'Platillos',routerLink:['/mesera/register-order',this.mesaNombre]},
-        { label: 'Pagos',routerLink:['/mesera/payments',this.mesaNombre]},
+        { label: 'Platillos',routerLink:['/mesera/register-order',this.idMesa]},
+        { label: 'Pagos',routerLink:['/mesera/payments',this.idMesa]},
     ];
 
      // Try to retrieve the stored array from localStorage based on mesaId
-     const storedPlatosList = localStorage.getItem(`platosList_${this.mesaNombre}`);
+     const storedPlatosList = localStorage.getItem(`platosList_${this.idMesa}`);
 
      if (storedPlatosList) {
        // Parse the JSON string to get the array
@@ -59,6 +91,7 @@ export class RegisterOrderComponent implements OnInit{
      }
 
      this.obtenerPlatillos();
+     this.obtenerMenuSomee();
     }
 
 
@@ -230,14 +263,15 @@ export class RegisterOrderComponent implements OnInit{
          // Save the updated array to localStorage
         // localStorage.setItem('platosList', JSON.stringify(this.platosList));
 
-        if(this.platosList.length === 0){
-            alert('Ningún platillo encontrado para Guardar')
-        }
-        else{
-             // Save the updated array to localStorage based on mesaId
+        // if(this.platosList.length === 0){
+        //     alert('Ningún platillo encontrado para Guardar')
+        // }
+        // else{
+        //      // Save the updated array to localStorage based on mesaId
 
-            this.agregarOrdenH();
-        }
+        //     this.agregarOrdenH();
+        // }
+        this.agregarOrdenH();
       }
         obtenerFechaHoraFormateada(): string {
         const fechaHoraActual = new Date();
@@ -280,7 +314,7 @@ export class RegisterOrderComponent implements OnInit{
             MontoTotal:totalAcumulado, // Frontend
             detalle_orden:detalleOrden // Frontend
         }
-        localStorage.setItem(`mesa_Status_${this.mesaNombre}`,nuevaOrden.idEstado.toString())
+        localStorage.setItem(`mesa_Status_${this.idMesa}`,nuevaOrden.idEstado.toString())
         this.meseraService.agregarOrden(nuevaOrden).subscribe(
             (response)=>{
                 console.log("La orden se registro correctamente ",response);
@@ -310,16 +344,16 @@ export class RegisterOrderComponent implements OnInit{
         const nuevaOrdenH: OrderH ={
             fechaOrden: fechaHoraActual,
             total: totalAcumulado,
-            mesaId: parseInt(this.mesaNombre.match(/\d+/)[0], 10),
+            mesaId: parseInt(this.idMesa.match(/\d+/)[0], 10),
             estadoId: 1,
             detalles: detallerOrdenH
         }
-
+        console.log("dentro de registro:",this.mesaId);
         this.meseraService.agregarOrdenH(nuevaOrdenH).subscribe(
             (response)=>{
                 console.log("La orden se registro correctamente ",response);
-                localStorage.setItem(`mesa_Status_${this.mesaNombre}`,nuevaOrdenH.estadoId.toString());
-                localStorage.setItem(`platosList_${this.mesaNombre}`, JSON.stringify(this.platosList));
+                localStorage.setItem(`mesa_Status_${this.idMesa}`,nuevaOrdenH.estadoId.toString());
+                localStorage.setItem(`platosList_${this.idMesa}`, JSON.stringify(this.platosList));
             },
             (error) =>{
                 console.log("Hubo un error al registrar la orden ",error);
@@ -365,5 +399,169 @@ export class RegisterOrderComponent implements OnInit{
           }
         );
       }
+
+
+    //   **************************************************************************************
+
+    menuListSomee:EMenu[]=[];
+    platillosList:EPlatilloM[]=[];
+    cantidadesPlatillos:number[]=[];
+    platillosView:boolean = true;
+    pagosView:boolean = false;
+    observacion:string='';
+    total:number=0;
+
+
+
+      obtenerMenuSomee(){
+        this.meseraService.obtenerMenuSomee("2024-04-23").subscribe((response:EMenu[])=>{
+            this.menuListSomee = response;
+        })
+      }
+
+
+      seleccionarPlatilloSomee(product: EMenu) {
+        const platilloSeleccionado:EPlatilloM = {
+          idPlatillo:product.idPlatillo,
+          nombre: product.nombre,
+          cantidad:1,
+          precioUnitario: product.precioUnitario,
+          precioTotal: product.precioUnitario,
+        };
+        const existePlatillo = this.platillosList.some(item => item.idPlatillo === platilloSeleccionado.idPlatillo);
+
+        if (existePlatillo) {
+           Swal.fire('El plato ya fue seleccionado','','warning')
+           return;
+        }
+        this.platillosList.push(platilloSeleccionado);
+        this.actualizarTotal();
+      }
+
+      quitarPlatilloSomee(platillo: EPlatilloM) {
+
+        const index = this.platillosList.findIndex(item => item.idPlatillo === platillo.idPlatillo);
+        if (index !== -1) {
+            this.platillosList.splice(index, 1);
+        }
+        this.actualizarTotal();
+      }
+      sumarPlatillo(item:EPlatilloM){
+        item.cantidad++;
+        item.precioTotal = item.precioUnitario * item.cantidad;
+        this.actualizarTotal();
+
+      }
+      restarPlatillo(item:EPlatilloM){
+
+        if(item.cantidad > 1){
+            item.cantidad--;
+        }
+        item.precioTotal = item.precioUnitario * item.cantidad;
+        this.actualizarTotal();
+      }
+
+      actualizarTotal(){
+        this.total=0;
+       for (let i = 0; i < this.platillosList.length; i++) {
+        this.total += this.platillosList[i].precioTotal
+       }
+      }
+
+      onEnterKeyPressed(platillo: EPlatilloM, cantidadIngresada: string) {
+        const cantidad = parseInt(cantidadIngresada, 10);
+
+        if (!isNaN(cantidad) && cantidad >= 0) {
+            // Actualiza la cantidad del platillo
+            platillo.cantidad = cantidad;
+
+            // Calcula el nuevo precio total
+            platillo.precioTotal = platillo.precioUnitario * cantidad;
+
+            // Aquí puedes realizar cualquier otra acción que necesites con el nuevo precio total
+            console.log('Nuevo precio total:', platillo.precioTotal);
+        }
+        else{
+            Swal.fire('El valor ingresado no es válido','','error')
+        }
+        this.actualizarTotal();
+    }
+
+
+    // aumentarCantidad(plato: platos) {
+    //     plato.cantidad++;
+    //     plato.precio = plato.precioUnitario * plato.cantidad;
+    //   }
+
+    //   disminuirCantidad(plato: platos) {
+    //     if (plato.cantidad > 1) {
+    //       plato.cantidad--;
+    //     }
+    //     plato.precio = plato.precioUnitario * plato.cantidad;
+    //   }
+
+
+      showPlatillosView(){
+        this.platillosView = true;
+        this.pagosView = false;
+      }
+      showPagosView(){
+        this.pagosView = true;
+        this.platillosView = false;
+      }
+
+
+
+      ordenClick(){
+        console.log(this.observacion)
+        const listaProductos: PlatilloRequest[]=[];
+
+        if(this.platillosList.length<1){
+            alert("no hay platillos en la orden");
+        }
+
+
+
+        for (let i = 0; i < this.platillosList.length; i++) {
+
+            listaProductos.push({
+                idPlatillo: this.platillosList[i].idPlatillo,
+                cantidad: this.platillosList[i].cantidad,
+                precioTotal: this.platillosList[i].precioTotal,
+            })
+
+        }
+
+        const ordenRequest:OrdenRequest ={
+            fecha: this.formatearFecha(new Date),
+            mesaId: this.mesaObj.idMesa,
+            observacion: this.observacion,
+            orden:listaProductos,
+        }
+
+
+        console.log(ordenRequest);
+
+        this.meseraService.agregarOrdenSomee(ordenRequest).subscribe(
+            (response) => {
+                if(response.response.isSuccess){
+                    Swal.close();
+                    Swal.fire(response.response.isSuccess,'', 'success');
+
+                    // TODO: REDIRECCIONAR A LAS MESAS
+                    return;
+                }
+            });
+
+      }
+
+      formatearFecha(fecha:Date){
+        const year = fecha.getFullYear();
+        const month = fecha.getMonth() + 1; // Los meses en JavaScript van de 0 a 11, por lo que necesitas agregar 1
+        const day = fecha.getDate();
+
+        return `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
+      }
+
 
 }
