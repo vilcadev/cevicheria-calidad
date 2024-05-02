@@ -13,6 +13,7 @@ import { DetallesH, OrderH } from '../interfaces/orderH.interface';
 import { EMesa } from '../interfaces/mesa.interface';
 import { EMenu } from '../interfaces/menuI.interface';
 import Swal from 'sweetalert2';
+import { OrdenDetalle } from '../interfaces/ordenDetalle.interface';
 
 (pdfMake as any).vfs = pdfFonts.pdfMake.vfs;
 
@@ -52,7 +53,7 @@ export class MeseraService {
 
     // Obtener Menu del Día
     obtenerMenu(){
-        const response = this.http.get(`${this.miapiUrl}getMenu?fecha=2023-11-27`);
+        const response = this.http.get(`${this.miapiUrl}getMenu?fecha=2024-04-29`);
         return response;
     }
 
@@ -186,6 +187,12 @@ export class MeseraService {
                 return throwError(() => error);
             })
         );
+    }
+
+
+
+    obtenerOrdenSomee(mesaId:string):Observable<OrdenDetalle>{
+        return this.http.get<OrdenDetalle>(`${this.endpointSomee}/api/Orden/GetOrderMesa?id=${mesaId}`);
     }
 
 

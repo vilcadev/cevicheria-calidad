@@ -6,9 +6,18 @@ import { ManageMenuComponent } from './pages/manage-menu/manage-menu.component';
 import { ReportComponent } from './pages/report/report.component';
 import { SalesComponent } from './pages/sales/sales.component';
 import { authGuard } from '../auth/guards/auth.guard';
+import { ManageCategoryComponent } from './pages/manage-category/manage-category.component';
 
 
 const manageRoutes: Routes = [
+    {
+        path: 'manageCategory',
+        component:ManageCategoryComponent,
+        canActivate:[authGuard],
+        data:{
+          role:'admin'
+        }
+      },
     {
       path: 'manageDishes',
       component:ManageDishesComponent,

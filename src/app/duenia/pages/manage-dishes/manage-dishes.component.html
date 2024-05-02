@@ -4,7 +4,7 @@
 <!-- <main-menu></main-menu> -->
 <div class="card flex justify-content-center">
 
-  <p-dialog header="Agregar Platillo" [(visible)]="visible" [style]="{width: '500px'}" [modal]="true" class="p-fluid" (onHide)="resetFormPlatillo()">
+  <p-dialog header="Nuevo Platillo" [(visible)]="visible" [style]="{width: '500px'}" [modal]="true" class="p-fluid" (onHide)="resetFormPlatillo()">
     <!-- Modal Agregar Platillo -->
     <form [formGroup]="form" (ngSubmit)="agregarProductoSomme()">
       <!-- <input pInputText  required autofocus type="text" id="nombrePlatillo" [(ngModel)]="miPlatillo.nombre" name="nombre" > -->
@@ -13,14 +13,14 @@
       <label >Nombre:</label>
 
             <input pInputText  type="text"  formControlName="nombrePlatillo" placeholder="Ingrese nombre del platillo" style="width: 100%;">
-            <small *ngIf="isRequerido('nombrePlatillo')" id="username-help" class="p-error">El nombre del platillo es requerido</small>
+            <small *ngIf="isRequerido('nombrePlatillo')" id="username-help" class="p-error" style="font-weight: bold;">El nombre del platillo es requerido</small>
         </div>
         <div class="field col">
       <label >Categoria:</label>
 
             <p-dropdown [options]="listaCategorias" formControlName="categoriaPlatillo"
              placeholder="Selecciona una categoria" [style]="{width:'220px'}"></p-dropdown>
-            <small *ngIf="isRequerido('categoriaPlatillo')" id="username-help" class="p-error">El nombre de la categoria es requerido</small>
+            <small *ngIf="isRequerido('categoriaPlatillo')" id="username-help" class="p-error" style="font-weight: bold;">El nombre de la categoria es requerido</small>
         </div>
       </div>
 
@@ -60,7 +60,7 @@
               </ng-template>
           </p-toolbar>
           <!-- Boton Nuevo -->
-            <button  (click)="showDialog()" pButton pRipple label="Agregar Platillo" class="p-button-success" style="width: 140px; margin-bottom: 30px;"></button>
+            <button  (click)="showDialog()" pButton pRipple label="Agregar Platillo" class="p-button-success" style="width: 150px; margin-bottom: 30px;     padding: 0.9rem 1.25rem;"></button>
 
         <!-- Tabla de patillos registrados -->
           <p-table  #dt [value]="listaPlatillosSomme" [columns]="cols" responsiveLayout="scroll" [rows]="10" [globalFilterFields]="['name','country.name','representative.name','status']" [paginator]="true" [rowsPerPageOptions]="[10,20,30]" [showCurrentPageReport]="true" selectionMode="multiple" [rowHover]="true" dataKey="id">

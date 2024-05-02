@@ -30,7 +30,9 @@ import { SplitButtonModule } from 'primeng/splitbutton';
 import { PaymentComponentM } from './pages/register-order/payment-component/payment.component';
 import { PlatillosComponentM } from './pages/register-order/platillos-component/platillos.component';
 import { FormsModule } from '@angular/forms';
-
+import { SpeedDialModule } from 'primeng/speeddial';
+import { SideBarMeseraComponent } from './components/side-bar-mesera/side-bar-mesera.component';
+import { SidebarModule } from 'primeng/sidebar';
 
 @NgModule({
   declarations:[
@@ -38,7 +40,8 @@ import { FormsModule } from '@angular/forms';
     SelectTablesComponent,
     RegisterOrderComponent,
     PaymentComponentM,
-    PlatillosComponentM
+    PlatillosComponentM,
+    SideBarMeseraComponent
 
   ],
   imports:[
@@ -59,7 +62,9 @@ import { FormsModule } from '@angular/forms';
     DropdownModule,
     ToolbarModule,
     SplitButtonModule,
-    FormsModule
+    FormsModule,
+    SpeedDialModule,
+    SidebarModule
 
   ],
   providers:[  DatePipe,MeseraService]

@@ -1,19 +1,20 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { Subject, interval, map, startWith, switchMap, takeUntil } from 'rxjs';
+import { Subject, interval, map, startWith, switchMap, takeUntil,Subscription } from 'rxjs';
 import { OrderHCocinero } from 'src/app/cocinero/interfaces/orderHCocinero.interface';
 import { CocineroService } from 'src/app/cocinero/services/cocinero.service';
 import { MeseraService } from '../../services/mesera.service';
 import { MenuItem } from 'primeng/api';
 import { EMesa } from '../../interfaces/mesa.interface';
 import { ShareMeseraService } from '../../services/shareMesera.service';
+import { Menu } from 'primeng/menu';
 
 @Component({
   selector: 'app-select-tables',
   templateUrl: './select-tables.component.html',
   styleUrls: ['./select-tables.component.scss']
 })
-export class SelectTablesComponent implements OnInit{
+export class SelectTablesComponent implements OnInit, OnDestroy{
 
     mesas:string[] =['Mesa 1','Mesa 2','Mesa 3','Mesa 4','Mesa 5','Mesa 6' ];
 
@@ -48,12 +49,15 @@ export class SelectTablesComponent implements OnInit{
     },
   });
 
-  this.items = [
-    { label: 'Cancelar Venta', icon: 'pi pi-refresh' },
-];
-
     this.obtenerMesasSomee();
+    // this.getMesaAfterSeconds();
     }
+
+
+    optionClicked(option: string) {
+        console.log('Clicked option:', option);
+        // Aquí puedes realizar cualquier acción que desees para cada opción
+      }
 
     actualizarOrdenes(data: any): void {
   this.ordenH = data; // Asigna la lista completa de platillos
@@ -72,6 +76,14 @@ export class SelectTablesComponent implements OnInit{
         // Al destruir el componente, completa el observable y detiene el intervalo
         this.destroy$.next();
         this.destroy$.complete();
+
+
+        //List mesas
+         // Desuscribe la suscripción al intervalo si existe
+         if (this.intervaloSubscription) {
+            this.intervaloSubscription.unsubscribe();
+          }
+
       }
 
 
@@ -172,17 +184,41 @@ export class SelectTablesComponent implements OnInit{
         this.obtenerOrdenesH();
       }
 
-      items: MenuItem[] = [];
+    //   items: MenuItem[] = [];
 
+      items:MenuItem[] = [
+        { label: 'Cancelar Venta', icon: 'pi pi-refresh', command:() => this.optionClicked('Option1')},
+    ];
 
       listaMesas:EMesa[] =[];
     //   *************************************************************************
+    private intervaloSubscription: Subscription | undefined;
 
     obtenerMesasSomee(){
+
+
         this.meseraService.obtenerMesasSomee().subscribe((response:EMesa[])=>{
             this.listaMesas = response;
+
+
+            console.log(this.listaMesas);
         })
     }
+
+    getMesaAfterSeconds() {
+        const intervalo = interval(2000); // 2000 milisegundos = 2 segundos
+
+        // Suscríbete al intervalo y llama a la función obtenerMesasSomee() cada vez que emita un valor
+        this.intervaloSubscription = intervalo.subscribe(() => {
+          this.obtenerMesasSomee();
+        });
+      }
+
+    hla(){
+        console.log("gdfg")
+    }
+
+
 
 
 }

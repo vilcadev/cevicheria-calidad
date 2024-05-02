@@ -22,7 +22,7 @@ export class PlatillosComponentM implements OnInit {
 
 
     obtenerMenuSomee(){
-        this.meseraService.obtenerMenuSomee("2024-04-23").subscribe((response:EMenu[])=>{
+        this.meseraService.obtenerMenuSomee("2024-04-29").subscribe((response:EMenu[])=>{
             this.menuListSomee = response;
         })
       }

@@ -68,16 +68,14 @@ export class ManageMenuComponent implements OnInit{
         Swal.showLoading()
 
         const fechaFormateada: string = format(this.fechaSeleccionada, "yyyy-MM-dd'T'HH:mm:ss.SSSX");
-        // Obtén los detalles de los platillos desde tableData y los precios desde la interfaz
 
-        // todo: validar que todos los platillos tengan precio
         const detalles: any[] = this.tableData.map((platillo: PlatilloRequest) => ({
             idPlatillo: platillo.idPlatillo,
             precioUnitario: platillo.precioUnitario,
         }))
 
         const data: MenuRequest = {
-            fecha: fechaFormateada, // Puedes ajustar esto según sea necesario
+            fecha: fechaFormateada,
             platillo: detalles,
           };
 

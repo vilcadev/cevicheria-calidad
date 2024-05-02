@@ -1,4 +1,7 @@
-<div class="grid">
+<app-side-bar-mesera></app-side-bar-mesera>
+
+
+<div class="grid" style="padding-top: 5rem;">
     <div class="col-12 xl:col-7" style="padding-right: 0;">
         <div class="card " style="height: calc(1000px); border-radius: 0;">
 
@@ -18,10 +21,15 @@
                 </span>
                 <hr> -->
                 <div class="grid">
-
-                    <div>
-                        <h4>{{ mesaObj.nombreMesa }}</h4>
+                    <div class="flex gap-2 " style="margin-left: 20px;">
+                        <div>
+                            <button (click)="back()" pButton pRipple type="button" icon="pi pi-arrow-left" class="p-button-rounded p-button-outlined"></button>
+                        </div>
+                        <div style="margin-top: 8px;">
+                            <h4>{{ mesaObj.nombreMesa }}</h4>
+                        </div>
                     </div>
+
 
                 </div>
 
@@ -197,15 +205,7 @@
                 </div>
 
 
-                <div>
-                    <span class="p-buttonset">
-                        <button (click)="generarPDF()" pButton pRipple type="button" label="Pre - Cuenta"
-                            class="p-button-raised p-button-secondary" icon="pi pi-print"></button>
-                        <button (click)="guardarOrden()" pButton pRipple type="button" label="Guardar"
-                            class="p-button-raised p-button-success"></button>
-                        <!-- <button (click)="actualizarOrden()" pButton pRipple type="button" label="Aztualizar" class="p-button-raised p-button-success"></button> -->
-                    </span>
-                </div>
+
 
             </div>
 

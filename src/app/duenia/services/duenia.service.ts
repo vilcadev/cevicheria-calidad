@@ -95,6 +95,30 @@ export class DueniaService {
     return this.http.get<Categoria[]>(`${this.endpointSomee}/api/categoria`);
   }
 
+  agregarCategoriaSomee(nombre: FormData):Observable<any>{
+    return this.http.post<any>(`${this.endpointSomee}/api/Categoria`,nombre)
+  }
+
+  actualizarCategoriaSomee(categoria:FormData, categoriaId:string):Observable<any>{
+    return this.http.put<any>(`${this.endpointSomee}/api/Categoria/${categoriaId}`,categoria).pipe(
+        map(response => response.response.isSuccess),
+        catchError(error => {
+          Swal.fire('Error', error, 'warning');
+          throw error;
+        })
+      );
+  }
+
+  eliminarCategoriaSomee(categoriaId:string):Observable<any>{
+    return this.http.delete<any>(`${this.endpointSomee}/api/Categoria/${categoriaId}`).pipe(
+        map(response => response.response.isSuccess),
+        catchError(error => {
+          Swal.fire('Error', error.response, 'warning');
+          throw error;
+        })
+      );
+  }
+
   obtenerPlatillosSommee():Observable<EPlatillo[]>{
     return this.http.get<EPlatillo[]>(`${this.endpointSomee}/api/platillo`);
   }
@@ -133,6 +157,9 @@ export class DueniaService {
     return this.http.get<Menu[]>(`${this.endpointSomee}/api/Menu?fecha=${fecha}`);
   }
 
+
+
+
   agregarMenuSommee(menuRequest:MenuRequest):Observable<any>{
     return this.http.post<any>(`${this.endpointSomee}/api/Menu`,menuRequest).pipe(
         catchError(error => {
@@ -141,6 +168,7 @@ export class DueniaService {
         })
     );
   }
+
 
 
 

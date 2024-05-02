@@ -1,0 +1,102 @@
+
+
+<side-bar></side-bar>
+<!-- <main-menu></main-menu> -->
+<div class="card flex justify-content-center">
+
+  <p-dialog header="Nueva Categoria" [(visible)]="visible" [style]="{width: '500px'}" [modal]="true" class="p-fluid" (onHide)="resetFormPlatillo()">
+    <!-- Modal Agregar Platillo -->
+    <form [formGroup]="form" (ngSubmit)="agregarCategoriaSomee()">
+      <!-- <input pInputText  required autofocus type="text" id="nombrePlatillo" [(ngModel)]="miPlatillo.nombre" name="nombre" > -->
+      <div class="formgrid grid">
+        <div class="field col">
+      <label >Nombre:</label>
+
+            <input pInputText  type="text"  formControlName="nombreCategoria" placeholder="Ingrese nombre de la categoria" style="width: 100%;">
+            <small *ngIf="isRequerido('nombreCategoria')" id="username-help" class="p-error" style="font-weight: bold;">El nombre de la categoria es requerido</small>
+        </div>
+      </div>
+      <button pButton pRipple type="submit" label="Agregar Categoria" class="p-button-raised p-button-success"></button>
+    </form>
+  </p-dialog>
+</div>
+
+
+
+<div class="grid" >
+  <div class="col-12" >
+      <div class="card px-6 py-6">
+          <p-toast></p-toast>
+          <p-toolbar styleClass="mb-4" >
+              <ng-template pTemplate="left">
+                  <h1 style="color: black;">Gestionar Categorías</h1>
+              </ng-template>
+          </p-toolbar>
+          <!-- Boton Nuevo -->
+            <button  (click)="showDialog()" pButton pRipple label="Agregar Categoria" class="p-button-success" style="width: 160px; margin-bottom: 30px; padding: 0.9rem 1.25rem;"></button>
+
+        <!-- Tabla de patillos registrados -->
+          <p-table  #dt [value]="listaCategorias" [columns]="cols" responsiveLayout="scroll" [rows]="10" [globalFilterFields]="['name','country.name','representative.name','status']" [paginator]="true" [rowsPerPageOptions]="[10,20,30]" [showCurrentPageReport]="true" selectionMode="multiple" [rowHover]="true" dataKey="id">
+              <ng-template pTemplate="caption">
+                  <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
+                      <h5 class="m-0">Platillos</h5>
+                  </div>
+              </ng-template>
+              <ng-template pTemplate="header">
+                  <tr>
+                      <th>Nombre <p-sortIcon field="name"></p-sortIcon></th>
+                      <th>Acciones<p-sortIcon field="category"></p-sortIcon></th>
+                  </tr>
+              </ng-template>
+              <ng-template pTemplate="body" let-categoria>
+                  <tr>
+                      <td >
+                          <span class="p-column-title">Nombre</span>
+                          {{ categoria.nombre}}
+                      </td>
+                      <td>
+                          <div class="flex">
+                              <button pButton pRipple type="button" icon="pi pi-pencil" class="p-button-rounded p-button-info mr-2"(click)="cargarPlatilloSomee(categoria)"></button>
+                              <button pButton pRipple type="button" icon="pi pi-trash" class="p-button-rounded p-button-danger"(click)="eliminarPlatilloSomee(categoria.idCategoria)"></button>
+                          </div>
+                      </td>
+                  </tr>
+              </ng-template>
+          </p-table>
+      </div>
+
+      <!-- Modal Editar Platillo -->
+      <p-dialog [(visible)]="productDialog" [style]="{width: '450px'}" header="Editar Platillo" [modal]="true" class="p-fluid" (onHide)="resetFormPlatillo()" >
+        <form [formGroup]="form" (ngSubmit)="editarCategoriaSomee()">
+            <!-- <input pInputText  required autofocus type="text" id="nombrePlatillo" [(ngModel)]="miPlatillo.nombre" name="nombre" > -->
+            <div class="formgrid grid">
+              <div class="field col">
+            <label >Nombre:</label>
+                  <input pInputText  type="text"  formControlName="nombreCategoria" placeholder="Ingrese nombre de la categoria" style="width: 100%;">
+                  <small *ngIf="isRequerido('nombreCategoria')" id="username-help" class="p-error" style="font-weight: bold;">El nombre de la categoria es requerida</small>
+              </div>
+            </div>
+        <div class="flex">
+            <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text" (click)="this.productDialog =false"></button>
+            <button pButton pRipple label="Guardar" icon="pi pi-check" class="p-button-text"type="submit"></button>
+        </div>
+
+
+
+    </form>
+      </p-dialog>
+
+  </div>
+
+
+</div>
+
+<div class="overlay" *ngIf="loading">
+    <div class="loader"></div>
+  </div>
+
+
+
+
+
+

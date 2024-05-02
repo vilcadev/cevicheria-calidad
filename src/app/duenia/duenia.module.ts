@@ -27,6 +27,7 @@ import { SalesComponent } from './pages/sales/sales.component';
 import { AutoCompleteModule } from 'primeng/autocomplete';
 import { CalendarModule } from 'primeng/calendar';
 import { NgxDropzoneModule } from 'ngx-dropzone';
+import { ManageCategoryComponent } from './pages/manage-category/manage-category.component';
 
 @NgModule({
     declarations:[
@@ -35,7 +36,8 @@ import { NgxDropzoneModule } from 'ngx-dropzone';
         SideBarComponent,
         ManageMenuComponent,
         ReportComponent,
-        SalesComponent
+        SalesComponent,
+        ManageCategoryComponent
     ],
     imports:[
       CommonModule,

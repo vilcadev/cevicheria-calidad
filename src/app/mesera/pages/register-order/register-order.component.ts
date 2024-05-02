@@ -14,6 +14,8 @@ import { DetallesH, OrderH } from '../../interfaces/orderH.interface';
 import { ShareMeseraService } from '../../services/shareMesera.service';
 import { EMesa } from '../../interfaces/mesa.interface';
 import Swal from 'sweetalert2';
+import { Location } from '@angular/common';
+import { OrdenDetalle } from '../../interfaces/ordenDetalle.interface';
 
 
 
@@ -42,7 +44,7 @@ export class RegisterOrderComponent implements OnInit{
     idMesa: string;
     mesaObj:EMesa;
     constructor(private route: ActivatedRoute,
-        private router: Router, private meseraService:MeseraService, private shareMeseraService:ShareMeseraService) {
+        private router: Router, private meseraService:MeseraService, private shareMeseraService:ShareMeseraService, private location:Location) {
 
 
 
@@ -92,6 +94,7 @@ export class RegisterOrderComponent implements OnInit{
 
      this.obtenerPlatillos();
      this.obtenerMenuSomee();
+     this.obtenerOrdenSomee();
     }
 
 
@@ -410,15 +413,35 @@ export class RegisterOrderComponent implements OnInit{
     pagosView:boolean = false;
     observacion:string='';
     total:number=0;
+    ordenDetalle:OrdenDetalle;
 
 
 
       obtenerMenuSomee(){
-        this.meseraService.obtenerMenuSomee("2024-04-23").subscribe((response:EMenu[])=>{
+        this.meseraService.obtenerMenuSomee("2024-05-01").subscribe((response:EMenu[])=>{
             this.menuListSomee = response;
         })
       }
 
+      obtenerOrdenSomee(){
+        this.meseraService.obtenerOrdenSomee(this.mesaId || this.idMesa).subscribe((response:OrdenDetalle)=>{
+            this.ordenDetalle = response;
+
+            this.platillosList = this.ordenDetalle.platillos.map(detallePlatillo => {
+                this.total += detallePlatillo.precioTotal
+
+                return {
+                    idPlatillo: detallePlatillo.idPlatillo,
+                    // Aquí deberías obtener el nombre del platillo desde tu sistema
+                    nombre: detallePlatillo.nombrePlatillo,
+                    cantidad: detallePlatillo.cantidad,
+                    precioUnitario: detallePlatillo.precioTotal / detallePlatillo.cantidad,
+                    precioTotal: detallePlatillo.precioTotal
+                };
+            });
+            this.observacion = this.ordenDetalle.observacion
+        });
+      }
 
       seleccionarPlatilloSomee(product: EMenu) {
         const platilloSeleccionado:EPlatilloM = {
@@ -513,12 +536,14 @@ export class RegisterOrderComponent implements OnInit{
 
 
       ordenClick(){
-        console.log(this.observacion)
         const listaProductos: PlatilloRequest[]=[];
 
         if(this.platillosList.length<1){
             alert("no hay platillos en la orden");
+            return;
         }
+        Swal.fire('Procesando')
+        Swal.showLoading()
 
 
 
@@ -547,13 +572,12 @@ export class RegisterOrderComponent implements OnInit{
                 if(response.response.isSuccess){
                     Swal.close();
                     Swal.fire(response.response.isSuccess,'', 'success');
-
-                    // TODO: REDIRECCIONAR A LAS MESAS
+                    this.back();
                     return;
                 }
-            });
+              }
 
-      }
+      )};
 
       formatearFecha(fecha:Date){
         const year = fecha.getFullYear();
@@ -562,6 +586,11 @@ export class RegisterOrderComponent implements OnInit{
 
         return `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
       }
+
+
+  back() {
+    this.location.back(); // <-- go back to previous location on cancel
+  }
 
 
 }

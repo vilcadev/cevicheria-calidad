@@ -303,7 +303,7 @@ export class ManageDishesComponent implements OnInit {
         //Cargamos la lista
     }
 
-    //***************************** */
+    //*********************************************************************/
     files: File[] = [];
     disableZone: boolean = false;
 
@@ -386,6 +386,11 @@ export class ManageDishesComponent implements OnInit {
     }
 
     editarPlatilloSomee(){
+        if (this.form.invalid) {
+            this.isFormSubmitted = true;
+            this.isTouched();
+            return;
+        }
         this.productDialog = false;
 
         Swal.fire('Procesando')
