@@ -20,11 +20,7 @@ import { Component, OnInit } from '@angular/core';
                             <label for="inputtext">Enviar a...</label>
                         </span>
 
-                        <div style="display: flex;align-items: flex-end;">
-                            <h3>Total</h3>
-                            <h3>Total</h3>
-                        </div>
-
+                        <h5>Boleta</h5>
                         <hr />
                         <span class="p-float-label">
                             <input
@@ -36,7 +32,7 @@ import { Component, OnInit } from '@angular/core';
                             <label for="inputtext">Nombre Cliente</label>
                         </span>
                         <hr />
-                        <span class="p-float-label">
+                        <!-- <span class="p-float-label">
                             <input
                                 type="number"
                                 id="DNI"
@@ -44,9 +40,9 @@ import { Component, OnInit } from '@angular/core';
                                 style="width: 300px;"
                             />
                             <label for="inputtext">DNI</label>
-                        </span>
-                        <hr>
-
+                        </span> -->
+                        <!-- <hr> -->
+<!--
                         <span class="p-buttonset">
                             <button
                                 pButton
@@ -64,7 +60,7 @@ import { Component, OnInit } from '@angular/core';
                                 class="p-button-raised p-button-danger"
                                 icon="pi pi-print"
                             ></button>
-                        </span>
+                        </span> -->
     </div>
     `
 })

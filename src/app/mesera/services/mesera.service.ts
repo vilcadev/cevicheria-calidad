@@ -14,6 +14,7 @@ import { EMesa } from '../interfaces/mesa.interface';
 import { EMenu } from '../interfaces/menuI.interface';
 import Swal from 'sweetalert2';
 import { OrdenDetalle } from '../interfaces/ordenDetalle.interface';
+import { ECategoriasMenu } from '../interfaces/categorias.interface';
 
 (pdfMake as any).vfs = pdfFonts.pdfMake.vfs;
 
@@ -195,6 +196,13 @@ export class MeseraService {
         return this.http.get<OrdenDetalle>(`${this.endpointSomee}/api/Orden/GetOrderMesa?id=${mesaId}`);
     }
 
+
+    obtenerCategoriasMenuSomee(fecha: string):Observable<ECategoriasMenu[]>{
+        return this .http.get<ECategoriasMenu[]>(`${this.endpointSomee}/api/Menu/categoriasMenu?fecha=${fecha}`);
+    }
+    obtenerPlatillosPorCategoriaSomee(fecha: string, categoriaId:string):Observable<EMenu[]>{
+        return this .http.get<EMenu[]>(`${this.endpointSomee}/api/Menu/PlatillosPorCategoria?fecha=${fecha}&categoriaId=${categoriaId}`);
+    }
 
 
 

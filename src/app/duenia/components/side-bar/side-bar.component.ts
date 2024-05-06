@@ -13,4 +13,6 @@ export class SideBarComponent {
         localStorage.removeItem('Rol_User');
     }
 
+
+
 }

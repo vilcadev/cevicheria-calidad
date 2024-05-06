@@ -7,6 +7,8 @@ import { ReportComponent } from './pages/report/report.component';
 import { SalesComponent } from './pages/sales/sales.component';
 import { authGuard } from '../auth/guards/auth.guard';
 import { ManageCategoryComponent } from './pages/manage-category/manage-category.component';
+import { ManageCategorySuppliesComponent } from './pages/manage-category-supplies/manage-category-supplies.component';
+import { ManageSuppliesComponent } from './pages/manage-supplies/manage-supplies.component';
 
 
 const manageRoutes: Routes = [
@@ -34,6 +36,23 @@ const manageRoutes: Routes = [
         role:'admin'
       }
     },
+    {
+        path: 'manageCategorySupplies',
+        component:ManageCategorySuppliesComponent,
+        canActivate:[authGuard],
+        data:{
+          role:'admin'
+        }
+      },
+      {
+        path: 'manageSupplies',
+        component:ManageSuppliesComponent,
+        canActivate:[authGuard],
+        data:{
+          role:'admin'
+        }
+      },
+
     {
       path: 'sales',
       component: SalesComponent,

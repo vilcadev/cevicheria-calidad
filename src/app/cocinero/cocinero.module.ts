@@ -24,12 +24,14 @@ import { ManageOrderComponent } from './pages/manage-order/manage-order.componen
 import { CocineroRoutingModule } from './cocinero-routing.module';
 import { MessageService } from 'primeng/api';
 import { BadgeModule } from 'primeng/badge';
+import { SideBarCocineroComponent } from './components/side-bar-cocinero/side-bar-cocinero.component';
 
 
 
 @NgModule({
     declarations:[
-        ManageOrderComponent
+        ManageOrderComponent,
+        SideBarCocineroComponent
 
     ],
     imports:[

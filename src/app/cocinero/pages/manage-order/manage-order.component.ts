@@ -26,22 +26,25 @@ export class ManageOrderComponent implements OnInit{
 
   ngOnInit(): void {
      // Inicia el intervalo y ejecuta la función cada 3 segundos
-     interval(this.pollingInterval)
-     .pipe(
-       startWith(0), // Para que se ejecute inmediatamente al inicio
-       switchMap(() => this.cocineroService.obtenerOrdenesH()), // Realiza la llamada HTTP
-       map((response: any) => response.data),
-       takeUntil(this.destroy$) // Detiene el intervalo cuando el componente se destruye
-     )
-     .subscribe({
-       next: (data) => {
-         this.ordenH = data;
-         console.log(this.ordenH);
-       },
-       error: (e) => {
-         console.error('Error al obtener platillos:', e);
-       },
-     });
+    //  interval(this.pollingInterval)
+    //  .pipe(
+    //    startWith(0), // Para que se ejecute inmediatamente al inicio
+    //    switchMap(() => this.cocineroService.obtenerOrdenesH()), // Realiza la llamada HTTP
+    //    map((response: any) => response.data),
+    //    takeUntil(this.destroy$) // Detiene el intervalo cuando el componente se destruye
+    //  )
+    //  .subscribe({
+    //    next: (data) => {
+    //      this.ordenH = data;
+    //      console.log(this.ordenH);
+    //    },
+    //    error: (e) => {
+    //      console.error('Error al obtener platillos:', e);
+    //    },
+    //  });
+
+    //  this.obtenerOrdenes();
+    this.obtenerOrdenes();
   }
 
   ngOnDestroy(): void {
@@ -144,6 +147,35 @@ export class ManageOrderComponent implements OnInit{
                       console.error('Error al obtener platillos:', e);
                     }
                   });
+    }
+
+    order:OrderHCocinero[];
+
+    obtenerOrdenes(){
+        this.order = [{
+            id: 1,
+            fechaOrden: new Date(),
+            total: 35.50,
+            mesa: { id: 1, nombre: "Mesa 1" },
+            estado: { id: 2, nombre: "En Proceso" },
+            detalleOrden: [
+              {
+                id: 1,
+                cantidad: 2,
+                total: 15.00,
+                platillo: { id: 1, nombre: "Hamburguesa", categoriaId: 1 },
+                estado: { id: 1, nombre: "Pendiente" }
+              },
+              {
+                id: 2,
+                cantidad: 1,
+                total: 20.50,
+                platillo: { id: 2, nombre: "Sopa de Tomate", categoriaId: 2 },
+                estado: { id: 1, nombre: "Pendiente" }
+              }
+            ]
+          }];
+
     }
 
 

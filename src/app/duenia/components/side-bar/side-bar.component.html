@@ -2,9 +2,23 @@
     <p-sidebar [(visible)]="sidebarVisible" styleClass="my-class">
   <img routerLink="/duenia" src="/assets/imgs/cevicheria.png" alt="" style="width: 200px;padding-left: 50px; margin-bottom: 20px; cursor: pointer;">
   <div  style="display: flex; flex-direction: column;">
-    <button icon="pi pi-table" routerLink="/duenia/manageCategory" pButton pRipple label="Categorias"></button>
-    <button icon="pi pi-shopping-bag" routerLink="/duenia/manageDishes" pButton pRipple label="Platillos"></button>
+    <!-- <button icon="pi pi-table" routerLink="/duenia/manageCategory" pButton pRipple label="Categorias"></button> -->
+    <!-- <button icon="pi pi-shopping-bag" routerLink="/duenia/manageDishes" pButton pRipple label="Platillos"></button> -->
+
+    <div class="dropdown">
+        <button icon="pi pi-chevron-down" pButton  class="dropbtn" style="width: 100%;" label="Configuración"></button>
+        <div class="dropdown-content" style="width: 100%; text-align: center;">
+          <a routerLink="/duenia/manageCategorySupplies">Categoría Insumo</a>
+          <a routerLink="/duenia/manageCategory">Categoría Platillo</a>
+          <a routerLink="/duenia/manageSupplies">Insumo</a>
+          <a routerLink="/duenia/manageDishes">Platillos</a>
+          <!-- Agrega más opciones según sea necesario -->
+        </div>
+      </div>
+
     <button icon="pi pi-cart-plus" routerLink="/duenia/manageMenu" pButton pRipple label="Menú "></button>
+
+
     <button icon="pi pi-arrow-left" routerLink="/auth/login" pButton pRipple label="Salir" (click)="logout()"></button>
 
   </div>

@@ -1,8 +1,18 @@
-<div class="grid mx-5 my-3">
-    <div data-v-1dde7998="" data-v-7565b8e2=""
+<div class="grid mx-5 my-3" style=" overflow-x: auto; flex-wrap: nowrap; grid-gap: .625rem !important; font-weight: bold !important;">
+    <div  data-v-1dde7998="" data-v-7565b8e2=""
+    [ngClass]="{ 'categoria-active': selectedCategory === 'Todos' }"
+        (click)="obtenerMenuSomee()"
         class="tw-flex tw-items-center tw-justify-center tw-rounded-2xl tw-font-medium tw-px-3 tw-py-1.5 tw-text-center tw-bg-gray-100 hover:tw-bg-gray-200 tw-cursor-pointer custom-category-item">
-        <div data-v-1dde7998="" data-v-7565b8e2="" class="tw-capitalize tw-text-xs tw-line-clamp-2">
-            insumos
+        <div data-v-1dde7998="" data-v-7565b8e2="" class="tw-capitalize tw-text-xs tw-line-clamp-2" >
+            Todos
+        </div>
+    </div>
+    <div *ngFor="let categoria of listaCategoriasMenu" data-v-1dde7998="" data-v-7565b8e2=""
+    [ngClass]="{ 'categoria-active': categoria.categoriaNombre === selectedCategory }"
+    (click)="obtenerPlatillosPorCategoriaSomee(categoria.categoria, categoria.categoriaNombre)"
+        class="tw-flex tw-items-center tw-justify-center tw-rounded-2xl tw-font-medium tw-px-3 tw-py-1.5 tw-text-center tw-bg-gray-100 hover:tw-bg-gray-200 tw-cursor-pointer custom-category-item">
+        <div data-v-1dde7998="" data-v-7565b8e2="" class="tw-capitalize tw-text-xs tw-line-clamp-2" >
+            {{ categoria.categoriaNombre }}
         </div>
     </div>
 </div>
