@@ -1,9 +1,10 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, catchError, map } from 'rxjs';
 import { Datum, RootObject } from '../interfaces/order.interface';
 import { environment, environmentJson, environmentSomee } from 'src/config';
 import { EOrderRegistrada, EOrderRegistradaDetalle, OrderHCocinero } from '../interfaces/orderHCocinero.interface';
+import Swal from 'sweetalert2';
 
 @Injectable({
   providedIn: 'root'
@@ -73,7 +74,13 @@ export class CocineroService {
 
   actualizarOrdenRegistradaSomee(idOrden:string, estadoOrden:number):Observable<any>{
     const body = { estadoOrden: estadoOrden };
-    return this.http.put<any>(`${this.endpointSomee}/api/Orden/${idOrden}?estadoOrden=${estadoOrden}`,body)
+    return this.http.put<any>(`${this.endpointSomee}/api/Orden/${idOrden}?estadoOrden=${estadoOrden}`,body).pipe(
+        map(response => response.response.isSuccess),
+        catchError(error => {
+          Swal.fire('Error', error, 'warning');
+          throw error;
+        })
+      );
   }
 
 }

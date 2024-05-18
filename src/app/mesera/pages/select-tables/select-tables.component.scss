@@ -206,6 +206,23 @@
 }
 
 
+.cancel-style{
+    display: flex;
+    bottom: 70px;
+    right: 50px;
+    position: relative;
+    --tw-bg-opacity: 1 !important;
+    background-color: rgb(228, 228, 231) !important;
+    border-radius: 0.75rem;
+    padding: 5px;
+    cursor: pointer;
+}
+
+.cancel-style:hover{
+    --tw-bg-opacity: 1 !important;
+    background-color: rgb(212, 212, 216) !important;
+}
+
 
 
 @media (min-width: 600px) {
@@ -234,3 +251,5 @@
         width: 20% !important;
     }
 }
+
+

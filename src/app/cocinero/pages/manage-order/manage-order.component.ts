@@ -6,6 +6,7 @@ import { CocineroService } from '../../services/cocinero.service';
 import { Subject, interval, map, startWith, switchMap, takeUntil } from 'rxjs';
 import { Order } from 'src/app/mesera/interfaces/order.interface';
 import { EOrderRegistrada, EOrderRegistradaDetalle, OrderHCocinero } from '../../interfaces/orderHCocinero.interface';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-manage-order',
@@ -284,9 +285,20 @@ export class ManageOrderComponent implements OnInit{
      }
 
      actualizarEstadoOrdenSomee(idOrden:string, estadoOrden:number){
-        return this.cocineroService.actualizarOrdenRegistradaSomee(idOrden, estadoOrden).subscribe((response:any)=>{
-            console.log(response);
-        })
+        this.visible = false;
+        Swal.fire('Procesando')
+        Swal.showLoading()
+        return this.cocineroService.actualizarOrdenRegistradaSomee(idOrden, estadoOrden).subscribe(
+            (message: string) => {
+              Swal.close();
+              Swal.fire(message,'', 'success');
+              // Realizar otras acciones si es necesario
+            },
+            error => {
+                Swal.fire(error,'', 'warning');
+
+            }
+          );
      }
 
 

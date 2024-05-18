@@ -8,7 +8,7 @@ import { DatePipe } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { environment, environmentJson, environmentSomee } from 'src/config';
 import { OrdenRequest, Order } from '../interfaces/order.interface';
-import { Observable, catchError, throwError } from 'rxjs';
+import { Observable, catchError, map, throwError } from 'rxjs';
 import { DetallesH, OrderH } from '../interfaces/orderH.interface';
 import { EMesa } from '../interfaces/mesa.interface';
 import { EMenu } from '../interfaces/menuI.interface';
@@ -202,6 +202,17 @@ export class MeseraService {
     }
     obtenerPlatillosPorCategoriaSomee(fecha: string, categoriaId:string):Observable<EMenu[]>{
         return this .http.get<EMenu[]>(`${this.endpointSomee}/api/Menu/PlatillosPorCategoria?fecha=${fecha}&categoriaId=${categoriaId}`);
+    }
+
+
+    eliminarOrden(mesaId:string):Observable<any>{
+        return this.http.delete<any>(`${this.endpointSomee}/api/Orden/${mesaId}`).pipe(
+            map(response => response.response.isSuccess),
+            catchError(error => {
+              Swal.fire('Error', error, 'warning');
+              throw error;
+            })
+          );
     }
 
 

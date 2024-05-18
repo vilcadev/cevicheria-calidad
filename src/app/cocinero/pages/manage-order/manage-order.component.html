@@ -60,7 +60,7 @@
                             <span>{{dishe.status}}</span>
                         </td> -->
                         <td>
-                            <button pButton pRipple label="Terminar Orden" [disabled]="orden.estadoOrden === 1" (click)="obtenerOrdenEliminarH(orden.mesaId)"></button>
+                            <button pButton pRipple label="Terminar Orden" [disabled]="orden.estadoOrden === 1" (click)="$event.stopPropagation" (click)="$event.stopPropagation(); actualizarEstadoOrdenSomee(orden.idOrden, 3)"></button>
                         </td>
                     </tr>
                 </ng-template>

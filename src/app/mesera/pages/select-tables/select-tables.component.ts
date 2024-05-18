@@ -8,6 +8,7 @@ import { MenuItem } from 'primeng/api';
 import { EMesa } from '../../interfaces/mesa.interface';
 import { ShareMeseraService } from '../../services/shareMesera.service';
 import { Menu } from 'primeng/menu';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-select-tables',
@@ -54,10 +55,6 @@ export class SelectTablesComponent implements OnInit, OnDestroy{
     }
 
 
-    optionClicked(option: string) {
-        console.log('Clicked option:', option);
-        // Aquí puedes realizar cualquier acción que desees para cada opción
-      }
 
     actualizarOrdenes(data: any): void {
   this.ordenH = data; // Asigna la lista completa de platillos
@@ -186,9 +183,35 @@ export class SelectTablesComponent implements OnInit, OnDestroy{
 
     //   items: MenuItem[] = [];
 
-      items:MenuItem[] = [
-        { label: 'Cancelar Venta', icon: 'pi pi-refresh', command:() => this.optionClicked('Option1')},
-    ];
+
+
+    eliminarOrden(mesaId:string){
+        Swal.fire({
+            title: '¿Estas seguro que deseas eliminar?',
+            showDenyButton: true,
+            confirmButtonText: 'Eliminar',
+            denyButtonText: `Cancelar`,
+          }).then((result) => {
+            if (result.isConfirmed) {
+                Swal.fire('Procesando')
+                Swal.showLoading()
+                this.meseraService.eliminarOrden(mesaId).subscribe(
+                    (message: string) => {
+                      Swal.close();
+                      Swal.fire(message,'', 'success');
+
+                      // Realizar otras acciones si es necesario
+                    },
+                    error => {
+                        Swal.fire(error, 'warning');
+
+                    }
+                  );
+            } else {
+              return;
+            }
+          })
+    }
 
       listaMesas:EMesa[] =[];
     //   *************************************************************************
