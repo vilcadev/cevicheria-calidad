@@ -28,8 +28,6 @@ import { AutoCompleteModule } from 'primeng/autocomplete';
 import { CalendarModule } from 'primeng/calendar';
 import { NgxDropzoneModule } from 'ngx-dropzone';
 import { ManageCategoryComponent } from './pages/manage-category/manage-category.component';
-import { ManageCategorySuppliesComponent } from './pages/manage-category-supplies/manage-category-supplies.component';
-import { ManageSuppliesComponent } from './pages/manage-supplies/manage-supplies.component';
 import { InputNumberModule } from 'primeng/inputnumber';
 
 @NgModule({
@@ -41,8 +39,6 @@ import { InputNumberModule } from 'primeng/inputnumber';
         ReportComponent,
         SalesComponent,
         ManageCategoryComponent,
-        ManageCategorySuppliesComponent,
-        ManageSuppliesComponent
     ],
     imports:[
       CommonModule,
