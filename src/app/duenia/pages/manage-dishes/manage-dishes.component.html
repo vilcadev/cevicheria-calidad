@@ -12,15 +12,17 @@
         <div class="field col">
       <label >Nombre:</label>
 
-            <input pInputText  type="text"  formControlName="nombrePlatillo" placeholder="Ingrese nombre del platillo" style="width: 100%;">
-            <small *ngIf="isRequerido('nombrePlatillo')" id="username-help" class="p-error" style="font-weight: bold;">El nombre del platillo es requerido</small>
+            <input pInputText  type="text"  formControlName="nombrePlatillo" placeholder="Ingrese nombre del platillo" style="width: 100%;" maxlength="15">
+            <small *ngIf="isRequerido('nombrePlatillo','required')" id="username-help" class="p-error" style="font-weight: bold;">El nombre del platillo es requerido</small>
+            <small *ngIf="isRequerido('nombrePlatillo','pattern')" id="username-help" class="p-error" style="font-weight: bold;">Caracteres no aceptados</small>
+            <small *ngIf="isRequerido('nombrePlatillo','maxlength')" id="username-help" class="p-error" style="font-weight: bold;">El nombre excede el limite de caracteres</small>
         </div>
         <div class="field col">
       <label >Categoria:</label>
 
             <p-dropdown [options]="listaCategorias" formControlName="categoriaPlatillo"
              placeholder="Selecciona una categoria" [style]="{width:'220px'}"></p-dropdown>
-            <small *ngIf="isRequerido('categoriaPlatillo')" id="username-help" class="p-error" style="font-weight: bold;">El nombre de la categoria es requerido</small>
+            <small *ngIf="isRequerido('categoriaPlatillo','required')" id="username-help" class="p-error" style="font-weight: bold;">El nombre de la categoria es requerido</small>
         </div>
       </div>
 
@@ -106,14 +108,16 @@
             <label >Nombre:</label>
 
                   <input pInputText  type="text"  formControlName="nombrePlatillo" placeholder="Ingrese nombre del platillo" style="width: 100%;">
-                  <small *ngIf="isRequerido('nombrePlatillo')" id="username-help" class="p-error">El nombre del platillo es requerido</small>
+                  <small *ngIf="isRequerido('nombrePlatillo','required')" id="username-help" class="p-error" style="font-weight: bold;">El nombre del platillo es requerido</small>
+                  <small *ngIf="isRequerido('nombrePlatillo','maxLength')" id="username-help" class="p-error" style="font-weight: bold;">El nombre del platillo es requerido</small>
+                  <small *ngIf="isRequerido('nombrePlatillo','pattern')" id="username-help" class="p-error" style="font-weight: bold;">Caracteres no aceptados</small>
               </div>
               <div class="field col">
             <label >Categoria:</label>
 
                   <p-dropdown [options]="listaCategorias" formControlName="categoriaPlatillo"
                    placeholder="Selecciona una categoria" [style]="{width:'220px'}" ></p-dropdown>
-                  <small *ngIf="isRequerido('categoriaPlatillo')" id="username-help" class="p-error">El nombre de la categoria es requerido</small>
+                  <small *ngIf="isRequerido('categoriaPlatillo','required')" id="username-help" class="p-error" style="font-weight: bold;">El nombre de la categoria es requerido</small>
               </div>
             </div>
         <div>

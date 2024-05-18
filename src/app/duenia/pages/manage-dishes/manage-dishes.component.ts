@@ -25,7 +25,7 @@ export class ManageDishesComponent implements OnInit {
     ) {
         this.form = this.fb.group({
             platilloId:[''],
-            nombrePlatillo: ['', Validators.required],
+            nombrePlatillo: ['', [Validators.required, Validators.pattern('^[a-zA-Z]+(?: [a-zA-Z]+)*$'), Validators.maxLength(15)]],
             categoriaPlatillo: ['', Validators.required],
         });
     }
@@ -474,8 +474,8 @@ export class ManageDishesComponent implements OnInit {
         });
     }
 
-    isRequerido(controlName: string) {
+    isRequerido(controlName: string, errorType: string) {
         const control = this.form.get(controlName);
-        return control?.invalid && (control?.touched || control?.dirty);
-    }
+        return control?.invalid && control?.errors && control?.errors[errorType] && (control?.touched || control?.dirty);
+      }
 }

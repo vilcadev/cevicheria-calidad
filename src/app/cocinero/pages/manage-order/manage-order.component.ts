@@ -5,7 +5,7 @@ import { Datum, RootObject, DetalleOrden } from '../../interfaces/order.interfac
 import { CocineroService } from '../../services/cocinero.service';
 import { Subject, interval, map, startWith, switchMap, takeUntil } from 'rxjs';
 import { Order } from 'src/app/mesera/interfaces/order.interface';
-import { OrderHCocinero } from '../../interfaces/orderHCocinero.interface';
+import { EOrderRegistrada, EOrderRegistradaDetalle, OrderHCocinero } from '../../interfaces/orderHCocinero.interface';
 
 @Component({
   selector: 'app-manage-order',
@@ -45,6 +45,7 @@ export class ManageOrderComponent implements OnInit{
 
     //  this.obtenerOrdenes();
     this.obtenerOrdenes();
+    this.obtenerOrdenesSomee();
   }
 
   ngOnDestroy(): void {
@@ -261,6 +262,32 @@ export class ManageOrderComponent implements OnInit{
             }
         )
     }
+
+
+     //**************************************************************** */
+
+     listaOrdenesSomee:EOrderRegistrada[] =[];
+     listaOrdenDetalleSomee:EOrderRegistradaDetalle;
+
+     obtenerOrdenesSomee(){
+         this.cocineroService.obtenerOrdenesRegistradasSomee().subscribe((response:EOrderRegistrada[])=>{
+             this.listaOrdenesSomee = response;
+         })
+     }
+
+
+     obtenerDetalleOrdenSomee(mesaId:string){
+        this.visible = true;
+        this.cocineroService.obtenerDetallerOrdenRegistradaSomee(mesaId).subscribe((response:EOrderRegistradaDetalle)=>{
+            this.listaOrdenDetalleSomee = response;
+        })
+     }
+
+     actualizarEstadoOrdenSomee(idOrden:string, estadoOrden:number){
+        return this.cocineroService.actualizarOrdenRegistradaSomee(idOrden, estadoOrden).subscribe((response:any)=>{
+            console.log(response);
+        })
+     }
 
 
 }

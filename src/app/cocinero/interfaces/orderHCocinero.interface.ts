@@ -28,3 +28,37 @@ export interface OrderHCocinero {
       nombre: string;
     };
   }
+
+
+ export interface EOrderRegistrada {
+    idOrden:          string;
+    fecha:            Date;
+    estadoOrden:      number;
+    mesaId:           string;
+    mesa:             null;
+    observacion:      string;
+    ordenesPlatillos: null;
+}
+
+
+
+
+
+export interface EOrderRegistradaDetalle {
+    idOrden:     string;
+    fecha:       Date;
+    estadoOrden: number;
+    mesaId:      string;
+    observacion: string;
+    platillos:   Platillo[];
+}
+
+export interface Platillo {
+    idPlatillo:     string;
+    nombrePlatillo: string;
+    cantidad:       number;
+    precioTotal:    number;
+    estado:         number;
+}
+
+
