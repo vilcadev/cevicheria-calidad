@@ -6,12 +6,22 @@ import { ActivatedRouteSnapshot, Router } from "@angular/router";
 export const authGuard= (route: ActivatedRouteSnapshot) => {
 
     const authService = inject(AuthService)
-    const localStorageRole = localStorage.getItem('Rol_User');
     const router = inject(Router)
+
+    let localStorageRole
+    const token = localStorage.getItem('token')
+    if(token){
+        localStorageRole = authService.getRoleFromToken(token);
+    }
+    else{
+        router.navigate(['./auth/login'])
+    }
+
+
     const requiredRole = route.data['role'] as string;
 
     if(!localStorageRole || localStorageRole !== requiredRole){
-        console.log('No autenticado')
+        console.log('No autenticado',requiredRole)
         router.navigate(['./auth/login'])
         return false;
     }

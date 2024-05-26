@@ -7,6 +7,7 @@ import { map } from 'rxjs';
 import { Categoria } from '../../interfaces/categoria.interface';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import Swal from 'sweetalert2';
+import { envAzure } from 'src/config';
 
 @Component({
     selector: 'manage-dishes',
@@ -17,6 +18,7 @@ import Swal from 'sweetalert2';
 export class ManageDishesComponent implements OnInit {
     form!: FormGroup;
     isFormSubmitted = false;
+    enivonmentAzureImage ='';
 
     constructor(
         private dueniaService: DueniaService,
@@ -26,7 +28,7 @@ export class ManageDishesComponent implements OnInit {
         this.form = this.fb.group({
             platilloId:[''],
             nombrePlatillo: ['', [Validators.required, Validators.pattern('^[a-zA-Z]+(?: [a-zA-Z]+)*$'), Validators.maxLength(15)]],
-            categoriaPlatillo: ['', Validators.required],
+            categoriaPlatillo: ['', Validators.required]
         });
     }
 
@@ -34,6 +36,7 @@ export class ManageDishesComponent implements OnInit {
         this.obtenerPlatillos();
         this.obtenerCategorias();
         this.obtenerPlatillosSomee();
+        this.enivonmentAzureImage = envAzure.url;
     }
 
     valSwitch: boolean = false;
@@ -306,14 +309,27 @@ export class ManageDishesComponent implements OnInit {
     //*********************************************************************/
     files: File[] = [];
     disableZone: boolean = false;
+    uploadImage:boolean = false;
 
     onSelect(event: any) {
+        // console.log(event);
+        // if (this.files.length < 1) {
+        //     this.files.push(...event.addedFiles);
+        //     this.disableZone = true;
+        // } else {
+        //     console.log('mas de uno');
+        // }
         console.log(event);
-        if (this.files.length < 1) {
-            this.files.push(...event.addedFiles);
-            this.disableZone = true;
+        if (this.files.length === 1) {
+          // Reemplazar el archivo existente con el nuevo archivo cargado
+          this.files.splice(0, 1, ...event.addedFiles);
+          this.disableZone = true;
+        } else if (this.files.length === 0) {
+          // Si no hay archivos, añadir el nuevo archivo
+          this.files.push(...event.addedFiles);
+          this.disableZone = true;
         } else {
-            console.log('mas de uno');
+          console.log('Ya hay más de un archivo');
         }
     }
 
@@ -355,14 +371,17 @@ export class ManageDishesComponent implements OnInit {
             'Nombre',
             this.form.get('nombrePlatillo')?.value
         );
-        const dd = this.form.get('categoriaPlatillo')?.value;
         formData.append(
             'CategoriaId',
-            dd
+            this.form.get('categoriaPlatillo')?.value
         );
-        formData.append(
-            'ImagenUrl', 'htttp://cloudinary'
-        )
+
+        if(this.files){
+            formData.append(
+                'ImagenUrl', this.files[0]
+            )
+        }
+
 
         this.dueniaService.agregarPlatillosSommee(formData).subscribe(
             (response) => {
@@ -376,13 +395,36 @@ export class ManageDishesComponent implements OnInit {
             });
     }
 
+    varUrl: string='';
     cargarPlatilloSomee(platillo:EPlatillo){
+        this.uploadImage = true;
         this.productDialog=true;
         this.form.patchValue({
             platilloId:platillo.idPlatillo,
             nombrePlatillo: platillo.nombre,
             categoriaPlatillo: platillo.categoriaId
-        })
+        });
+
+        const imagen = `${envAzure.url}${platillo.imagenUrl}`
+
+        if(imagen && platillo.imagenUrl){
+        fetch(imagen)
+        .then(response => response.blob())
+        .then(blob => {
+          const file = new File([blob], platillo.nombre, { type: blob.type });
+          this.files.push(file);
+          this.uploadImage = false;
+        });
+
+        this.varUrl = platillo.imagenUrl;
+        } else{
+            this.uploadImage=false;
+        }
+
+
+
+
+
     }
 
     editarPlatilloSomee(){
@@ -404,14 +446,19 @@ export class ManageDishesComponent implements OnInit {
             'Nombre',
             this.form.get('nombrePlatillo')?.value
         );
-        const dd = this.form.get('categoriaPlatillo')?.value;
         formData.append(
             'CategoriaId',
-            dd
+            this.form.get('categoriaPlatillo')?.value
         );
+        if(this.files){
+            formData.append(
+                'ImagenUrl', this.files[0]
+            )
+        }
         formData.append(
-            'ImagenUrl', 'htttp://cloudinary'
+            'Url', this.varUrl
         )
+
 
         this.dueniaService.actualizarPlatilloSommee(formData,platilloId).subscribe(
             (message: string) => {
@@ -419,6 +466,7 @@ export class ManageDishesComponent implements OnInit {
               Swal.fire(message,'', 'success');
               this.obtenerPlatillosSomee();
               this.resetForm();
+              this.varUrl ='';
               // Realizar otras acciones si es necesario
             },
             error => {

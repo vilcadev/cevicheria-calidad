@@ -3,7 +3,8 @@ import {  Component, type OnInit } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
 import { Usuario } from '../../interfaces/user.interface';
-
+import { AbstractControl, FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
+import { JwtTokenResponse } from '../../interfaces/jwt.interface';
 @Component({
     selector: 'app-login',
     templateUrl: './login.component.html',
@@ -15,7 +16,7 @@ export class LoginComponent implements OnInit {
     valCheck: string[] = ['remember'];
 
     // password!: string;
-
+    isLoading = false;
     email:string;
     password:string;
     jwt:string;
@@ -26,48 +27,84 @@ export class LoginComponent implements OnInit {
         , private router: Router
         ){}
 
+
+    form = new FormGroup({
+        email: new FormControl('',[
+            Validators.required,
+            Validators.email,
+        ]),
+        password: new FormControl('',[Validators.required, Validators.pattern(/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>])[^\s]+$/)]),
+    })
+
     ngOnInit(): void { }
 
-
+    JWT!: JwtTokenResponse;
     onLogin(){
-        this.authService.login(this.email).subscribe(
-            (response) =>{
 
-                this.jwt = response.jwt;
 
-                console.log('JWT obtenido:', this.jwt);
-                this.authService.getUser(this.jwt);
+        if (this.form.valid) {
+            this.isLoading = true;
+            const email = this.form.get("email")?.value ?? '';
+            const password = this.form.get("password")?.value ?? '';
 
-                let role = this.authService.usuario?.role;
-                console.log("y soy el rol:",role)
+            this.authService.inicioSesion(email, password).subscribe(
+              (response: JwtTokenResponse) => {
+                this.JWT = response;
+                this.isLoading = false;
+                console.log(this.JWT.token);
+                localStorage.setItem('token', this.JWT.token);
+                const role = this.authService.getRoleFromToken(this.JWT.token);
+
                 switch (role) {
-                    case 'admin':
-                      this.router.navigate(['/duenia/manageDishes']);  // Ruta para el administrador
-                      break;
-                    case 'mesera':
-                      this.router.navigate(['/mesera/select-tables']);  // Ruta para la mesera
-                      break;
-                    case 'cocinero':
-                      this.router.navigate(['/cocinero/manageOrder']);  // Ruta para el cocinero
-                      break;
-                    // Otros casos según los roles que tengas
-                    default:
-                      console.log('Rol no reconocido');
-                      break;
-                  }
-            },
-            (error) =>{
-                console.log('Error obtenido:', error);
-            }
-        )
+                  case 'admin':
+                    this.router.navigate(['/duenia/manageDishes']);
+                    break;
+                  case 'mesera':
+                    this.router.navigate(['/mesera/select-tables']);
+                    break;
+                  case 'cocinero':
+                    this.router.navigate(['/cocinero/manageOrder']);
+                    break;
+                }
 
-        // this.jwtUsuario = this.authService.getUser(this.jwt);
+                // Detener el spinner de carga en caso de éxito
+              },
+              (error) => {
+                console.error('Error en la petición de inicio de sesión:', error);
+                // Manejar el error aquí si es necesario
 
-        // this.authService.autenticar(this.jwtUsuario);
-
-
-        // let role = this.authService.user.role;
-
+                // Detener el spinner de carga en caso de error
+                this.isLoading = false;
+              }
+            );
+          }
     }
+
+
+    // Validador personalizado para asegurar que no haya espacios en blanco
+ noWhitespaceValidator(control: AbstractControl): ValidationErrors | null {
+    const isWhitespace = (control.value || '').trim().length === 0;
+    const isValid = !isWhitespace;
+    return isValid ? null : { whitespace: true };
+  }
+
+  // Validador personalizado para contraseñas robustas
+ passwordValidator(control: AbstractControl): ValidationErrors | null {
+    const value = control.value;
+    if (!value) return null;
+
+    const hasUpperCase = /[A-Z]/.test(value);
+    const hasLowerCase = /[a-z]/.test(value);
+    const hasNumber = /[0-9]/.test(value);
+    const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(value);
+
+    const passwordValid = hasUpperCase && hasLowerCase && hasNumber && hasSpecialChar;
+    return passwordValid ? null : { passwordStrength: true };
+  }
+
+  isRequerido(controlName: string, errorType: string) {
+    const control = this.form.get(controlName);
+    return control?.invalid && control?.errors && control?.errors[errorType] && (control?.touched || control?.dirty);
+  }
 
 }

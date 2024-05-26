@@ -385,6 +385,9 @@ button{
         font-size: 1.125rem !important;
         line-height: 1.75rem !important;
     }
+    .\32xl\:tw-h-40 {
+        height: 10rem !important;
+    }
   }
 
   .hover\:tw-border-green-600:hover {
@@ -404,6 +407,7 @@ button{
 
 
 // ****Tab Menu
+
 
 @media (min-width: 1280px) {
     .\32xl\:tw-text-lg {
@@ -475,4 +479,13 @@ button:not(:disabled) {
     --tw-bg-opacity: 1 !important;
     background-color: rgb(99 102 241) !important;
     color: white;
+}
+
+.img-style{
+    width: 100% !important;
+    height: 10rem !important;
+    border-radius: 1rem !important;
+    vertical-align: middle;
+    border-style: none;
+    max-width: 100%;
 }

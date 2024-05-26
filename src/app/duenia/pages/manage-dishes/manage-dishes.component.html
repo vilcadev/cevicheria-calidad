@@ -30,7 +30,7 @@
 
 
   <div>
-    <label >Imagen:</label>
+    <label class="pb-3 ">Imagen:</label>
 
     <ngx-dropzone (change)="onSelect($event)" accept="image/jpeg,image/jpg,image/png" [disableClick]="disableZone" >
         <ngx-dropzone-label>Sube una imagen</ngx-dropzone-label>
@@ -73,17 +73,26 @@
               </ng-template>
               <ng-template pTemplate="header">
                   <tr>
-                      <th>Nombre <p-sortIcon field="name"></p-sortIcon></th>
-                      <th>Categoria <p-sortIcon field="category"></p-sortIcon></th>
-                      <th>Acciones<p-sortIcon field="category"></p-sortIcon></th>
+                      <th>Nombre</th>
+                      <th>Imagen</th>
+                      <th>Categoria </th>
+                      <th>Acciones</th>
                   </tr>
               </ng-template>
               <ng-template pTemplate="body" let-platillo>
                   <tr>
                       <td >
-                          <span class="p-column-title">Nombre</span>
-                          {{ platillo.nombre}}
+
+                            <span class="p-column-title">Nombre</span>
+                            {{ platillo.nombre}}
+
                       </td>
+                      <td style="width:14%; min-width:10rem;">
+                        <span class="p-column-title">Image</span>
+                        <img src="{{enivonmentAzureImage + platillo.imagenUrl}}"
+                             class="shadow-4"
+                             style="width: 60px; height: 60px; object-fit: cover;" />
+                    </td>
                      <td >
                           <span class="p-column-title">Categoria</span>
                           {{platillo.nombreCategoria}}
@@ -121,17 +130,20 @@
               </div>
             </div>
         <div>
-          <label >Imagen:</label>
+          <label class="pb-3 ">Tu Imagen Nueva:</label>
 
           <ngx-dropzone (change)="onSelect($event)" accept="image/jpeg,image/jpg,image/png" [disableClick]="disableZone" >
               <ngx-dropzone-label>Sube una imagen</ngx-dropzone-label>
-              <ngx-dropzone-preview *ngFor="let f of files" [removable]="true" (removed)="onRemove(f)">
+              <ngx-dropzone-preview *ngFor="let f of files" [removable]="true" (removed)="onRemove(f)" [file]="f">
                 <ngx-dropzone-label>{{ f.name }} ({{ f.type }})</ngx-dropzone-label>
               </ngx-dropzone-preview>
             </ngx-dropzone>
         </div>
 
-        <div style="padding: 5vh;">
+        <div class="box-loader">
+        <div  *ngIf="uploadImage">
+            <div class="loader"></div>
+          </div>
           <ngx-dropzone-image-preview ngProjectAs="ngx-dropzone-preview" *ngFor="let f of files" [file]="f">
           </ngx-dropzone-image-preview>
         </div>

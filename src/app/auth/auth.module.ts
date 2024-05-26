@@ -5,8 +5,9 @@ import { PasswordModule } from 'primeng/password';
 import { ButtonModule } from 'primeng/button';
 import { LoginComponent } from './pages/login/login.component';
 import { InputTextModule } from 'primeng/inputtext';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
 
 
 @NgModule({
@@ -21,6 +22,8 @@ import { FormsModule } from '@angular/forms';
 
         AuthRoutingModule,
         FormsModule,
+        ReactiveFormsModule,
+        ProgressSpinnerModule
     ],
     exports:[
     ]

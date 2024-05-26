@@ -1,7 +1,18 @@
 import { Injectable } from '@angular/core';
 import { User, Usuario } from '../interfaces/user.interface';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, catchError, throwError } from 'rxjs';
+import Swal from 'sweetalert2';
+import { JwtTokenResponse } from '../interfaces/jwt.interface';
+import { environmentSomee } from 'src/config';
+import { jwtDecode } from 'jwt-decode';
+
+
+interface TokenPayload {
+    email: string;
+    rol: string;
+    exp: number;
+  }
 
 @Injectable({
   providedIn: 'root'
@@ -12,12 +23,16 @@ export class AuthService {
   private endpoint: string ;
   private miapiUrl: string ;
 
+  private endpointSomee: string ;
+
   constructor(private http:HttpClient) {
     // this.user = this.getUser(this.token);
 
 
     this.endpoint = 'http://localhost:3000/users/';
      this.miapiUrl = this.endpoint;
+
+     this.endpointSomee = environmentSomee.endPoint
   }
 
 
@@ -56,6 +71,31 @@ export class AuthService {
   autenticar(jwt:Usuario){
     this.usuario = jwt;
     localStorage.setItem('Token_Usuario',jwt.toString());
+  }
+
+  public inicioSesion(correo: string, contrasena: string):Observable<JwtTokenResponse>{
+
+    const body = { correo, contrasena };
+    return this.http.post<JwtTokenResponse>(`${this.endpointSomee}/api/Usuario/auth`,body).pipe(
+        catchError((error) => {
+          let errorMessage = 'Ha ocurrido un error'; // Mensaje por defecto
+
+          if (error && error.error && error.error.message) {
+            errorMessage = error.error.message; // Utiliza el mensaje de error del backend si está disponible
+          }
+
+          Swal.fire(errorMessage,'', 'warning'); // Muestra el mensaje de error al usuario
+          return throwError(() => error);
+        })
+      );
+  }
+
+
+  token!: TokenPayload;
+  public getRoleFromToken(token: string):string{
+      this.token = jwtDecode(token) as TokenPayload;
+      console.log(this.token.rol)
+      return this.token.rol;
   }
 
 }

@@ -7,5 +7,9 @@ export const environment = {
   };
 
   export const environmentSomee = {
-    endPoint: 'http://apichinitav.somee.com'
+    endPoint: 'https://localhost:7288'
   };
+
+  export const envAzure ={
+    url:'https://demoanimestorage.blob.core.windows.net/cevicheriachinita/'
+  }

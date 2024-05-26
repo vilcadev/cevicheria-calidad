@@ -10,7 +10,7 @@ export class SideBarComponent {
     sidebarVisible: boolean = false;
 
     logout(){
-        localStorage.removeItem('Rol_User');
+        localStorage.removeItem('token');
     }
 
 

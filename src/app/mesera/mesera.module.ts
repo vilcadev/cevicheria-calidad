@@ -33,6 +33,8 @@ import { FormsModule } from '@angular/forms';
 import { SpeedDialModule } from 'primeng/speeddial';
 import { SideBarMeseraComponent } from './components/side-bar-mesera/side-bar-mesera.component';
 import { SidebarModule } from 'primeng/sidebar';
+import { CalendarModule } from 'primeng/calendar';
+import { FullCalendarModule } from '@fullcalendar/angular';
 
 @NgModule({
   declarations:[
@@ -64,8 +66,9 @@ import { SidebarModule } from 'primeng/sidebar';
     SplitButtonModule,
     FormsModule,
     SpeedDialModule,
-    SidebarModule
-
+    SidebarModule,
+    CalendarModule,
+    FullCalendarModule
   ],
   providers:[  DatePipe,MeseraService]
   })

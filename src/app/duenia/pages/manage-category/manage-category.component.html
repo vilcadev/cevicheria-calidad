@@ -33,7 +33,7 @@
               </ng-template>
           </p-toolbar>
           <!-- Boton Nuevo -->
-            <button  (click)="showDialog()" pButton pRipple label="Agregar Categoria" class="p-button-success" style="width: 160px; margin-bottom: 30px; padding: 0.9rem 1.25rem;"></button>
+            <button id="btnSelect"  (click)="showDialog()" pButton pRipple label="Agregar Categoria" class="p-button-success" style="width: 160px; margin-bottom: 30px; padding: 0.9rem 1.25rem;"></button>
 
         <!-- Tabla de patillos registrados -->
           <p-table  #dt [value]="listaCategorias" [columns]="cols" responsiveLayout="scroll" [rows]="10" [globalFilterFields]="['name','country.name','representative.name','status']" [paginator]="true" [rowsPerPageOptions]="[10,20,30]" [showCurrentPageReport]="true" selectionMode="multiple" [rowHover]="true" dataKey="id">

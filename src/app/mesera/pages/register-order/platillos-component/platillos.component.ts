@@ -2,6 +2,8 @@ import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { MeseraService } from '../../../services/mesera.service';
 import { EMenu } from '../../../interfaces/menuI.interface';
 import { ECategoriasMenu } from 'src/app/mesera/interfaces/categorias.interface';
+import Swal from 'sweetalert2';
+import { envAzure } from 'src/config';
 
 @Component({
     selector: 'platillos-component',
@@ -17,20 +19,75 @@ export class PlatillosComponentM implements OnInit {
     selectedCategory: string | null = 'Todos';
 
     listaCategoriasMenu: ECategoriasMenu[]=[];
+    fechaSeleccionada: Date;
+    enivonmentAzureImage ='';
+
 
     ngOnInit() {
+
+
+        this.enivonmentAzureImage = envAzure.url;
+        let fecha = localStorage.getItem('fechaMenu');
+
+        if(fecha){
+            const fechaNueva = new Date(fecha);
+            fechaNueva.setDate(fechaNueva.getDate() + 1); // Sumar un día a la fecha
+            this.fechaSeleccionada = fechaNueva;
+        }
+        else{
+            console.log("entro")
+            const date = new Date();
+            this.fechaSeleccionada = date
+        }
+
+
         this.obtenerMenuSomee();
         this.obtenerCategoriasMenuSomee();
      }
 
     menuListSomee:EMenu[]=[];
 
+    formatearFechaUTC(fecha: Date): string {
+        const year = fecha.getUTCFullYear();
+        const month = ('0' + (fecha.getUTCMonth() + 1)).slice(-2);
+        const day = ('0' + fecha.getUTCDate()).slice(-2);
+
+        return `${year}-${month}-${day}`;
+      }
+
+  formatearFechaLocal(fecha: Date): string {
+    const year = fecha.getFullYear();
+    const month = ('0' + (fecha.getMonth() + 1)).slice(-2);
+    const day = ('0' + fecha.getDate()).slice(-2);
+
+    return `${year}-${month}-${day}`;
+  }
+
 
     obtenerMenuSomee(){
         this.selectedCategory = "Todos"
-        this.meseraService.obtenerMenuSomee("2024-05-04").subscribe((response:EMenu[])=>{
-            this.menuListSomee = response;
-        })
+        if(this.fechaSeleccionada){
+
+            const fecha = this.formatearFechaLocal(this.fechaSeleccionada);
+            this.meseraService.obtenerMenuSomee(fecha).subscribe((response:EMenu[])=>{
+                this.menuListSomee = response;
+
+                if(this.menuListSomee.length<1){
+                    Swal.showLoading();
+                    Swal.close();
+                    Swal.fire('No hay un menú registrado para la fecha','', 'warning');
+                }
+
+                localStorage.setItem('fechaMenu', this.formatearFechaUTC(this.fechaSeleccionada));
+                this.obtenerCategoriasMenuSomee();
+
+            })
+        }
+        else{
+            Swal.showLoading();
+            Swal.close();
+            Swal.fire('Ninguna fecha ingresada','', 'warning');
+        }
       }
 
       seleccionarPlatilloSomee(menu:EMenu){
@@ -41,7 +98,8 @@ export class PlatillosComponentM implements OnInit {
 
 
     obtenerCategoriasMenuSomee(){
-        this.meseraService.obtenerCategoriasMenuSomee("2024-05-04").subscribe((response:ECategoriasMenu[])=>{
+        const fecha = this.formatearFechaUTC(this.fechaSeleccionada);
+        this.meseraService.obtenerCategoriasMenuSomee(fecha).subscribe((response:ECategoriasMenu[])=>{
             this.listaCategoriasMenu = response;
             console.log(this.listaCategoriasMenu);
         })
@@ -49,7 +107,10 @@ export class PlatillosComponentM implements OnInit {
 
     obtenerPlatillosPorCategoriaSomee(categoriaId:string, categoriaNombre:string){
         this.selectedCategory = categoriaNombre;
-        this.meseraService.obtenerPlatillosPorCategoriaSomee("2024-05-04",categoriaId).subscribe((response:EMenu[])=>{
+        const fecha = this.formatearFechaUTC(this.fechaSeleccionada);
+
+        console.log("hey",fecha)
+        this.meseraService.obtenerPlatillosPorCategoriaSomee(fecha,categoriaId).subscribe((response:EMenu[])=>{
             this.menuListSomee = response;
         })
     }

@@ -19,6 +19,7 @@ export interface Platillo {
     nombre:          string;
     categoriaId:     string;
     nombreCategoria: string;
+    imagenUrl?: string;
 }
 
 
