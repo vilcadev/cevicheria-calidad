@@ -11,7 +11,9 @@ module.exports = function (config) {
         require('@angular-devkit/build-angular/plugins/karma')
       ],
       files:[
-        'src/app/duenia/pages/manage-category/manage-category.component.spec.ts'
+        // 'src/app/duenia/pages/manage-category/manage-category.component.spec.ts',
+        'src/app/auth/services/auth.service.spec.ts'
+
       ],
       client: {
         jasmine: {

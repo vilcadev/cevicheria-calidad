@@ -7,7 +7,10 @@ export const environment = {
   };
 
   export const environmentSomee = {
-    endPoint: 'https://localhost:7288'
+    endPoint: 'https://www.apichinitav.somee.com'
+    // endPoint: 'https://localhost:7288'
+
+
   };
 
   export const envAzure ={

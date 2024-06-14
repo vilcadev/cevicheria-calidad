@@ -6,6 +6,7 @@ import Swal from 'sweetalert2';
 import { JwtTokenResponse } from '../interfaces/jwt.interface';
 import { environmentSomee } from 'src/config';
 import { jwtDecode } from 'jwt-decode';
+import { Router } from '@angular/router';
 
 
 interface TokenPayload {
@@ -25,7 +26,7 @@ export class AuthService {
 
   private endpointSomee: string ;
 
-  constructor(private http:HttpClient) {
+  constructor(private http:HttpClient,private router: Router) {
     // this.user = this.getUser(this.token);
 
 
@@ -90,6 +91,21 @@ export class AuthService {
       );
   }
 
+  redirigirVista(JWT: string){
+
+    const role = this.getRoleFromToken(JWT);
+    switch (role) {
+      case 'admin':
+        this.router.navigate(['/duenia/manageDishes']);
+        break;
+      case 'mesera':
+        this.router.navigate(['/mesera/select-tables']);
+        break;
+      case 'cocinero':
+        this.router.navigate(['/cocinero/manageOrder']);
+        break;
+    }
+  }
 
   token!: TokenPayload;
   public getRoleFromToken(token: string):string{

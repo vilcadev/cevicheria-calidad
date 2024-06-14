@@ -8,6 +8,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { RecaptchaModule } from 'ng-recaptcha';
 
 
 @NgModule({
@@ -23,7 +24,8 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
         AuthRoutingModule,
         FormsModule,
         ReactiveFormsModule,
-        ProgressSpinnerModule
+        ProgressSpinnerModule,
+        RecaptchaModule
     ],
     exports:[
     ]

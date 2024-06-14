@@ -51,7 +51,7 @@ export class SelectTablesComponent implements OnInit, OnDestroy{
   });
 
     this.obtenerMesasSomee();
-    // this.getMesaAfterSeconds();
+    this.getMesaAfterSeconds();
     }
 
 

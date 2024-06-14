@@ -14,6 +14,8 @@ import { JwtTokenResponse } from '../../interfaces/jwt.interface';
 export class LoginComponent implements OnInit {
 
     valCheck: string[] = ['remember'];
+    captcha: string;
+    captchaCompleto: boolean = false;
 
     // password!: string;
     isLoading = false;
@@ -25,7 +27,17 @@ export class LoginComponent implements OnInit {
 
     constructor(private authService: AuthService
         , private router: Router
-        ){}
+        ){
+            this.captcha  ='';
+
+            const token = localStorage.getItem('token');
+            if(token){
+                this.authService.redirigirVista(token);
+            }
+            else{
+                return;
+            }
+        }
 
 
     form = new FormGroup({
@@ -36,7 +48,18 @@ export class LoginComponent implements OnInit {
         password: new FormControl('',[Validators.required, Validators.pattern(/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>])[^\s]+$/)]),
     })
 
-    ngOnInit(): void { }
+    ngOnInit(): void {
+
+
+        const token = localStorage.getItem('token');
+        if(token){
+            this.authService.redirigirVista(token);
+        }
+        else{
+            return;
+        }
+
+    }
 
     JWT!: JwtTokenResponse;
     onLogin(){
@@ -78,6 +101,13 @@ export class LoginComponent implements OnInit {
               }
             );
           }
+    }
+
+
+    resolved(captchaResponse: string){
+        this.captcha = captchaResponse;
+        console.log("resolved captcha:" + this.captcha);
+        this.captchaCompleto=true;
     }
 
 

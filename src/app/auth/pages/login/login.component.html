@@ -16,7 +16,7 @@
                             <label for="email1" class="block text-900 text-xl font-medium mb-2">Correo</label>
                         <input  formControlName="email" type="text" placeholder="Ingrese su Correo" pInputText class="w-full " style="padding:1rem"   [ngClass]="{
                             'ng-dirty ng-invalid': form.controls.email.invalid && form.controls.email.touched
-                          }">
+                          }" >
                         <small *ngIf="isRequerido('email','required')" id="username-help" class="p-error">El campo es requerido</small>
                         <small *ngIf="isRequerido('email','email')" id="username-help" class="p-error">Ingrese un correo válido</small>
                         <small *ngIf="isRequerido('email','pattern')" id="username-help" class="p-error">El correo no debe contener espacios en blanco</small>
@@ -27,7 +27,7 @@
                             <label for="password1" class="block text-900 font-medium text-xl mb-2">Contraseña</label>
                         <input formControlName="password" type="password" placeholder="Ingrese su contraseña" pInputText class="w-full " style="padding:1rem" [ngClass]="{
                             'ng-dirty ng-invalid': form.controls.password.invalid && form.controls.password.touched
-                          }">
+                          }" >
                                 <small *ngIf="isRequerido('password','required')" id="username-help" class="p-error">El campo es requerido</small>
                                 <small *ngIf="isRequerido('password','pattern')" id="username-help" class="p-error">Ingrese una contraseña válida</small>
                         </div>
@@ -37,7 +37,10 @@
                         <div class="flex align-items-center justify-content-between mb-5 gap-5">
                             <a class="font-medium no-underline ml-2 text-right cursor-pointer" style="color: var(--primary-color)"></a>
                         </div>
-                        <button [disabled]="form.invalid || isLoading" pButton pRipple class="w-full p-3 text-xl" style="justify-content: center;" type="submit">
+                        <div [hidden]="form.invalid" >
+                            <re-captcha class="flex justify-content-center mb-3" (resolved)="resolved($event)" siteKey="6LctuOgpAAAAABch3DP_roOwYyyvMW0sCg6Y8LPm"></re-captcha>
+                        </div>
+                        <button [disabled]="form.invalid || isLoading || !captchaCompleto" pButton pRipple class="w-full p-3 text-xl" style="justify-content: center;" type="submit">
                             <ng-container *ngIf="!isLoading; else loading">
                               Iniciar Sesión
                             </ng-container>

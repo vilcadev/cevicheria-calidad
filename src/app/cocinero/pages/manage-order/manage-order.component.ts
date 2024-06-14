@@ -1,9 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 
 
 import { Datum, RootObject, DetalleOrden } from '../../interfaces/order.interface';
 import { CocineroService } from '../../services/cocinero.service';
-import { Subject, interval, map, startWith, switchMap, takeUntil } from 'rxjs';
+import { Subject, Subscription, interval, map, startWith, switchMap, takeUntil } from 'rxjs';
 import { Order } from 'src/app/mesera/interfaces/order.interface';
 import { EOrderRegistrada, EOrderRegistradaDetalle, OrderHCocinero } from '../../interfaces/orderHCocinero.interface';
 import Swal from 'sweetalert2';
@@ -13,7 +13,7 @@ import Swal from 'sweetalert2';
   templateUrl: './manage-order.component.html',
   styleUrls: ['./manage-order.component.scss']
 })
-export class ManageOrderComponent implements OnInit{
+export class ManageOrderComponent implements OnInit, OnDestroy{
 
     loading = false;
     finishOrder:boolean = false;
@@ -47,12 +47,18 @@ export class ManageOrderComponent implements OnInit{
     //  this.obtenerOrdenes();
     this.obtenerOrdenes();
     this.obtenerOrdenesSomee();
+    this.getMesaOrdenAfterSeconds();
   }
 
   ngOnDestroy(): void {
     // Al destruir el componente, completa el observable y detiene el intervalo
     this.destroy$.next();
     this.destroy$.complete();
+
+
+    if (this.intervaloSubscription) {
+        this.intervaloSubscription.unsubscribe();
+      }
   }
 
   cols: any[] = [];
@@ -292,6 +298,7 @@ export class ManageOrderComponent implements OnInit{
             (message: string) => {
               Swal.close();
               Swal.fire(message,'', 'success');
+              this.obtenerOrdenesSomee();
               // Realizar otras acciones si es necesario
             },
             error => {
@@ -300,6 +307,19 @@ export class ManageOrderComponent implements OnInit{
             }
           );
      }
+
+
+     private intervaloSubscription: Subscription | undefined;
+
+     getMesaOrdenAfterSeconds() {
+        const intervalo = interval(2000); // 2000 milisegundos = 2 segundos
+
+        // Suscríbete al intervalo y llama a la función obtenerMesasSomee() cada vez que emita un valor
+        this.intervaloSubscription = intervalo.subscribe(() => {
+          this.obtenerOrdenesSomee();
+        });
+      }
+
 
 
 }

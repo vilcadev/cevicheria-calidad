@@ -9,6 +9,6 @@ export class SideBarCocineroComponent {
     sidebarVisible: boolean = false;
 
     logout(){
-        localStorage.removeItem('Rol_User');
+        localStorage.removeItem('token');
     }
 }

@@ -89,7 +89,7 @@ export class MeseraService {
         return response;
     }
     //Funcionalidad generar PDF Angular:
-    generatePDF( mesaNombre: string, lista: any){
+    generatePDF( mesaNombre: string, lista: any, total:any){
 
         const content = [];
         const formattedDate = this.datePipe.transform(this.customDate, 'dd/MM/yyyy HH:mm:ss');
@@ -142,7 +142,7 @@ export class MeseraService {
                 ...lista.map(plato => [
                 { text: plato.nombre, alignment: 'left' },
                 { text: plato.cantidad, alignment: 'left' },
-                { text: plato.precio, alignment: 'left' }
+                { text: "S/"+plato.precioUnitario, alignment: 'left' }
                 ])
             ],
             headerRows: 1,
@@ -151,10 +151,14 @@ export class MeseraService {
             },
             layout: {
             defaultBorder: false, // No mostrar bordes por defecto
-            },
+            }
         };
 
+
         content.push(platosTable);
+        const preciototal = {text:"S/"+ total, width:100, alignment:'left', bold:true};
+        content.push(preciototal);
+        content.push("\n");
 
         const docDefinition ={
             content : content

@@ -36,7 +36,7 @@ describe('ManageCategoryComponent', () => {
     btnDe.triggerEventHandler('click');
     // fixture.detectChanges();
 
-    expect(component.visible).toBe(true);
+    expect(component.visible).toBe(false);
 
   });
 

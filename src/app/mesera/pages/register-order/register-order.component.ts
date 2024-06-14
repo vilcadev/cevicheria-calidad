@@ -27,11 +27,11 @@ import { OrdenDetalle } from '../../interfaces/ordenDetalle.interface';
 export class RegisterOrderComponent implements OnInit{
 
     generarPDF(){
-        if(this.platosList.length === 0){
+        if(this.platillosList.length === 0){
             alert('Ningún platillo encontrado para la Pre - cuenta')
         }
         else{
-            this.meseraService.generatePDF(this.idMesa,this.platosList);
+            this.meseraService.generatePDF(this.mesaObj.nombreMesa,this.platillosList, this.total);
         }
 
     }
@@ -59,6 +59,7 @@ export class RegisterOrderComponent implements OnInit{
         console.log(this.idMesa)
 
       });
+
     //   const IdMesa = this.shareMeseraService.getMesaId();
     //   if(IdMesa ===undefined){
     //     this.meseraService.obtenerMesaInfoSomee(this.idMesa).subscribe((data:EMesa)=>{
