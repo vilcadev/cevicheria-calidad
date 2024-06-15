@@ -16,3 +16,9 @@ export const environment = {
   export const envAzure ={
     url:'https://demoanimestorage.blob.core.windows.net/cevicheriachinita/'
   }
+
+
+  export const recaptcha = {
+    sitekey:'6LcJRfkpAAAAAGLV66BnOLYuCehkRdLoBSqJPg8p',
+    secretkey:'6LcJRfkpAAAAAHVUUWTocPXbBXrXq--00U-CkbMI'
+  }

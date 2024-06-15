@@ -5,6 +5,8 @@ import { Router } from '@angular/router';
 import { Usuario } from '../../interfaces/user.interface';
 import { AbstractControl, FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { JwtTokenResponse } from '../../interfaces/jwt.interface';
+
+import * as CryptoJS from 'crypto-js';
 @Component({
     selector: 'app-login',
     templateUrl: './login.component.html',
@@ -22,7 +24,7 @@ export class LoginComponent implements OnInit {
     email:string;
     password:string;
     jwt:string;
-
+    JWT!: JwtTokenResponse;
     jwtUsuario:Usuario;
 
     constructor(private authService: AuthService
@@ -60,8 +62,14 @@ export class LoginComponent implements OnInit {
         }
 
     }
+    hashPassword(password: string): string {
+        const hash = CryptoJS.SHA256(password).toString(CryptoJS.enc.Base64);
+        return hash;
+      }
 
-    JWT!: JwtTokenResponse;
+
+
+
     onLogin(){
 
 
@@ -69,8 +77,10 @@ export class LoginComponent implements OnInit {
             this.isLoading = true;
             const email = this.form.get("email")?.value ?? '';
             const password = this.form.get("password")?.value ?? '';
+            const hashedPassword = this.hashPassword(password);
 
-            this.authService.inicioSesion(email, password).subscribe(
+            console.log(hashedPassword);
+            this.authService.inicioSesion(email, hashedPassword).subscribe(
               (response: JwtTokenResponse) => {
                 this.JWT = response;
                 this.isLoading = false;
