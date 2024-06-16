@@ -77,7 +77,7 @@ export class AuthService {
   public inicioSesion(correo: string, contrasena: string):Observable<JwtTokenResponse>{
 
     const body = { correo, contrasena };
-    return this.http.post<JwtTokenResponse>(`${this.endpointSomee}/api/Usuario/auth`,body).pipe(
+    return this.http.post<JwtTokenResponse>(`${this.endpoint}/api/Usuario/auth`,body).pipe(
         catchError((error) => {
           let errorMessage = 'Ha ocurrido un error'; // Mensaje por defecto
 
@@ -109,7 +109,7 @@ export class AuthService {
 
   token!: TokenPayload;
   public getRoleFromToken(token: string):string{
-      this.token = jwtDecode(token) as TokenPayload;
+      this.token = getUser(token) as TokenPayload;
       console.log(this.token.rol)
       return this.token.rol;
   }
