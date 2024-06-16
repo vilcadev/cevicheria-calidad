@@ -164,14 +164,14 @@ span{
 
                 </div>
                 <div class="col-6">
-                        <input type="text" pInputText placeholder="Cliente" style="width: 300px;">
+
                     </div>
             </div>
 
             <h5 style="margin-bottom: 20px;" >Boleta</h5>
             <div class="grid my-flex">
                 <div class="col-6">
-                  <p-dropdown class="width-autocomplete width-300 " [options]="cities" [(ngModel)]="selectedDrop" placeholder="Select a City" [showClear]="true" ></p-dropdown>
+                <input type="text" pInputText placeholder="Cliente" style="width: 300px;">
                 </div>
                 <div class="col-6">
                         <input type="text" pInputText placeholder="DNI" class="width-300 ">
@@ -206,36 +206,6 @@ span{
                                     </svg></span> <span data-v-1dde7998="" data-v-7565b8e2=""
                                     class="tw-text-lg lg:tw-text-base 2xl:tw-text-lg">Finalizar</span></button></div>
             </div>
-
-            <!-- <span class="p-float-label">
-                            <input
-                                type="number"
-                                id="DNI"
-                                pInputText
-                                style="width: 300px;"
-                            />
-                            <label for="inputtext">DNI</label>
-                        </span> -->
-            <!-- <hr> -->
-            <!--
-                        <span class="p-buttonset">
-                            <button
-                                pButton
-                                pRipple
-                                type="button"
-                                label="Imprimir"
-                                class="p-button-raised p-button-secondary"
-                                icon="pi pi-print"
-                            ></button>
-                            <button
-                                pButton
-                                pRipple
-                                type="button"
-                                label="Generar Comprobante de Pago"
-                                class="p-button-raised p-button-danger"
-                                icon="pi pi-print"
-                            ></button>
-                        </span> -->
         </div>
     `,
 })

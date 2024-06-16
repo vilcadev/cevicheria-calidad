@@ -13,6 +13,7 @@ export interface DetallePlatillo {
     idPlatillo:  string;
     cantidad:    number;
     nombrePlatillo: string;
+    precioUnitario: string;
     precioTotal: number;
     estado:      number;
 }
