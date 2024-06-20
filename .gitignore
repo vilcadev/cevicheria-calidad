@@ -37,7 +37,6 @@ testem.log
 # System files
 .DS_Store
 Thumbs.db
-/src/config.ts
 
 # Compiled files
 layout.css

@@ -19,6 +19,6 @@ export const environment = {
 
 
   export const recaptcha = {
-    sitekey:'6LcJRfkpAAAAAGLV66BnOLYuCehkRdLoBSqJPg8p',
-    secretkey:'6LcJRfkpAAAAAHVUUWTocPXbBXrXq--00U-CkbMI'
+    sitekey:'6LfYafopAAAAAJEpWv-2rHJ8plLlc800qfrbSlAA',
+    secretkey:'6LfYafopAAAAAJ8iOg9-ORe3vcisC8_U3wSKG4uE'
   }

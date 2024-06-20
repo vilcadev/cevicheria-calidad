@@ -23,9 +23,6 @@
                         <th>Nro Orden <p-sortIcon field="name"></p-sortIcon></th>
                         <th>Estado <p-sortIcon field="estado"></p-sortIcon></th>
                         <th>Hora Pedido<p-sortIcon field="Hora pedido"></p-sortIcon></th>
-                        <!-- <th>Precio <p-sortIcon field="category"></p-sortIcon></th>
-                        <th>Estado <p-sortIcon field="category"></p-sortIcon></th> -->
-                        <!-- <th>Status <p-sortIcon field="inventoryStatus"></p-sortIcon></th> -->
                         <th>Acciones<p-sortIcon field="Acciones"></p-sortIcon></th>
                     </tr>
                 </ng-template>
@@ -47,18 +44,6 @@
                             {{ orden.fecha | date:'H:mm':'es-PE'}}
 
                         </td>
-                        <!-- <td >
-                          <span class="p-column-title">Precio</span>
-                          {{dishe.precio}}
-                      </td> -->
-                      <!-- <td >
-                          <span class="p-column-title">Estado</span>
-
-                          <span [class]="dishe.esMenuDelDia ? 'product-badge status-instock' : 'product-badge status-outofstock'">{{dishe.esMenuDelDia ? 'Habilitado':'Deshabilitado'}}</span>
-                      </td> -->
-                        <!-- <td><span class="p-column-title">Status</span>
-                            <span>{{dishe.status}}</span>
-                        </td> -->
                         <td>
                             <button pButton pRipple label="Terminar Orden" [disabled]="orden.estadoOrden === 1" (click)="$event.stopPropagation" (click)="$event.stopPropagation(); actualizarEstadoOrdenSomee(orden.idOrden, 3)"></button>
                         </td>
@@ -69,26 +54,9 @@
     </div>
 </div>
 
-<!-- MODAL TERMINAR ORDEN -->
- <p-dialog [(visible)]="finishOrder" header="Eliminar PLatillo" [modal]="true" [style]="{width:'450px'}">
-    <div class="flex align-items-center justify-content-center">
-        <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
-        <span>Se actualizará la orden a "Terminado"</span>
-    </div>
-    <ng-template pTemplate="footer">
-        <button pButton pRipple icon="pi pi-times" class="p-button-text" label="Cancelar" (click)="finishOrder = false"></button>
-        <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Aceptar" (click)="terminarOrden(ordenSeleccionada.id,3)"></button>
-    </ng-template>
-</p-dialog>
-
-
-
 <!-- MODAL DETALLES PLATILLO -->
-
 <p-dialog  [(visible)]="visible" [style]="{width: '900px'}" [modal]="true" class="p-fluid">
-
     <h1>Detalle Orden</h1>
-
 
     <p-toolbar *ngIf="listaOrdenDetalleSomee" styleClass="mb-4" [style]="{height:'150px'}">
         <div class="flex xl:gap-8 align-items-end" style="font-size: 15px;
@@ -130,10 +98,6 @@
     <div class="flex justify-content-center ">
         <button icon="fa-solid fa-utensils" pButton pRipple type="button" label="Preparar" [style]="{ width: '15%'}" (click)="actualizarEstadoOrdenSomee(listaOrdenDetalleSomee.idOrden,2)"></button>
       </div>
-
-
-
-
 </p-dialog>
 
 

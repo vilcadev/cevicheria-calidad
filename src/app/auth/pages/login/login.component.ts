@@ -15,11 +15,11 @@ import * as CryptoJS from 'crypto-js';
 })
 export class LoginComponent implements OnInit {
 
+    // Variables
     valCheck: string[] = ['remember'];
     captcha: string;
     captchaCompleto: boolean = false;
 
-    // password!: string;
     isLoading = false;
     email:string;
     password:string;
@@ -71,20 +71,15 @@ export class LoginComponent implements OnInit {
 
 
     onLogin(){
-
-
         if (this.form.valid) {
             this.isLoading = true;
             const email = this.form.get("email")?.value ?? '';
             const password = this.form.get("password")?.value ?? '';
             const hashedPassword = this.hashPassword(password);
-
-            console.log(hashedPassword);
             this.authService.inicioSesion(email, hashedPassword).subscribe(
               (response: JwtTokenResponse) => {
                 this.JWT = response;
                 this.isLoading = false;
-                console.log(this.JWT.token);
                 localStorage.setItem('token', this.JWT.token);
                 const role = this.authService.getRoleFromToken(this.JWT.token);
 
@@ -99,14 +94,9 @@ export class LoginComponent implements OnInit {
                     this.router.navigate(['/cocinero/manageOrder']);
                     break;
                 }
-
-                // Detener el spinner de carga en caso de éxito
               },
               (error) => {
                 console.error('Error en la petición de inicio de sesión:', error);
-                // Manejar el error aquí si es necesario
-
-                // Detener el spinner de carga en caso de error
                 this.isLoading = false;
               }
             );
