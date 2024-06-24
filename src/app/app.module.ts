@@ -14,9 +14,10 @@ import { PhotoService } from './demo/service/photo.service';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { TokenInterceptor } from './interceptors/token.interceptor';
 
+
 @NgModule({
     declarations: [
-        AppComponent, NotfoundComponent
+        AppComponent, NotfoundComponent,
     ],
     imports: [
         AppRoutingModule,

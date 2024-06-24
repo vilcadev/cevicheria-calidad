@@ -41,7 +41,6 @@ export class LoginComponent implements OnInit {
             }
         }
 
-
     form = new FormGroup({
         email: new FormControl('',[
             Validators.required,
@@ -51,8 +50,6 @@ export class LoginComponent implements OnInit {
     })
 
     ngOnInit(): void {
-
-
         const token = localStorage.getItem('token');
         if(token){
             this.authService.redirigirVista(token);
@@ -60,15 +57,11 @@ export class LoginComponent implements OnInit {
         else{
             return;
         }
-
     }
     hashPassword(password: string): string {
         const hash = CryptoJS.SHA256(password).toString(CryptoJS.enc.Base64);
         return hash;
       }
-
-
-
 
     onLogin(){
         if (this.form.valid) {
@@ -103,13 +96,11 @@ export class LoginComponent implements OnInit {
           }
     }
 
-
     resolved(captchaResponse: string){
         this.captcha = captchaResponse;
         console.log("resolved captcha:" + this.captcha);
         this.captchaCompleto=true;
     }
-
 
     // Validador personalizado para asegurar que no haya espacios en blanco
  noWhitespaceValidator(control: AbstractControl): ValidationErrors | null {

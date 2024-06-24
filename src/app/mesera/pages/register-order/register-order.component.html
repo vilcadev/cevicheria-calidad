@@ -48,7 +48,7 @@
                             <tr>
                                 <th>Nombre </th>
                                 <th>Cantidad </th>
-                                <th>Precio Unitario </th>
+                                <th>Precio  </th>
                                 <th>Acciones</th>
                                 <!-- <th>Status <p-sortIcon field="inventoryStatus"></p-sortIcon></th> -->
 
@@ -69,9 +69,9 @@
                                         <!-- <span class="p-column-title">Categoria</span>
                             {{dishe.cantidad}} -->
 
-                                        <input [(ngModel)]="platillo.cantidad"
+                                        <input  [(ngModel)]="platillo.cantidad"
                                         (keyup.enter)="onEnterKeyPressed(platillo, $event.target.value)"
-                                            style="width: 50px; text-align: center;" >
+                                            style="width: 50px; text-align: center;" appOnlyNumbers>
 
                                         <button pButton pRipple type="button" icon="pi pi-plus"
                                             class="p-button-rounded ml-2 buttons-list"
@@ -80,7 +80,7 @@
                                     </div>
                                 </td>
                                 <td>
-                                    <span class="p-column-title">Precio Unitario</span>
+                                    <span class="p-column-title">Precio </span>
                                     {{platillo.precioTotal}}
                                 </td>
 
@@ -113,7 +113,7 @@
                     </div> <!---->
                     <div  class="tw-relative tw-px-5 lg:tw-px-8 tw-mb-5">
                         <div  class="tw-flex tw-flex-col tw-mt-4">
-                            <div data-v-1dde7998="" data-v-7565b8e2="" class=""><textarea
+                            <div data-v-1dde7998="" data-v-7565b8e2="" class=""><textarea appNoSpecialChar
                                     placeholder="Mensaje de impresión para la cocina." rows="2"
                                     class="tw-block tw-resize-none tw-border-2 tw-border-gray-075 tw-text-base tw-py-3 tw-w-full tw-font-semibold tw-text-gray-700 tw-bg-gray-075 focus:tw-border-black tw-rounded-2xl tw-pl-5 tw-pr-11 p-3 "
                                     [(ngModel)]="observacion" ></textarea></div>
@@ -360,10 +360,10 @@
        <span style="color: white;">Productos </span>
     </div> -->
 
-    <button pButton pRipple type="button" [label]="(selectedPlatillos.length | i18nPlural: clientsMap)"
+    <!-- <button pButton pRipple type="button" [label]="(selectedPlatillos.length | i18nPlural: clientsMap)"
         class="p-button-success fixed-button" style="width: 100%;" (click)="transferirPlatillos()">
         <i class="pi pi-shopping-bag" style="color: white; font-size: 30px;"></i>
-    </button>
+    </button> -->
 </p-dialog>
 
 <div class="overlay" *ngIf="loading">

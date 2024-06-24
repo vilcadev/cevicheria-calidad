@@ -12,8 +12,10 @@
         <div class="field col">
       <label >Nombre:</label>
 
-            <input pInputText  type="text"  formControlName="nombreCategoria" placeholder="Ingrese nombre de la categoria" style="width: 100%;">
-            <small *ngIf="isRequerido('nombreCategoria')" id="username-help" class="p-error" style="font-weight: bold;">El nombre de la categoria es requerido</small>
+            <input pInputText  type="text"  formControlName="nombreCategoria" placeholder="Ingrese nombre de la categoria" style="width: 100%;"  maxlength="20">
+            <small *ngIf="isRequerido('nombreCategoria','required')" id="username-help" class="p-error" style="font-weight: bold;">El nombre de la categoria es requerido</small>
+            <small *ngIf="isRequerido('nombreCategoria','pattern')" id="username-help" class="p-error" style="font-weight: bold;">Caracteres no aceptados</small>
+            <small *ngIf="isRequerido('nombrePlatillo','maxlength')" id="username-help" class="p-error" style="font-weight: bold;">El nombre excede el limite de caracteres</small>
         </div>
       </div>
       <button pButton pRipple type="submit" label="Agregar Categoria" class="p-button-raised p-button-success"></button>
@@ -72,8 +74,10 @@
             <div class="formgrid grid">
               <div class="field col">
             <label >Nombre:</label>
-                  <input pInputText  type="text"  formControlName="nombreCategoria" placeholder="Ingrese nombre de la categoria" style="width: 100%;">
-                  <small *ngIf="isRequerido('nombreCategoria')" id="username-help" class="p-error" style="font-weight: bold;">El nombre de la categoria es requerida</small>
+                  <input pInputText  type="text"  formControlName="nombreCategoria" placeholder="Ingrese nombre de la categoria" style="width: 100%;"  maxlength="15">
+                  <small *ngIf="isRequerido('nombreCategoria','required')" id="username-help" class="p-error" style="font-weight: bold;">El nombre de la categoria es requerida</small>
+                  <small *ngIf="isRequerido('nombreCategoria','pattern')" id="username-help" class="p-error" style="font-weight: bold;">Caracteres no aceptados</small>
+                  <small *ngIf="isRequerido('nombrePlatillo','maxlength')" id="username-help" class="p-error" style="font-weight: bold;">El nombre excede el limite de caracteres</small>
               </div>
             </div>
         <div class="flex">

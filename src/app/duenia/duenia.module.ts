@@ -29,6 +29,7 @@ import { CalendarModule } from 'primeng/calendar';
 import { NgxDropzoneModule } from 'ngx-dropzone';
 import { ManageCategoryComponent } from './pages/manage-category/manage-category.component';
 import { InputNumberModule } from 'primeng/inputnumber';
+import { DecimalNumbersDirective } from '../directives/decimal-numbers.directive';
 
 @NgModule({
     declarations:[
@@ -39,6 +40,7 @@ import { InputNumberModule } from 'primeng/inputnumber';
         ReportComponent,
         SalesComponent,
         ManageCategoryComponent,
+        DecimalNumbersDirective
     ],
     imports:[
       CommonModule,

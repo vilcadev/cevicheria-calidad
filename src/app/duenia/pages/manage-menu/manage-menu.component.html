@@ -61,7 +61,7 @@
                     </td> -->
                     <td>
                         <input type="number" [(ngModel)]="platillo.precioUnitario" pInputText placeholder="Precio"
-                        [ngClass]="{'exceed-stock': validacionRealizada && !platillo.precioUnitario}">
+                        [ngClass]="{'exceed-stock': validacionRealizada && !platillo.precioUnitario}" appDecimalNumbers>
                     </td>
                     <td>
                         <div class="flex">

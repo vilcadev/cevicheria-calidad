@@ -7,12 +7,11 @@
   <p-dialog header="Nuevo Platillo" [(visible)]="visible" [style]="{width: '500px'}" [modal]="true" class="p-fluid" (onHide)="resetFormPlatillo()">
     <!-- Modal Agregar Platillo -->
     <form [formGroup]="form" (ngSubmit)="agregarProductoSomme()">
-      <!-- <input pInputText  required autofocus type="text" id="nombrePlatillo" [(ngModel)]="miPlatillo.nombre" name="nombre" > -->
       <div class="formgrid grid">
         <div class="field col">
       <label >Nombre:</label>
 
-            <input pInputText  type="text"  formControlName="nombrePlatillo" placeholder="Ingrese nombre del platillo" style="width: 100%;" maxlength="15">
+            <input pInputText  type="text"  formControlName="nombrePlatillo" placeholder="Ingrese nombre del platillo" style="width: 100%;" maxlength="20">
             <small *ngIf="isRequerido('nombrePlatillo','required')" id="username-help" class="p-error" style="font-weight: bold;">El nombre del platillo es requerido</small>
             <small *ngIf="isRequerido('nombrePlatillo','pattern')" id="username-help" class="p-error" style="font-weight: bold;">Caracteres no aceptados</small>
             <small *ngIf="isRequerido('nombrePlatillo','maxlength')" id="username-help" class="p-error" style="font-weight: bold;">El nombre excede el limite de caracteres</small>
@@ -111,14 +110,13 @@
       <!-- Modal Editar Platillo -->
       <p-dialog [(visible)]="productDialog" [style]="{width: '450px'}" header="Editar Platillo" [modal]="true" class="p-fluid" (onHide)="resetFormPlatillo()" >
         <form [formGroup]="form" (ngSubmit)="editarPlatilloSomee()">
-            <!-- <input pInputText  required autofocus type="text" id="nombrePlatillo" [(ngModel)]="miPlatillo.nombre" name="nombre" > -->
             <div class="formgrid grid">
               <div class="field col">
             <label >Nombre:</label>
 
-                  <input pInputText  type="text"  formControlName="nombrePlatillo" placeholder="Ingrese nombre del platillo" style="width: 100%;">
+                  <input pInputText  type="text"  formControlName="nombrePlatillo" placeholder="Ingrese nombre del platillo" style="width: 100%;" maxlength="20">
                   <small *ngIf="isRequerido('nombrePlatillo','required')" id="username-help" class="p-error" style="font-weight: bold;">El nombre del platillo es requerido</small>
-                  <small *ngIf="isRequerido('nombrePlatillo','maxLength')" id="username-help" class="p-error" style="font-weight: bold;">El nombre del platillo es requerido</small>
+                  <small *ngIf="isRequerido('nombrePlatillo','maxlength')" id="username-help" class="p-error" style="font-weight: bold;">El nombre del platillo es requerido</small>
                   <small *ngIf="isRequerido('nombrePlatillo','pattern')" id="username-help" class="p-error" style="font-weight: bold;">Caracteres no aceptados</small>
               </div>
               <div class="field col">

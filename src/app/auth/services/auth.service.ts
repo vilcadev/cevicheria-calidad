@@ -8,7 +8,6 @@ import { environmentSomee } from 'src/config';
 import { jwtDecode } from 'jwt-decode';
 import { Router } from '@angular/router';
 
-
 interface TokenPayload {
     email: string;
     rol: string;
@@ -56,8 +55,6 @@ export class AuthService {
         break;
     }
   }
-
-
   public getRoleFromToken(token: string):string{
       this.token = jwtDecode(token) as TokenPayload;
       console.log(this.token.rol)

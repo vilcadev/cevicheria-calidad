@@ -35,6 +35,8 @@ import { SideBarMeseraComponent } from './components/side-bar-mesera/side-bar-me
 import { SidebarModule } from 'primeng/sidebar';
 import { CalendarModule } from 'primeng/calendar';
 import { FullCalendarModule } from '@fullcalendar/angular';
+import { NoSpecialCharDirective } from '../directives/no-special-char.directive';
+import { OnlyNumbersDirective } from '../directives/only-numbers.directive';
 
 @NgModule({
   declarations:[
@@ -43,7 +45,10 @@ import { FullCalendarModule } from '@fullcalendar/angular';
     RegisterOrderComponent,
     PaymentComponentM,
     PlatillosComponentM,
-    SideBarMeseraComponent
+    SideBarMeseraComponent,
+    NoSpecialCharDirective,
+    OnlyNumbersDirective
+
 
   ],
   imports:[

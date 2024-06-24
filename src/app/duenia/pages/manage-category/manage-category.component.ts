@@ -31,7 +31,7 @@ export class ManageCategoryComponent implements OnInit{
     ) {
         this.form = this.fb.group({
             idCategoria:[''],
-            nombreCategoria: ['', Validators.required],
+            nombreCategoria: ['',  [Validators.required, Validators.pattern('^[a-zA-Z]+(?: [a-zA-Z]+)*$'), Validators.maxLength(20)]],
         });
     }
 
@@ -158,10 +158,11 @@ export class ManageCategoryComponent implements OnInit{
         this.form.reset();
     }
 
-    isRequerido(controlName: string) {
+
+    isRequerido(controlName: string, errorType: string) {
         const control = this.form.get(controlName);
-        return control?.invalid && (control?.touched || control?.dirty);
-    }
+        return control?.invalid && control?.errors && control?.errors[errorType] && (control?.touched || control?.dirty);
+      }
 
     isTouched() {
         Object.values(this.form.controls).forEach((control) => {

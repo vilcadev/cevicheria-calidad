@@ -20,7 +20,6 @@ export class ManageMenuComponent implements OnInit{
     }
 
     ngOnInit(): void {
-        this.obtenerPlatillos();
         this.obtenerPlatillosSomee();
     }
 
@@ -111,19 +110,6 @@ export class ManageMenuComponent implements OnInit{
         }
       }
 
-
-    obtenerPlatillos() {
-        this.dueniaService.obtenerPlatillos().pipe(
-          map((response: any) => response.data) // Extrae la lista de platillos de la respuesta
-        ).subscribe({
-          next: (data) => {
-            this.platillos = data; // Asigna la lista completa de platillos
-          },
-          error: (e) => {
-            console.error('Error al obtener platillos:', e);
-          }
-        });
-      }
 
       filterDishes(event: any) {
         const filtered: any[] = [];

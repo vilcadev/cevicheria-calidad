@@ -13,7 +13,6 @@ import { EPlatillo, Platillo } from '../interfaces/platillos.interface';
 import { Categoria } from '../interfaces/categoria.interface';
 import Swal from 'sweetalert2';
 import { Menu, MenuRequest } from '../interfaces/menu.interface';
-// import { createClient } from '@supabase/supabase-js';
 
 @Injectable({
   providedIn: 'root'
