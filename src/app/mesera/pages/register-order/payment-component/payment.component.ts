@@ -1,9 +1,13 @@
+import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
+import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SelectItem } from 'primeng/api';
+import { DetalleComprobante, IComprobante } from 'src/app/mesera/interfaces/comprobante.interface';
 import { OrdenDetalle } from 'src/app/mesera/interfaces/ordenDetalle.interface';
 import { EPlatilloM } from 'src/app/mesera/interfaces/order.interface';
 import { MeseraService } from 'src/app/mesera/services/mesera.service';
+import Swal from 'sweetalert2';
 
 @Component({
     selector: 'payment-component',
@@ -117,6 +121,7 @@ span{
     width: 20rem;
 }
         </style>
+        <form [formGroup]="form" (ngSubmit)="registrarComprobante()">
         <div class="flex flex-column ">
             <!-- <div class="col-12 md:col-4 mt-5 md:mt-0">
                     <router-outlet></router-outlet>
@@ -149,12 +154,20 @@ span{
                             ></i
                         ></span>
                         <input
+                        type="number"
+                        maxlength="9"
+                        appOnlyNumbers
+                        formControlName="contacto"
                             *ngIf="whatsappButton"
                             type="text"
                             pInputText
                             placeholder="Enviar a..."
                         />
                         <input
+                        formControlName="contacto"
+                        [ngClass]="{
+                            'ng-dirty ng-invalid': form.controls.contacto.invalid && form.controls.contacto.touched
+                          }"
                             *ngIf="gmailButton"
                             type="text"
                             pInputText
@@ -171,10 +184,10 @@ span{
             <h5 style="margin-bottom: 20px;" >Boleta</h5>
             <div class="grid my-flex">
                 <div class="col-6">
-                <input type="text" pInputText placeholder="Cliente" style="width: 300px;">
+                <input formControlName="nombreCliente" type="text" pInputText placeholder="Cliente" style="width: 300px;" maxlength="20">
                 </div>
                 <div class="col-6">
-                        <input type="text" pInputText placeholder="DNI" class="width-300 ">
+                        <input maxlength="8" type="number" formControlName="dni" type="text" pInputText placeholder="DNI" class="width-300" appOnlyNumbers>
                     </div>
             </div>
 
@@ -184,14 +197,14 @@ span{
                 <h5>Total</h5>
                 </div>
                 <div class="col-6" >
-                <h5 *ngIf="total">S/ {{ total }}</h5>
+                <h5 *ngIf="total">S/ {{ total | number:'1.2-2'}}</h5>
                     </div>
             </div>
 
             <hr />
 
             <div class="tw-h-16">
-            <div data-v-1dde7998="" data-v-7565b8e2="" class="tw-flex-grow"><button style=" border: none;" data-v-1dde7998=""
+            <div data-v-1dde7998="" data-v-7565b8e2="" class="tw-flex-grow"><button (click)=generarPDF() type="submit" style=" border: none;" data-v-1dde7998=""
                                 data-v-7565b8e2="" split=""
                                 class="tw-rounded-none xl:tw-rounded-l-2xl tw-w-full tw-h-full tw-flex tw-items-center tw-justify-center tw-bg-susii-red-500 hover:tw-bg-susii-red-600 tw-text-white tw-font-semibold tw-py-2.5"
                                 data-dashlane-rid="b9135939baf3f208" data-dashlane-label="true"
@@ -207,10 +220,12 @@ span{
                                     class="tw-text-lg lg:tw-text-base 2xl:tw-text-lg">Finalizar</span></button></div>
             </div>
         </div>
+        </form>
+
     `,
 })
 export class PaymentComponentM implements OnInit {
-    constructor(private route: ActivatedRoute, private meseraService:MeseraService) {}
+
     cities: SelectItem[] = [];
     platillosList:EPlatilloM[]=[];
     ordenDetalle:OrdenDetalle;
@@ -218,6 +233,33 @@ export class PaymentComponentM implements OnInit {
     selectedDrop: SelectItem = { value: '' };
     private router: Router;
     idMesa: string;
+    form!: FormGroup;
+    isFormSubmitted = false;
+
+
+    constructor(private route: ActivatedRoute, private meseraService:MeseraService, public fb:FormBuilder,private location:Location) {
+        this.form = this.fb.group({
+            contacto: ['', this.validateContact()],
+            nombreCliente: [''],
+            dni: ['']
+        });
+    }
+
+    validateContact(): any {
+        return (control: AbstractControl) => {
+          if (this.whatsappButton) {
+            // Validar número de teléfono para WhatsApp
+            const isValid = /^\d+$/.test(control.value);
+            return isValid ? null : { invalidContact: true };
+          } else if (this.gmailButton) {
+            // Validar email para Gmail
+            return Validators.email(control);
+          }
+          return null;
+        };
+      }
+
+
 
 
     ngOnInit() {
@@ -240,6 +282,7 @@ export class PaymentComponentM implements OnInit {
     obtenerOrdenSomee(){
         this.meseraService.obtenerOrdenSomee(this.idMesa).subscribe((response:OrdenDetalle)=>{
             this.ordenDetalle = response;
+            console.log(this.ordenDetalle)
 
             this.platillosList = this.ordenDetalle.platillos.map(detallePlatillo => {
                 this.total += detallePlatillo.precioTotal
@@ -256,6 +299,65 @@ export class PaymentComponentM implements OnInit {
         });
       }
 
+      registrarComprobante(){
+
+        if (this.form.invalid) {
+            this.isFormSubmitted = true;
+            this.isTouched();
+            return;
+        }
+        const detalleComprobante: DetalleComprobante[]=[];
+
+        for (let i = 0; i < this.platillosList.length; i++) {
+
+            detalleComprobante.push({
+                nombre: this.platillosList[i].nombre,
+                cantidad: this.platillosList[i].cantidad,
+                precioUnitario: this.platillosList[i].precioUnitario,
+            })
+
+        }
+
+        const comprobanteRequest:IComprobante ={
+            ordenId: this.ordenDetalle.idOrden,
+            fecha: this.formatearFecha(new Date),
+            mesaId: this.ordenDetalle.mesaId,
+            nombreCliente:   this.form.get('nombreCliente')?.value || 'none',
+            contacto:   this.form.get('contacto')?.value,
+            dni:   this.form.get('dni')?.value || '666',
+            montoTotal: this.total,
+            detalles: detalleComprobante
+
+        }
+        console.log(comprobanteRequest)
+
+        this.meseraService.registrarComprobante(comprobanteRequest).subscribe(
+            (response) => {
+                if(response.response.isSuccess){
+                    Swal.close();
+                    Swal.fire(response.response.isSuccess,'', 'success');
+                    this.back();
+                    return;
+                }
+              }
+        )
+      }
+
+      back() {
+        this.location.back(); // <-- go back to previous location on cancel
+      }
+
+
+    generarPDF(){
+        if(this.platillosList.length === 0){
+            alert('Ningún platillo encontrado para el comprobante')
+        }
+        else{
+            this.meseraService.generatePDF(this.ordenDetalle.nombreMesa,this.platillosList, this.total);
+        }
+
+    }
+
     whatsappButton: boolean = true;
     gmailButton: boolean = false;
     fechaSeleccionada: Date;
@@ -268,5 +370,21 @@ export class PaymentComponentM implements OnInit {
     showGmail() {
         this.whatsappButton = false;
         this.gmailButton = true;
+    }
+
+    formatearFecha(fecha:Date){
+        const year = fecha.getFullYear();
+        const month = (fecha.getMonth() + 1).toString().padStart(2, '0'); // Los meses en JavaScript van de 0 a 11, por lo que necesitas agregar 1
+        const day = fecha.getDate().toString().padStart(2, '0');
+        const hours = fecha.getHours().toString().padStart(2, '0');
+        const minutes = fecha.getMinutes().toString().padStart(2, '0');
+
+        return `${year}-${month}-${day}T${hours}:${minutes}`;
+      }
+
+      isTouched() {
+        Object.values(this.form.controls).forEach((control) => {
+            control.markAsTouched();
+        });
     }
 }

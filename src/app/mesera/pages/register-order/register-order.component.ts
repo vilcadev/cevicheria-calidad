@@ -328,14 +328,17 @@ export class RegisterOrderComponent implements OnInit{
                 }
               }
 
-      )};
+      )
+    };
 
       formatearFecha(fecha:Date){
         const year = fecha.getFullYear();
-        const month = fecha.getMonth() + 1; // Los meses en JavaScript van de 0 a 11, por lo que necesitas agregar 1
-        const day = fecha.getDate();
+        const month = (fecha.getMonth() + 1).toString().padStart(2, '0'); // Los meses en JavaScript van de 0 a 11, por lo que necesitas agregar 1
+        const day = fecha.getDate().toString().padStart(2, '0');
+        const hours = fecha.getHours().toString().padStart(2, '0');
+        const minutes = fecha.getMinutes().toString().padStart(2, '0');
 
-        return `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
+        return `${year}-${month}-${day}T${hours}:${minutes}`;
       }
 
 

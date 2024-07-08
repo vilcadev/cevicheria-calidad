@@ -5,6 +5,7 @@ export interface OrdenDetalle {
     fecha:       Date;
     estadoOrden: number;
     mesaId:      string;
+    nombreMesa:string;
     observacion: string;
     platillos:   DetallePlatillo[];
 }

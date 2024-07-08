@@ -7,6 +7,7 @@ import { AbstractControl, FormControl, FormGroup, ValidationErrors, Validators }
 import { JwtTokenResponse } from '../../interfaces/jwt.interface';
 
 import * as CryptoJS from 'crypto-js';
+import { ReCaptchaV3Service } from 'ng-recaptcha';
 @Component({
     selector: 'app-login',
     templateUrl: './login.component.html',
@@ -28,7 +29,7 @@ export class LoginComponent implements OnInit {
     jwtUsuario:Usuario;
 
     constructor(private authService: AuthService
-        , private router: Router
+        , private router: Router,  private recaptchaV3Service: ReCaptchaV3Service,
         ){
             this.captcha  ='';
 
@@ -40,6 +41,19 @@ export class LoginComponent implements OnInit {
                 return;
             }
         }
+
+        public log: string[] = [];
+
+  public addTokenLog(message: string, token: string | null) {
+    this.log.push(`${message}: ${this.formatToken(token)}`);
+  }
+  public formatToken(token: string | null) {
+    return token !== null
+      ? `${token.substring(0, 7)}...${token.substring(token.length - 7)}`
+      : 'null';
+  }
+
+
 
     form = new FormGroup({
         email: new FormControl('',[

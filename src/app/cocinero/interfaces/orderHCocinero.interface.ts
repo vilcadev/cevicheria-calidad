@@ -35,7 +35,7 @@ export interface OrderHCocinero {
     fecha:            Date;
     estadoOrden:      number;
     mesaId:           string;
-    mesa:             null;
+    nombreMesa:             null;
     observacion:      string;
     ordenesPlatillos: null;
 }
@@ -48,7 +48,7 @@ export interface EOrderRegistradaDetalle {
     idOrden:     string;
     fecha:       Date;
     estadoOrden: number;
-    mesaId:      string;
+    nombreMesa:      string;
     observacion: string;
     platillos:   Platillo[];
 }

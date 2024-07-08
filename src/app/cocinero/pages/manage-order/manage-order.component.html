@@ -13,24 +13,20 @@
 
           <!-- Tabla de patillos registrados -->
             <p-table #dt [value]="listaOrdenesSomee" [columns]="cols" responsiveLayout="scroll" [rows]="10" [globalFilterFields]="['name','country.name','representative.name','status']" [paginator]="true" [rowsPerPageOptions]="[10,20,30]" [showCurrentPageReport]="true" selectionMode="multiple" [rowHover]="true" dataKey="id">
-                <ng-template pTemplate="caption">
-                    <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
-                        <h5 class="m-0">Platillos</h5>
-                    </div>
-                </ng-template>
+
                 <ng-template pTemplate="header">
                     <tr style="font-size: 25px;">
-                        <th>Nro Orden <p-sortIcon field="name"></p-sortIcon></th>
-                        <th>Estado <p-sortIcon field="estado"></p-sortIcon></th>
-                        <th>Hora Pedido<p-sortIcon field="Hora pedido"></p-sortIcon></th>
-                        <th>Acciones<p-sortIcon field="Acciones"></p-sortIcon></th>
+                        <th>Mesa </th>
+                        <th>Estado </th>
+                        <th>Hora Pedido</th>
+                        <th>Acciones</th>
                     </tr>
                 </ng-template>
                 <ng-template pTemplate="body" let-orden>
                     <tr  (click)="obtenerDetalleOrdenSomee(orden.mesaId)" style="cursor: pointer;" *ngIf="orden.estadoOrden!=3">
                         <td >
                             <span class="p-column-title">Name</span>
-                            {{ orden.idOrden }}
+                            {{ orden.nombreMesa }}
                         </td>
 
                         <td >
@@ -58,10 +54,10 @@
 <p-dialog  [(visible)]="visible" [style]="{width: '900px'}" [modal]="true" class="p-fluid">
     <h1>Detalle Orden</h1>
 
-    <p-toolbar *ngIf="listaOrdenDetalleSomee" styleClass="mb-4" [style]="{height:'150px'}">
+    <p-toolbar *ngIf="listaOrdenDetalleSomee" styleClass="mb-4" [style]="{height:'100px'}">
         <div class="flex xl:gap-8 align-items-end" style="font-size: 15px;
         font-weight: bold;">
-            <div>Nro Orden: {{ listaOrdenDetalleSomee?.idOrden }}</div>
+            <div>Mesa: {{ listaOrdenDetalleSomee?.nombreMesa }}</div>
             <div>Estado:   <span [class]="listaOrdenDetalleSomee?.estadoOrden === 1 ? 'product-badge status-outofstock' : 'product-badge status-lowstock'">
                 {{ listaOrdenDetalleSomee?.estadoOrden === 1 ? 'Recibido' : 'En Preparación'}}
               </span></div>
@@ -82,10 +78,10 @@
         <div class="flex flex-column row-gap-6" style="font-size: 15px;
         font-weight: bold;">
             <div class="flex align-items-end sm:gap-2" *ngFor="let detalle of listaOrdenDetalleSomee?.platillos">
-                <p-badge [value]="detalle?.cantidad" size="large" severity="warning"></p-badge>
+                <p-badge [value]="detalle?.cantidad" size="large" severity="warning" ></p-badge>
                 <div>{{ detalle?.nombrePlatillo}}</div>
 
-                <span [class]="detalle?.estado?.id ===1 ? 'product-badge status-outofstock' : 'product-badge status-lowstock'">{{detalle?.estado ===1 ? 'Recibido' : 'En Preparación'}}</span>
+                <span [class]="detalle?.estado ===1 ? 'product-badge status-outofstock' : 'product-badge status-lowstock'">{{detalle?.estado ===1 ? 'Recibido' : 'En Preparación'}}</span>
             </div>
         </div>
     </p-toolbar>
@@ -93,6 +89,18 @@
     <div *ngIf="!listaOrdenDetalleSomee" style="display: flex;
     justify-content: center; margin-bottom: 15px;">
     <div class="loader"></div>
+</div>
+
+<p-toolbar *ngIf="listaOrdenDetalleSomee" styleClass="mb-4" [style]="{height:'100px'}">
+    <div class="flex xl:gap-8 align-items-end" style="font-size: 15px;
+    font-weight: bold;">
+        <div>Observación: {{ listaOrdenDetalleSomee?.observacion }}</div>
+    </div>
+</p-toolbar>
+
+<div *ngIf="!listaOrdenDetalleSomee" style="display: flex;
+justify-content: center; margin-bottom: 15px;">
+<div class="loader"></div>
 </div>
 
     <div class="flex justify-content-center ">

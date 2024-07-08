@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import {CommonModule, DatePipe} from '@angular/common';
+import {CommonModule, CurrencyPipe, DatePipe} from '@angular/common';
 import { SelectTablesComponent } from './pages/select-tables/select-tables.component';
 import { MeseraRoutingModule } from './mesera.routing.module';
 
@@ -29,7 +29,7 @@ import { ToolbarModule } from 'primeng/toolbar';
 import { SplitButtonModule } from 'primeng/splitbutton';
 import { PaymentComponentM } from './pages/register-order/payment-component/payment.component';
 import { PlatillosComponentM } from './pages/register-order/platillos-component/platillos.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SpeedDialModule } from 'primeng/speeddial';
 import { SideBarMeseraComponent } from './components/side-bar-mesera/side-bar-mesera.component';
 import { SidebarModule } from 'primeng/sidebar';
@@ -71,10 +71,11 @@ import { OnlyNumbersDirective } from '../directives/only-numbers.directive';
     SplitButtonModule,
     FormsModule,
     SpeedDialModule,
+    ReactiveFormsModule,
     SidebarModule,
     CalendarModule,
     FullCalendarModule
   ],
-  providers:[  DatePipe,MeseraService]
+  providers:[  DatePipe,MeseraService, CurrencyPipe]
   })
   export class MeseraModule { }

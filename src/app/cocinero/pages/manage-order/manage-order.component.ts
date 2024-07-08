@@ -26,7 +26,7 @@ export class ManageOrderComponent implements OnInit, OnDestroy{
 
   ngOnInit(): void {
     this.obtenerOrdenesSomee();
-    this.getMesaOrdenAfterSeconds();
+    // this.getMesaOrdenAfterSeconds();
   }
 
   ngOnDestroy(): void {
@@ -47,6 +47,7 @@ export class ManageOrderComponent implements OnInit, OnDestroy{
      obtenerOrdenesSomee(){
          this.cocineroService.obtenerOrdenesRegistradasSomee().subscribe((response:EOrderRegistrada[])=>{
              this.listaOrdenesSomee = response;
+             console.log(this.listaOrdenesSomee);
          })
      }
 
@@ -55,6 +56,7 @@ export class ManageOrderComponent implements OnInit, OnDestroy{
         this.visible = true;
         this.cocineroService.obtenerDetallerOrdenRegistradaSomee(mesaId).subscribe((response:EOrderRegistradaDetalle)=>{
             this.listaOrdenDetalleSomee = response;
+            console.log(this.listaOrdenDetalleSomee)
         })
      }
 

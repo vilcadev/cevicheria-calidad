@@ -38,7 +38,7 @@
                             <a class="font-medium no-underline ml-2 text-right cursor-pointer" style="color: var(--primary-color)"></a>
                         </div>
                         <div [hidden]="form.invalid" >
-                            <re-captcha class="flex justify-content-center mb-3" (resolved)="resolved($event)" siteKey="6LfYafopAAAAAJEpWv-2rHJ8plLlc800qfrbSlAA"></re-captcha>
+                            <re-captcha class="flex justify-content-center mb-3"  (resolved)="addTokenLog('Normal mode resolved', $event)"></re-captcha>
                         </div>
                         <button [disabled]="form.invalid || isLoading || !captchaCompleto" pButton pRipple class="w-full p-3 text-xl" style="justify-content: center;" type="submit">
                             <ng-container *ngIf="!isLoading; else loading">
