@@ -1,5 +1,5 @@
 
-import {  Component, type OnInit } from '@angular/core';
+import {  Component, ElementRef, ViewChild, type OnInit } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
 import { Usuario } from '../../interfaces/user.interface';
@@ -7,7 +7,9 @@ import { AbstractControl, FormControl, FormGroup, ValidationErrors, Validators }
 import { JwtTokenResponse } from '../../interfaces/jwt.interface';
 
 import * as CryptoJS from 'crypto-js';
-import { ReCaptchaV3Service } from 'ng-recaptcha';
+
+
+import { ReCaptcha2Component } from 'ngx-captcha';
 @Component({
     selector: 'app-login',
     templateUrl: './login.component.html',
@@ -28,8 +30,24 @@ export class LoginComponent implements OnInit {
     JWT!: JwtTokenResponse;
     jwtUsuario:Usuario;
 
+    //catpcha config
+    @ViewChild('catpchaElem') catpchaElem:ReCaptcha2Component;
+    @ViewChild('langInput') langInput: ElementRef;
+
+    public captchIsLoaded = false;
+    public catpchaSuccess = false;
+    public catpchaIsExpired = false;
+    public catpchaResponse?:string;
+
+    public theme : 'light' | 'dark' = 'light';
+    public size : 'compact' | 'normal' = 'normal';
+    public lang = 'es';
+    public type: 'image' | 'audio';
+    public sitekey='6LdJtAoqAAAAAM8eei4kvmySAMCwvtwGOkAsQlVH'
+
+
     constructor(private authService: AuthService
-        , private router: Router,  private recaptchaV3Service: ReCaptchaV3Service,
+        , private router: Router,
         ){
             this.captcha  ='';
 
@@ -44,13 +62,12 @@ export class LoginComponent implements OnInit {
 
         public log: string[] = [];
 
-  public addTokenLog(message: string, token: string | null) {
-    this.log.push(`${message}: ${this.formatToken(token)}`);
-  }
-  public formatToken(token: string | null) {
-    return token !== null
-      ? `${token.substring(0, 7)}...${token.substring(token.length - 7)}`
-      : 'null';
+
+
+  handleSuccess(data){
+    console.log(data);
+    this.captchaCompleto=true;
+
   }
 
 
@@ -61,6 +78,7 @@ export class LoginComponent implements OnInit {
             Validators.email,
         ]),
         password: new FormControl('',[Validators.required, Validators.pattern(/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>])[^\s]+$/)]),
+        recatpcha: new FormControl('',[Validators.required])
     })
 
     ngOnInit(): void {

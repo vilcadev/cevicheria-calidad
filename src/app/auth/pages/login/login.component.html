@@ -37,10 +37,23 @@
                         <div class="flex align-items-center justify-content-between mb-5 gap-5">
                             <a class="font-medium no-underline ml-2 text-right cursor-pointer" style="color: var(--primary-color)"></a>
                         </div>
-                        <div [hidden]="form.invalid" >
-                            <re-captcha class="flex justify-content-center mb-3"  (resolved)="addTokenLog('Normal mode resolved', $event)"></re-captcha>
+                        <div style="display: flex;
+                        justify-content: center;
+                        padding-bottom: 25px;">
+                            <ngx-recaptcha2 #catpchaElem
+                            [siteKey]="sitekey"
+                            (success)="handleSuccess($event)"
+                            [size]="size"
+                            [hl]="lang"
+                            [theme]="theme"
+                            [type]="type"
+                            formControlName="recatpcha"
+                            >
+
+                            </ngx-recaptcha2>
+
                         </div>
-                        <button [disabled]="form.invalid || isLoading || !captchaCompleto" pButton pRipple class="w-full p-3 text-xl" style="justify-content: center;" type="submit">
+                        <button [disabled]="form.invalid || isLoading" pButton pRipple class="w-full p-3 text-xl" style="justify-content: center;" type="submit">
                             <ng-container *ngIf="!isLoading; else loading">
                               Iniciar Sesión
                             </ng-container>

@@ -8,17 +8,10 @@ import { InputTextModule } from 'primeng/inputtext';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
-import {
-    RecaptchaModule,
-    RECAPTCHA_SETTINGS,
-    RecaptchaSettings,
-    RecaptchaFormsModule,
-    RECAPTCHA_V3_SITE_KEY,
-    RecaptchaV3Module,
-  } from 'ng-recaptcha';
+import { RecaptchaModule } from 'ng-recaptcha';
 
-const RECAPTCHA_V3_STACKBLITZ_KEY = '6LfFafopAAAAANolx7HDtr4rV4o0r4O6AhM-rZsG';
-const RECAPTCHA_V2_DUMMY_KEY = '6LfFafopAAAAAK2sG6brLQSyftWRBUABkd2rFj1C';
+import { NgxCaptchaModule } from 'ngx-captcha';
+
 
 @NgModule({
     declarations:[
@@ -35,22 +28,9 @@ const RECAPTCHA_V2_DUMMY_KEY = '6LfFafopAAAAAK2sG6brLQSyftWRBUABkd2rFj1C';
         ReactiveFormsModule,
         ProgressSpinnerModule,
         RecaptchaModule,
-        RecaptchaFormsModule,
-        RecaptchaV3Module,
+        NgxCaptchaModule
     ],
     exports:[
-    ],
-    providers: [
-        {
-          provide: RECAPTCHA_V3_SITE_KEY,
-          useValue: RECAPTCHA_V3_STACKBLITZ_KEY,
-        },
-        {
-          provide: RECAPTCHA_SETTINGS,
-          useValue: {
-            siteKey: RECAPTCHA_V2_DUMMY_KEY,
-          } as RecaptchaSettings,
-        },
-      ],
+    ]
     })
     export class AuthModule { }
