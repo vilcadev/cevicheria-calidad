@@ -29,7 +29,7 @@ export class LoginComponent implements OnInit {
     jwt:string;
     JWT!: JwtTokenResponse;
     jwtUsuario:Usuario;
-
+    var:any;
     //catpcha config
     @ViewChild('catpchaElem') catpchaElem:ReCaptcha2Component;
     @ViewChild('langInput') langInput: ElementRef;
@@ -73,12 +73,12 @@ export class LoginComponent implements OnInit {
 
 
     form = new FormGroup({
-        email: new FormControl('',[
+        email: new FormControl('omar@gmail.com',[
             Validators.required,
             Validators.email,
         ]),
-        password: new FormControl('',[Validators.required, Validators.pattern(/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>])[^\s]+$/)]),
-        recatpcha: new FormControl('',[Validators.required])
+        password: new FormControl('Abc123$',[Validators.required, Validators.pattern(/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>])[^\s]+$/)]),
+        recatpcha: new FormControl('')
     })
 
     ngOnInit(): void {
@@ -89,6 +89,7 @@ export class LoginComponent implements OnInit {
         else{
             return;
         }
+
     }
     hashPassword(password: string): string {
         const hash = CryptoJS.SHA256(password).toString(CryptoJS.enc.Base64);

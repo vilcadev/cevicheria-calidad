@@ -25,7 +25,7 @@ export class PlatillosComponentM implements OnInit {
 
     ngOnInit() {
 
-
+        alert("Carga el menu con la fecha 05/24/2024")
         this.enivonmentAzureImage = envAzure.url;
         let fecha = localStorage.getItem('fechaMenu');
 
