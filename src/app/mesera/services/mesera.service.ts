@@ -286,9 +286,14 @@ export class MeseraService {
         return this.http.get<EMesa>(`${this.endpointSomee}/api/Mesa/GetInfoMesa?idMesa=${idMesa}`);
     }
 
+    //API MENU FECHA
+    // obtenerMenuSomee(fecha: string):Observable<EMenu[]>{
+    //     return this.http.get<EMenu[]>(`${this.endpointSomee}/api/Menu?fecha=${fecha}`);
+    // }
 
+    //API MENU FECHA ESTATICA
     obtenerMenuSomee(fecha: string):Observable<EMenu[]>{
-        return this.http.get<EMenu[]>(`${this.endpointSomee}/api/Menu?fecha=${fecha}`);
+        return this.http.get<EMenu[]>(`${this.endpointSomee}/api/Menu?fecha=2024-10-21`);
     }
 
     agregarOrdenSomee(orden:OrdenRequest):Observable<any>{

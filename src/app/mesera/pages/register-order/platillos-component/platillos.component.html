@@ -53,8 +53,12 @@
                         class="tw-text-4xl tw-bg-gray-100 tw-rounded-2xl tw-w-full tw-h-28 2xl:tw-h-40 tw-flex tw-items-center tw-justify-center \32xl\:tw-h-40" style="  height: 10rem !important;">
 
                         <ng-container *ngIf="menu.imagenUrl; else elseBlock">
-                            <!-- Si la condición es verdadera, mostrar la imagen -->
-                            <img src="{{ enivonmentAzureImage + menu.imagenUrl}}" alt="Imagen" class="img-style">
+                            <!-- Si la condición es verdadera, mostrar la imagen CON AZURE-->
+                            <!-- <img src="{{ enivonmentAzureImage + menu.imagenUrl}}" alt="Imagen" class="img-style"> -->
+
+                            <!-- Si la condición es verdadera, mostrar la imagen SIN AZURE -->
+                            <img src="{{ menu.imagenUrl}}" alt="Imagen" class="img-style">
+
                         </ng-container>
                         <ng-template #elseBlock>
                             <svg data-v-1dde7998="" data-v-7565b8e2="" aria-hidden="true" focusable="false"
